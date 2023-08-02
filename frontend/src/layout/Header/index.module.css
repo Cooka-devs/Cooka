@@ -1,0 +1,22 @@
+/*-------------------------------Header--------------------------------*/
+.header {
+  width: 120rem;
+  height: 10rem;
+  margin: auto;
+  font-size: 2rem;
+  position: relative;
+}
+.header_main {
+  position: absolute;
+  left: 10rem;
+  line-height: 10rem;
+}
+.header_main_logo {
+  display: inline-block;
+  width: 30rem;
+}
+.header_main_login {
+  position: absolute;
+  bottom: 1rem;
+  right: 10rem;
+}

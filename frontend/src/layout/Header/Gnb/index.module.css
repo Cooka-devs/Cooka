@@ -1,0 +1,14 @@
+.gnb {
+  height: 5rem;
+  background-color: #a88219;
+}
+.gnb_list {
+  width: 120rem;
+  height: 5rem;
+  margin: auto;
+  font-size: 2rem;
+  background-color: antiquewhite;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}

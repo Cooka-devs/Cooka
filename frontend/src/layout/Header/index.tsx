@@ -1,6 +1,7 @@
-import Styles from "../index.module.css";
+import Styles from "./index.module.css";
 import Link from "next/link";
-import Gnb from "./Gnb";
+import Gnb from "@/layout/Header/Gnb";
+
 const Header = () => {
   return (
     <div>
