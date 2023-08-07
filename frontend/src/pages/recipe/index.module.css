@@ -1,22 +1,20 @@
 /*-------------------------------Gnb--------------------------------*/
-.recipe_right_make {
-  margin: 5px;
-  background-color: rgb(191, 255, 0);
-  border-radius: 5px;
-}
 .recipe_container {
   width: 120rem;
-  min-height: 120rem;
+  min-height: 75rem;
   margin: auto;
-  background-color: lightgrey;
   font-size: 2rem;
   display: flex;
 }
 .recipe_left {
   width: 90rem;
-  background-color: #a88219;
 }
 .recipe_right {
   width: 30rem;
-  background-color: aqua;
+}
+.recipe_right_make {
+  margin-top: 1rem;
+  padding: 2rem;
+  border: 1px solid black;
+  border-radius: 0.5rem;
 }

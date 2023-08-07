@@ -1,0 +1,24 @@
+.makeboard {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+.makeboard_text {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+  padding: 3rem;
+  border-radius: 0.5rem;
+}
+.text_title {
+  width: 100%;
+  border: none;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.text_content {
+  padding: 1rem;
+  width: 100%;
+  height: 50rem;
+  border: 1px solid #ababab;
+}

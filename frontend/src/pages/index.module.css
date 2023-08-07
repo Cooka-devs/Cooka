@@ -5,51 +5,33 @@
   min-height: 120rem;
   background-color: #f6f6f6;
 }
+
 .main_container {
   display: flex;
   flex-direction: column;
 }
-.main_item:nth-child(1) {
-  background-color: white;
-  height: 25rem;
-}
-.main_item:nth-child(2) {
-  background-color: darkgoldenrod;
-  height: 30rem;
-}
-.main_item:nth-child(3) {
-  background-color: violet;
-  height: 30rem;
-}
-.main_item:nth-child(4) {
+
+.flex_row {
   display: flex;
-  flex-direction: row;
-  margin-bottom: 2rem;
   height: 30rem;
+  gap: calc(16rem / 3);
+  padding: 2rem;
 }
-.main_item {
-  margin: 2rem 2rem 0 2rem;
+
+.best_container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 }
-.main_item_item:nth-child(1) {
-  background-color: bisque;
-}
-.main_item_item:nth-child(2) {
-  background-color: yellow;
-}
-.main_item_item {
-  flex-basis: 50%;
-}
-.main_item_item:nth-child(1) {
-  margin-right: 20px;
-}
+
 .main_ad {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   height: 100%;
 }
+
 .main_ad_item {
   height: 200px;
   width: 300px;
-  background-color: gray;
 }

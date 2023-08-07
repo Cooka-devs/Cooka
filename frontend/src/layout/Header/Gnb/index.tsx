@@ -4,7 +4,7 @@ const Gnb = () => {
   return (
     <div>
       <div className={Styles.gnb}>
-        <div className={Styles.gnb_list}>
+        <div className={Styles.gnb_list} style={{ fontWeight: "700" }}>
           <Link href="/recipe">나만의 레시피</Link>
           <Link href="/Gnb_News">cooka News</Link>
           <Link href="/gnb_place">이런곳도 있어요!</Link>
