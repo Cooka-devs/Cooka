@@ -1,0 +1,35 @@
+.news {
+  width: 120rem;
+  min-height: 75rem;
+  margin: auto;
+  font-size: 2rem;
+  display: flex;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.news_left {
+  width: 90rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.news_right {
+  width: 30rem;
+  padding-left: 1rem;
+}
+.right_text {
+  font-size: 1.5rem;
+}
+.flex_row {
+  height: 24rem;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 1rem;
+  border-collapse: collapse;
+}
+.row_img img {
+  width: 20rem;
+  height: 20rem;
+}
