@@ -1,12 +1,8 @@
 import Styles from "./index.module.css";
-interface newsItemsProp {
-  imgSrc: string;
-  imgArt: string;
-  title: string;
-  url: string;
-  data: Date;
-}
+import NewsPagination, { NewItem } from "./NewsPagination";
+import { useEffect, useState } from "react";
 // interface newsItemsProps extends Array<newsItemsProp> {}
+
 const NEWSDATA = [
   {
     imgSrc:
@@ -38,30 +34,55 @@ const NEWSDATA = [
     url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
     date: "2023-08-11",
   },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
 ];
+
 const news = () => {
+  const [list, setList] = useState<NewItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1); //현재페이지
+  const [currentPageItem, setCurrentPageItem] = useState<NewItem[]>([]);
+  const itemnum = 8; //페이지당 출력될 item 수
+  const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
+  const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
+
+  const CurrentPost = (post: NewItem[]) => {
+    let currentPosts: NewItem[] = [];
+    if (post != undefined) {
+      currentPosts = post.slice(indexOfFirst, indexOfLast);
+    }
+    return currentPosts;
+  };
+
+  useEffect(() => {
+    setList(NEWSDATA);
+  }, []);
+  useEffect(() => {
+    setCurrentPageItem(CurrentPost(list));
+  }, [currentPage]);
+
   return (
     <div className={Styles.news}>
-      <div className={Styles.news_left}>
-        {NEWSDATA.map((newsitem, index) => {
-          return (
-            <a href={newsitem.url} className={Styles.flex_row} key={index}>
-              <div className={Styles.row_img}>
-                <img src={newsitem.imgSrc} alt={newsitem.imgArt} />
-              </div>
-              <div className={Styles.row_title}>
-                <div>{newsitem.title}</div>
-                <div>{newsitem.date}</div>
-              </div>
-            </a>
-          );
-        })}
-      </div>
-      <div className={Styles.news_right}>
-        <div className={Styles.right_text}>
-          각종 다양한 요리관련뉴스를 읽어보세요!
-        </div>
-      </div>
+      <NewsPagination items={CurrentPost(list)} />
     </div>
   );
 };
