@@ -1,4 +1,5 @@
 import RecipeList from "@/components/RecipeList";
+import RecipePageMove from "./RecipePageMove";
 import { CreateRecipe } from "@/components";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
@@ -89,6 +90,105 @@ const RECIPELIST = [
     likes: 0,
     comments: 0,
   },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
+  {
+    imgSrc:
+      "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
+    imgAlt: "recipelist",
+    title: "김치볶음밥!",
+    category: "한식",
+    likes: 0,
+    comments: 0,
+  },
 ];
 
 interface Recipe {
@@ -103,7 +203,18 @@ console.log(RECIPELIST[0]);
 export default function RecipePage() {
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
+  const [currentPage, setCurrentPage] = useState(1); //현재페이지
+  const itemnum = 9; //페이지당 출력될 item 수
+  const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
+  const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
 
+  const CurrentPost = (post: Recipe[]) => {
+    let currentPosts: Recipe[] = [];
+    if (post != undefined) {
+      currentPosts = post.slice(indexOfFirst, indexOfLast);
+    }
+    return currentPosts;
+  };
   const makeRecipe = () => {
     setOnRecipe(true);
   };
@@ -116,17 +227,31 @@ export default function RecipePage() {
   }, []);
 
   return (
-    <div className={Styles.recipe_container}>
-      <div className={Styles.recipe_left}>
-        {onRecipe ? <CreateRecipe /> : <RecipeList items={list} />}
-      </div>
-      <div className={Styles.recipe_right}>
-        <div className={Styles.recipe_right_make}>
+    <div>
+      <div className={Styles.recipe_container}>
+        <div className={Styles.recipe_left}>
           {onRecipe ? (
-            <div onClick={() => listRecipe()}>돌아가기</div>
+            <CreateRecipe />
           ) : (
-            <MakeRecipeButton onClick={makeRecipe} />
+            <>
+              <RecipeList items={CurrentPost(list)} />
+              <RecipePageMove
+                totalPosts={list.length}
+                postsPerPage={itemnum}
+                pageMove={setCurrentPage}
+                currentPage={currentPage}
+              />
+            </>
           )}
+        </div>
+        <div className={Styles.recipe_right}>
+          <div className={Styles.recipe_right_make}>
+            {onRecipe ? (
+              <div onClick={() => listRecipe()}>돌아가기</div>
+            ) : (
+              <MakeRecipeButton onClick={makeRecipe} />
+            )}
+          </div>
         </div>
       </div>
     </div>

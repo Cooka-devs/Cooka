@@ -3,8 +3,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   padding: 1rem;
-  justify-content: space-between;
   row-gap: 2rem;
+  gap: 2rem;
 }
 
 .list_container img {

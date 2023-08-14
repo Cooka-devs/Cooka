@@ -32,7 +32,7 @@ const NewsPageMove = ({
     pageMove(cutPage + cutPageNumber + 1);
   };
   return (
-    <div>
+    <div style={{ marginTop: "1rem" }}>
       <div className={Styles.movepage}>
         <button
           className={Styles.btn_item}
