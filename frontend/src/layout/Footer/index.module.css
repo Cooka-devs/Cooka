@@ -1,7 +1,10 @@
 .footer {
-  width: 120rem;
   margin: auto;
-  font-size: 2rem;
+  font-size: 1.2rem;
   height: 20rem;
-  text-align: center;
+  padding-left: 40rem;
+  padding-top: 2rem;
+  margin-top: 20rem;
+  background-color: rgb(205, 169, 85);
+  color: #fff;
 }

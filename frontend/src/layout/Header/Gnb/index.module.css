@@ -1,6 +1,6 @@
 .gnb {
   height: 5rem;
-  background-color: antiquewhite;
+  background-color: rgb(205, 169, 85);
 }
 .gnb_list {
   width: 120rem;
@@ -10,4 +10,7 @@
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+}
+.gnb_list a {
+  color: white;
 }

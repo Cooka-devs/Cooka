@@ -58,10 +58,9 @@ const NEWSDATA = [
   },
 ];
 
-const news = () => {
+const News = () => {
   const [list, setList] = useState<NewItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  // const [currentPageItem, setCurrentPageItem] = useState<NewItem[]>([]);
   const itemnum = 1; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
@@ -90,4 +89,4 @@ const news = () => {
     </div>
   );
 };
-export default news;
+export default News;
