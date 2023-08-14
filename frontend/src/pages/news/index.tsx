@@ -1,4 +1,5 @@
 import Styles from "./index.module.css";
+import NewsPageMove from "./NewsPageMove";
 import NewsPagination, { NewItem } from "./NewsPagination";
 import { useEffect, useState } from "react";
 // interface newsItemsProps extends Array<newsItemsProp> {}
@@ -42,10 +43,10 @@ const NEWSDATA = [
     date: "2023-08-11",
   },
   {
-    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220727/201685768_300.jpg",
     imgArt: "newsimage",
-    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
-    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    title: "식용유로 요리하기 겁난다, 식품류 가격 줄인상 이제 시작",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006837555",
     date: "2023-08-11",
   },
   {
@@ -60,8 +61,8 @@ const NEWSDATA = [
 const news = () => {
   const [list, setList] = useState<NewItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [currentPageItem, setCurrentPageItem] = useState<NewItem[]>([]);
-  const itemnum = 8; //페이지당 출력될 item 수
+  // const [currentPageItem, setCurrentPageItem] = useState<NewItem[]>([]);
+  const itemnum = 1; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
 
@@ -76,13 +77,16 @@ const news = () => {
   useEffect(() => {
     setList(NEWSDATA);
   }, []);
-  useEffect(() => {
-    setCurrentPageItem(CurrentPost(list));
-  }, [currentPage]);
 
   return (
     <div className={Styles.news}>
       <NewsPagination items={CurrentPost(list)} />
+      <NewsPageMove
+        totalPosts={list.length}
+        postsPerPage={itemnum}
+        pageMove={setCurrentPage}
+        currentPage={currentPage}
+      />
     </div>
   );
 };
