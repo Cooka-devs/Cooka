@@ -21,21 +21,22 @@ const NewsPagination = ({ items }: NewsItemsProps) => {
         flexWrap: "wrap",
       }}
     >
-      {items.map((newsitem, index) => {
-        return (
-          <a href={newsitem.url} className={Styles.flex_column} key={index}>
-            <div className={Styles.column_img}>
-              <img src={newsitem.imgSrc} alt={newsitem.imgArt} />
-            </div>
-            <div className={Styles.column_title}>
-              <div>{newsitem.title}</div>
-              <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
-                {newsitem.date}
+      {items &&
+        items.map((newsitem, index) => {
+          return (
+            <a href={newsitem.url} className={Styles.flex_column} key={index}>
+              <div className={Styles.column_img}>
+                <img src={newsitem.imgSrc} alt={newsitem.imgArt} />
               </div>
-            </div>
-          </a>
-        );
-      })}
+              <div className={Styles.column_title}>
+                <div>{newsitem.title}</div>
+                <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+                  {newsitem.date}
+                </div>
+              </div>
+            </a>
+          );
+        })}
     </div>
   );
 };

@@ -4,7 +4,7 @@ import NewsPagination, { NewItem } from "./NewsPagination";
 import { useEffect, useState } from "react";
 // interface newsItemsProps extends Array<newsItemsProp> {}
 
-const NEWSDATA = [
+const NEWSDATA: NewItem[] = [
   {
     imgSrc:
       "https://ichef.bbci.co.uk/news/800/cpsprodpb/4a21/live/77387860-fc31-11ed-92cc-b3a9bf1f67e9.png",
@@ -67,9 +67,7 @@ const News = () => {
 
   const CurrentPost = (post: NewItem[]) => {
     let currentPosts: NewItem[] = [];
-    if (post != undefined) {
-      currentPosts = post.slice(indexOfFirst, indexOfLast);
-    }
+    currentPosts = post.slice(indexOfFirst, indexOfLast);
     return currentPosts;
   };
 
