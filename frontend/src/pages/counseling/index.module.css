@@ -1,0 +1,44 @@
+.counselingpage {
+  width: 120rem;
+  min-height: 75rem;
+  margin: auto;
+  font-size: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.cslist {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.csitem {
+  box-shadow: 0 0 3px 1px lightgray;
+  border-radius: 0.8rem;
+  width: 28rem;
+  height: 20rem;
+  padding: 1.5rem;
+}
+.item_date {
+  font-size: 1.4rem;
+}
+.item_title {
+  height: 13rem;
+  font-family: "SUITE-Regular";
+}
+.item_likes {
+  display: flex;
+  gap: 1rem;
+}
+.like_span {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: gray;
+}
+.like_icon {
+  margin-top: 2px;
+}

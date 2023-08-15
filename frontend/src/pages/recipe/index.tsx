@@ -1,5 +1,5 @@
 import RecipeList from "@/components/RecipeList";
-import RecipePageMove from "./RecipePageMove";
+import RecipePageMove from "@/components/RecipePageMove";
 import { CreateRecipe } from "@/components";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";

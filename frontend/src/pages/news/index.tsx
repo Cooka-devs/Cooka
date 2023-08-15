@@ -1,6 +1,6 @@
 import Styles from "./index.module.css";
-import NewsPageMove from "./NewsPageMove";
-import NewsPagination, { NewItem } from "./NewsPagination";
+import NewsPageMove from "@/components/NewsPageMove";
+import NewsPagination, { NewItem } from "@/components/NewsPagination";
 import { useEffect, useState } from "react";
 // interface newsItemsProps extends Array<newsItemsProp> {}
 
@@ -56,12 +56,68 @@ const NEWSDATA: NewItem[] = [
     url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
     date: "2023-08-11",
   },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
+  {
+    imgSrc: "https://img.sbs.co.kr/newimg/news/20220602/201669616_300.jpg",
+    imgArt: "newsimage",
+    title: "김치 재탄생 미션' 스페인 요리 경연 프로 시청률이 무려?",
+    url: "https://news.sbs.co.kr/news/endPage.do?news_id=N1006773368",
+    date: "2023-08-11",
+  },
 ];
 
 const News = () => {
   const [list, setList] = useState<NewItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const itemnum = 1; //페이지당 출력될 item 수
+  const itemnum = 12; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
 
