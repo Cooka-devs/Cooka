@@ -94,7 +94,7 @@ const CounselingDetail = () => {
     const post = COUNSELINGDATA.find((post) => post.id === +postId);
     if (!post) return;
     setPost(post);
-  }, []);
+  }, [router.query.id]);
 
   return (
     <div>
