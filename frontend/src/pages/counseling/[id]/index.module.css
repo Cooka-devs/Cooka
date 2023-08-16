@@ -33,10 +33,12 @@
 .comment_name {
   display: flex;
   gap: 1rem;
+  font-size: 1.8rem;
+  color: #747474;
 }
 .comment_comment {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 .comment_input_text {
   height: 150px;

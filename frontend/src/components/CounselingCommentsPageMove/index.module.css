@@ -1,0 +1,39 @@
+.movepage {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  justify-content: center;
+  gap: 1px;
+  position: relative;
+  padding-top: 2rem;
+}
+.btn_item {
+  width: 3rem;
+  height: 5rem;
+  font-size: 2rem;
+  border-radius: 0.6rem;
+  box-sizing: border-box;
+}
+.btn_item_none:hover {
+  border-color: lightgray;
+  box-shadow: none;
+  transform: none;
+}
+.btn_active {
+  width: 3rem;
+  height: 5rem;
+  font-size: 2rem;
+  box-sizing: border-box;
+  border-bottom: 1px solid black;
+}
+.cs_maker {
+  position: absolute;
+  right: 2rem;
+}
+.btn_maker {
+  font-size: 2.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  width: 15rem;
+  height: 5rem;
+}
