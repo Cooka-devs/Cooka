@@ -7,7 +7,14 @@ function Layout({ children }: LayoutProps) {
   return (
     <div>
       <Header />
-      {children}
+      <div
+        style={{
+          paddingTop: "4rem",
+          paddingBottom: "4rem",
+        }}
+      >
+        {children}
+      </div>
       <Footer />
     </div>
   );

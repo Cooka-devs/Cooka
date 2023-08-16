@@ -2,6 +2,7 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { useState } from "react";
 import Styles from "./index.module.css";
+import { ClassNames } from "@emotion/react";
 interface PageMoveProps {
   totalPosts: number;
   postsPerPage: number;
@@ -35,9 +36,9 @@ const CounselingPageMove = ({
     <div style={{ position: "relative" }}>
       <div className={Styles.movepage}>
         <button
-          className={Styles.btn_item}
           onClick={() => HandleClickPrev()}
           disabled={cutPage === 0 ? true : false}
+          className={cutPage === 0 ? Styles.btn_item_none : Styles.btn_item}
         >
           <KeyboardDoubleArrowLeftIcon
             style={{ width: "3rem", height: "3rem", paddingTop: "0.5rem" }}
@@ -61,7 +62,11 @@ const CounselingPageMove = ({
             );
           })}
         <button
-          className={Styles.btn_item}
+          className={
+            pageNumbers.length / cutPageNumber <= checkPage
+              ? Styles.btn_item_none
+              : Styles.btn_item
+          }
           onClick={() => HandleClickNext()}
           disabled={
             pageNumbers.length / cutPageNumber <= checkPage ? true : false

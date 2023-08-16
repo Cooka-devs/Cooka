@@ -6,19 +6,21 @@
   gap: 1px;
 }
 .btn_item {
-  width: 5rem;
+  width: 3rem;
   height: 5rem;
-  font-size: 2.5rem;
+  font-size: 2rem;
   border-radius: 0.6rem;
-  border: 1px solid black;
   box-sizing: border-box;
 }
 .btn_active {
-  width: 5rem;
+  width: 3rem;
   height: 5rem;
-  font-size: 2.5rem;
-  border-radius: 0.6rem;
-  border: 1px solid black;
+  font-size: 2rem;
   box-sizing: border-box;
-  background-color: antiquewhite;
+  border-bottom: 1px solid black;
+}
+.btn_item_none:hover {
+  border-color: lightgray;
+  box-shadow: none;
+  transform: none;
 }
