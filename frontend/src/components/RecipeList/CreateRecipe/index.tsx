@@ -65,10 +65,13 @@ const CreateRecipe = () => {
             onChange={onChangeText}
             modules={modules}
             formats={formats}
-            style={{ height: "50rem" }}
+            style={{ height: "64.219rem" }}
             placeholder="레시피를 입력하세요!"
           />
         </div>
+      </div>
+      <div style={{ width: "100%", textAlign: "center" }}>
+        <button className={Styles.submit_btn}>작성완료</button>
       </div>
     </div>
   );

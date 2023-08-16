@@ -247,7 +247,12 @@ export default function RecipePage() {
         <div className={Styles.recipe_right}>
           <div className={Styles.recipe_right_make}>
             {onRecipe ? (
-              <div onClick={() => listRecipe()}>돌아가기</div>
+              <button
+                onClick={() => listRecipe()}
+                className={Styles.goback_btn}
+              >
+                돌아가기
+              </button>
             ) : (
               <MakeRecipeButton onClick={makeRecipe} />
             )}

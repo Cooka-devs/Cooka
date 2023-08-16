@@ -20,3 +20,8 @@
   font-size: 1.8rem;
   font-family: "SUITE-Regular";
 }
+.flex_column:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
+}

@@ -4,23 +4,33 @@
   padding: 1rem;
 }
 .makeboard_text {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 100%;
   width: 100%;
-  padding: 3rem;
   border-radius: 0.5rem;
+  font-family: "SUITE-Regular";
+  display: flex;
+  flex-direction: column;
 }
 .text_title {
   width: 100%;
   border: none;
-  height: 2.5rem;
   font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.text_content {
   padding: 1rem;
-  width: 100%;
-  height: 50rem;
-  border: 1px solid #ababab;
+  outline: none;
+  font-family: "SUITE-Regular";
+  border: 1px solid #ccc;
+  border-bottom: none;
+}
+.submit_btn {
+  font-size: 2.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  width: 30rem;
+  height: 5rem;
+}
+.submit_btn:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
 }

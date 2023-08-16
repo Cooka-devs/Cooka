@@ -22,6 +22,11 @@
   height: 20rem;
   padding: 1.5rem;
 }
+.csitem:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
+}
 .item_date {
   font-size: 1.4rem;
 }

@@ -6,7 +6,11 @@
   box-shadow: 0 0 3px 1px lightgray;
   border-radius: 0.8rem;
 }
-
+.list_item:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
+}
 .list_date {
   padding: 0.5rem;
   color: gray;
