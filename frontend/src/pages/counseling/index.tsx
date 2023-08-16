@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 export interface csItem {
   id: number;
   title: string;
+  nickname: string;
   content: string;
   likes: number;
   comments: number;
@@ -17,6 +18,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 0,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -26,6 +28,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 1,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -35,6 +38,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 2,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -44,6 +48,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 3,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -53,6 +58,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 4,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -62,6 +68,7 @@ export const COUNSELINGDATA: csItem[] = [
   {
     id: 5,
     title: "개봉한 파스타소스 유통기한?",
+    nickname: "advsdv",
     content: `파스타 소스가 남으면 며칠안에 다 소진해야 할까요?
     이미 개봉한거라 늘 고민되더라구요ㅜ`,
     likes: 0,
@@ -74,7 +81,7 @@ const Counseling = () => {
   const router = useRouter();
   const [list, setList] = useState<csItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const itemnum = 3; //페이지당 출력될 item 수
+  const itemnum = 12; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
 

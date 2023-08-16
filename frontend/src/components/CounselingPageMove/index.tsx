@@ -2,7 +2,6 @@ import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import { useState } from "react";
 import Styles from "./index.module.css";
-import { ClassNames } from "@emotion/react";
 interface PageMoveProps {
   totalPosts: number;
   postsPerPage: number;
