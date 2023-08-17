@@ -3,7 +3,7 @@ import RecipePageMove from "@/components/RecipePageMove";
 import { CreateRecipe } from "@/components";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
-import MakeRecipeButton from "./MakeRecipeButton";
+import MakeRecipeButton from "../../components/MakeRecipeButton";
 const RECIPELIST = [
   {
     imgSrc:

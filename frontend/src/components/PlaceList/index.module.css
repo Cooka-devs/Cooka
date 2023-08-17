@@ -1,0 +1,17 @@
+.list_container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 1rem;
+  row-gap: 2rem;
+  gap: 2rem;
+}
+
+.list_container img {
+  width: 28rem;
+  height: 30rem;
+  border-radius: 0.8rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  object-fit: cover;
+}

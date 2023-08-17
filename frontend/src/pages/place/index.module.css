@@ -1,0 +1,16 @@
+.place_container {
+  width: 120rem;
+  min-height: 75rem;
+  margin: auto;
+  font-size: 2rem;
+  display: flex;
+}
+.place_left {
+  width: 90rem;
+}
+.place_right {
+  width: 30rem;
+}
+.place_right_make {
+  margin-top: 1rem;
+}

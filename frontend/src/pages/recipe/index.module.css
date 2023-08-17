@@ -18,10 +18,11 @@
 
 .goback_btn {
   text-align: left;
-  font-size: 2.5rem;
+  font-size: 2rem;
   border-radius: 0.6rem;
   border: 1px solid black;
   width: 25rem;
   height: 7rem;
   padding: 1rem;
+  padding-left: 3rem;
 }

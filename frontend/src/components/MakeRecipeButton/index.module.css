@@ -1,0 +1,9 @@
+.make_btn {
+  text-align: left;
+  font-size: 2.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  width: 30rem;
+  height: 15rem;
+  padding: 2rem;
+}

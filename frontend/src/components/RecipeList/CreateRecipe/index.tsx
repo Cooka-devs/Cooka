@@ -70,7 +70,7 @@ const CreateRecipe = () => {
           />
         </div>
       </div>
-      <div style={{ width: "100%", textAlign: "center" }}>
+      <div style={{ width: "100%", textAlign: "center", paddingTop: "2rem" }}>
         <button className={Styles.submit_btn}>작성완료</button>
       </div>
     </div>
