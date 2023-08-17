@@ -1,9 +1,9 @@
 import RecipeList from "@/components/RecipeList";
 import RecipePageMove from "@/components/RecipePageMove";
-import { CreateRecipe } from "@/components";
+import CreateList from "@/components/CreateList";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
-import MakeRecipeButton from "../../components/MakeRecipeButton";
+import MakeRecipeButton from "@/components/MakeRecipeButton";
 const RECIPELIST = [
   {
     imgSrc:
@@ -231,7 +231,7 @@ export default function RecipePage() {
       <div className={Styles.recipe_container}>
         <div className={Styles.recipe_left}>
           {onRecipe ? (
-            <CreateRecipe />
+            <CreateList textType="recipe" />
           ) : (
             <>
               <RecipeList items={CurrentPost(list)} />
@@ -251,7 +251,14 @@ export default function RecipePage() {
                 onClick={() => listRecipe()}
                 className={Styles.goback_btn}
               >
-                돌아가기
+                <div style={{ fontSize: "2rem", fontWeight: "700" }}>
+                  돌아가기
+                </div>
+                <div style={{ fontSize: "1.5rem", paddingTop: "1rem" }}>
+                  레시피공유 페이지로
+                  <br />
+                  돌아갈께요.
+                </div>
               </button>
             ) : (
               <MakeRecipeButton onClick={makeRecipe} />

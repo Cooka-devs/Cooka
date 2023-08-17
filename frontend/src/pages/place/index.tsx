@@ -1,8 +1,9 @@
-import Styels from "./index.module.css";
+import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 import PlaceList from "@/components/PlaceList";
 import PlacePageMove from "@/components/PlacePageMove";
 import MakePlaceButton from "@/components/MakePlaceButton";
+import CreateList from "@/components/CreateList";
 const PLACELIST = [
   {
     imgSrc:
@@ -194,19 +195,38 @@ const Place = () => {
   }, []);
   return (
     <div>
-      <div className={Styels.place_container}>
-        <div className={Styels.place_left}>
-          <PlaceList items={CurrentPost(list)} />
-          <PlacePageMove
-            totalPosts={list.length}
-            postsPerPage={itemnum}
-            pageMove={setCurrentPage}
-            currentPage={currentPage}
-          />
+      <div className={Styles.place_container}>
+        <div className={Styles.place_left}>
+          {onplace ? (
+            <CreateList textType="place" />
+          ) : (
+            <>
+              <PlaceList items={CurrentPost(list)} />
+              <PlacePageMove
+                totalPosts={list.length}
+                postsPerPage={itemnum}
+                pageMove={setCurrentPage}
+                currentPage={currentPage}
+              />
+            </>
+          )}
         </div>
-        <div className={Styels.place_right}>
-          <div className={Styels.place_right_make}>
-            <MakePlaceButton />
+        <div className={Styles.place_right}>
+          <div className={Styles.place_right_make}>
+            {onplace ? (
+              <button onClick={() => listPlace()} className={Styles.goback_btn}>
+                <div style={{ fontSize: "2rem", fontWeight: "700" }}>
+                  돌아가기
+                </div>
+                <div style={{ fontSize: "1.5rem", paddingTop: "1rem" }}>
+                  맛집공유 페이지로
+                  <br />
+                  돌아갈께요.
+                </div>
+              </button>
+            ) : (
+              <MakePlaceButton onClick={makePlace} />
+            )}
           </div>
         </div>
       </div>

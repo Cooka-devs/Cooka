@@ -1,4 +1,3 @@
-/*-------------------------------Gnb--------------------------------*/
 .recipe_container {
   width: 120rem;
   min-height: 75rem;
@@ -22,7 +21,6 @@
   border-radius: 0.6rem;
   border: 1px solid black;
   width: 25rem;
-  height: 7rem;
-  padding: 1rem;
-  padding-left: 3rem;
+  height: 12rem;
+  padding: 2rem;
 }
