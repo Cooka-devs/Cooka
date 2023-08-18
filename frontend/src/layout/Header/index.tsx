@@ -13,7 +13,7 @@ const Header = () => {
           </Link>
         </div>
         <div className={Styles.header_main_login}>
-          <a>
+          <Link href="/login">
             <PersonOutlineIcon
               style={{
                 width: "4rem",
@@ -22,7 +22,7 @@ const Header = () => {
                 color: "grey",
               }}
             />
-          </a>
+          </Link>
           <a>
             <SearchIcon
               style={{ width: "4rem", height: "4rem", color: "grey" }}

@@ -1,0 +1,23 @@
+.loginpage {
+  width: 120rem;
+  margin: auto;
+  background-color: antiquewhite;
+  height: 70rem;
+  text-align: center;
+  padding: 2rem;
+}
+.login_title {
+  font-size: 2.2rem;
+}
+.login_input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 5rem;
+  gap: 1rem;
+}
+.input_text {
+  width: 50rem;
+  height: 8rem;
+  padding: 1rem;
+}
