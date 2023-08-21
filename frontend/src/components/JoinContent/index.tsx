@@ -1,4 +1,3 @@
-import { type } from "os";
 import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 interface UserProps {
@@ -7,11 +6,7 @@ interface UserProps {
   nickname: string;
   email?: string;
 }
-const INPUTTYPE = {
-  id: "id",
-  password: "password",
-  nickname: "nickname",
-};
+
 const USERDATA = [
   {
     id: "test11",
