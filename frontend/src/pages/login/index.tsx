@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import Modal from "@/components/Modal";
 import JoinContent from "@/components/JoinContent";
 
-const kakao_client_Id = `1`;
-const kakao_redirect_Uri = `http://localhost:3000/login/kakao`;
-const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_client_Id}&redirect_uri=${kakao_redirect_Uri}&response_type=code`;
+export const kakao_client_Id = `1`;
+export const kakao_redirect_Uri = `http://localhost:3000/login/kakao`;
+export const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_client_Id}&redirect_uri=${kakao_redirect_Uri}&response_type=code`;
+export const kakao_Secret_code = `1`;
 
 const naver_client_Id = `1`;
 const naver_redirect_Uri = `http://localhost:3000/login/naver`;
