@@ -6,9 +6,32 @@ import {
   kakao_redirect_Uri,
 } from "..";
 import { useRouter } from "next/router";
+
 const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
 const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
-const kakaoLoginPage = () => {
+
+interface KaKaoLoginData {
+  connected_at: string;
+  id: number;
+  kakao_account: {
+    profile_nickname_needs_agreement: boolean;
+    profile: {
+      email: string;
+      email_needs_agreement: boolean;
+      has_email: boolean;
+      is_email_valid: boolean;
+      is_email_verified: boolean;
+      profile: { nickname: string };
+      profile_nickname_needs_agreement: boolean;
+    };
+    has_email: boolean;
+    email_needs_agreement: boolean;
+    is_email_valid: boolean;
+  };
+  properties: { nickname: string };
+}
+
+const KakaoLoginPage = () => {
   const router = useRouter();
   const [code, setCode] = useState("");
 
@@ -39,7 +62,9 @@ const kakaoLoginPage = () => {
             },
           })
             .then((res) =>
-              res.json().then((data) => console.log("회원정보:", data))
+              res
+                .json()
+                .then((data: KaKaoLoginData) => console.log("회원정보:", data))
             )
             .catch((err) => console.log("err:", err));
         } else {
@@ -55,4 +80,4 @@ const kakaoLoginPage = () => {
     </div>
   );
 };
-export default kakaoLoginPage;
+export default KakaoLoginPage;

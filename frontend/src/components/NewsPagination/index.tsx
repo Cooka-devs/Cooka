@@ -11,6 +11,23 @@ export interface NewItem {
 interface NewsItemsProps {
   items: NewItem[];
 }
+export const NewsItem = (item: NewItem) => {
+  return (
+    <a
+      href={item.url}
+      className={Styles.flex_column}
+      key={`${item.date} ${item.title}`}
+    >
+      <div className={Styles.column_img}>
+        <img src={item.imgSrc} alt={item.imgArt} />
+      </div>
+      <div className={Styles.column_title}>
+        <div>{item.title}</div>
+        <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>{item.date}</div>
+      </div>
+    </a>
+  );
+};
 const NewsPagination = ({ items }: NewsItemsProps) => {
   return (
     <div
@@ -19,23 +36,12 @@ const NewsPagination = ({ items }: NewsItemsProps) => {
         flexDirection: "row",
         gap: "2rem",
         flexWrap: "wrap",
+        padding: "1rem",
       }}
     >
       {items &&
-        items.map((newsitem, index) => {
-          return (
-            <a href={newsitem.url} className={Styles.flex_column} key={index}>
-              <div className={Styles.column_img}>
-                <img src={newsitem.imgSrc} alt={newsitem.imgArt} />
-              </div>
-              <div className={Styles.column_title}>
-                <div>{newsitem.title}</div>
-                <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
-                  {newsitem.date}
-                </div>
-              </div>
-            </a>
-          );
+        items.map((newsitem) => {
+          return NewsItem(newsitem);
         })}
     </div>
   );

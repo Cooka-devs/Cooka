@@ -1,14 +1,9 @@
+import { Recipe } from "@/pages/recipe";
 import RecipeItem from "./RecipeItem";
 import Styles from "./index.module.css";
+
 interface RecipeListProps {
-  items: {
-    imgSrc: string;
-    imgAlt: string;
-    title: string;
-    likes: number;
-    comments: number;
-    category: string;
-  }[];
+  items: Recipe[];
 }
 
 const RecipeList = ({ items }: RecipeListProps) => {
@@ -20,4 +15,5 @@ const RecipeList = ({ items }: RecipeListProps) => {
     </div>
   );
 };
+
 export default RecipeList;

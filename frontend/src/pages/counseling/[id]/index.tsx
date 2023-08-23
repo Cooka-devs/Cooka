@@ -1,7 +1,7 @@
 import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { COUNSELINGDATA, csItem } from "..";
+import { COUNSELINGDATA, CsItem } from "..";
 import CounselingCommentsPageMove from "@/components/CounselingCommentsPageMove";
 
 export interface Comment {
@@ -75,7 +75,7 @@ const COMMENTS: Comment[] = [
 
 const CounselingDetail = () => {
   const router = useRouter();
-  const [post, setPost] = useState<csItem>();
+  const [post, setPost] = useState<CsItem>();
   const [comments, setComments] = useState<Comment[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const itemnum = 3; //페이지당 출력될 item 수

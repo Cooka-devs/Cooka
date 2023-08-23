@@ -2,7 +2,7 @@ import Styles from "./index.module.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 
-interface RecipeItemProps {
+export interface RecipeItemProps {
   item: {
     imgSrc: string;
     imgAlt: string;

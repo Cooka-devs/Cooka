@@ -4,6 +4,7 @@ import Gnb from "@/layout/Header/Gnb";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { useState } from "react";
 import Search from "@/utilities/search";
+import { useRouter } from "next/router";
 
 const Header = () => {
   const [searchText, setSearchText] = useState<string>("");
@@ -11,7 +12,7 @@ const Header = () => {
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
-
+  const router = useRouter();
   return (
     <div>
       <div className={Styles.header}>
@@ -28,29 +29,10 @@ const Header = () => {
             <button
               className={Styles.search_btn}
               onClick={() => {
-                const {
-                  searchCounselingData,
-                  searchNewsData,
-                  searchPlaceListData,
-                  searchRecipeListData,
-                } = Search(searchText);
-
-                localStorage.setItem(
-                  "searchCounselingData",
-                  JSON.stringify(searchCounselingData)
-                );
-                localStorage.setItem(
-                  "searchNewsData",
-                  JSON.stringify(searchNewsData)
-                );
-                localStorage.setItem(
-                  "searchPlaceListData",
-                  JSON.stringify(searchPlaceListData)
-                );
-                localStorage.setItem(
-                  "searchRecipeListData",
-                  JSON.stringify(searchRecipeListData)
-                );
+                router.push({
+                  pathname: "search",
+                  query: { keyword: searchText },
+                });
               }}
             >
               검색

@@ -4,7 +4,8 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import CounselingPageMove from "@/components/CounselingPageMove";
 import { useRouter } from "next/router";
-export interface csItem {
+import CounselingList from "@/components/CounselingList";
+export interface CsItem {
   id: number;
   title: string;
   nickname: string;
@@ -14,7 +15,7 @@ export interface csItem {
   date: string;
 }
 
-export const COUNSELINGDATA: csItem[] = [
+export const COUNSELINGDATA: CsItem[] = [
   {
     id: 0,
     title: "개봉한 파스타소스 유통기한?",
@@ -78,15 +79,14 @@ export const COUNSELINGDATA: csItem[] = [
 ];
 
 const Counseling = () => {
-  const router = useRouter();
-  const [list, setList] = useState<csItem[]>([]);
+  const [list, setList] = useState<CsItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const itemnum = 12; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
 
-  const CurrentPost = (post: csItem[]) => {
-    let currentPosts: csItem[] = [];
+  const CurrentPost = (post: CsItem[]) => {
+    let currentPosts: CsItem[] = [];
     currentPosts = post.slice(indexOfFirst, indexOfLast);
     return currentPosts;
   };
@@ -94,40 +94,10 @@ const Counseling = () => {
   useEffect(() => {
     setList(COUNSELINGDATA); // TODO => 서버에서 들어오는 데이터로 바꾸기
   }, []);
+
   return (
     <div className={Styles.counselingpage}>
-      <div className={Styles.cslist}>
-        {CurrentPost(list).map((item, index) => {
-          return (
-            <div
-              className={Styles.csitem}
-              key={index}
-              onClick={() => {
-                router.push({ pathname: `counseling/${item.id}` });
-              }}
-            >
-              <div className={Styles.item_date}>{item.date}</div>
-              <div className={Styles.item_title}>{item.title}</div>
-              <div className={Styles.item_likes}>
-                <div className={Styles.like_span}>
-                  <ThumbUpOffAltIcon
-                    className={Styles.like_icon}
-                    fontSize={"large"}
-                  />
-                  {item.likes}
-                </div>
-                <div className={Styles.like_span}>
-                  <InsertCommentOutlinedIcon
-                    className={Styles.like_icon}
-                    fontSize={"large"}
-                  />
-                  {item.comments}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <CounselingList items={CurrentPost(list)} />
       <CounselingPageMove
         totalPosts={list.length}
         postsPerPage={itemnum}

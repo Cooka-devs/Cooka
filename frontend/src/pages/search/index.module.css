@@ -1,7 +1,68 @@
 .searchpage {
-  width: 120rem;
+  width: 140rem;
   margin: auto;
   font-size: 2rem;
   min-height: 120rem;
-  background-color: #f6f6f6;
+}
+.main_container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.container_item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+}
+
+.item_content {
+  display: flex;
+  flex-direction: row;
+  row-gap: 2rem;
+  gap: 2rem;
+  padding-left: 10rem;
+}
+.item_title {
+  padding-left: 11rem;
+  font-size: 3rem;
+  font-family: "SUITE-Regular";
+}
+
+.arrowbtn {
+  font-size: 5rem;
+  color: burlywood;
+}
+.news_arrowleft_btn {
+  position: absolute;
+  left: 2rem;
+  line-height: 42rem;
+}
+.news_arrowright_btn {
+  position: absolute;
+  right: 2rem;
+  line-height: 42rem;
+}
+.counseling_arrowleft_btn {
+  position: absolute;
+  left: 2rem;
+  line-height: 33rem;
+}
+.counseling_arrowright_btn {
+  position: absolute;
+  right: 2rem;
+  line-height: 33rem;
+}
+.arrowleft_btn {
+  position: absolute;
+  left: 2rem;
+  line-height: 50rem;
+}
+.arrowright_btn {
+  position: absolute;
+  right: 2rem;
+  line-height: 50rem;
+}
+.none_btn {
+  display: none;
 }
