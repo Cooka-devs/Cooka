@@ -4,7 +4,7 @@ import CreateList from "@/components/CreateList";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
-const RECIPELIST = [
+export const RECIPELIST = [
   {
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
@@ -191,7 +191,7 @@ const RECIPELIST = [
   },
 ];
 
-interface Recipe {
+export interface Recipe {
   imgSrc: string;
   imgAlt: string;
   title: string;

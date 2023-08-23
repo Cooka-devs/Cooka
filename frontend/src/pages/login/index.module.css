@@ -57,6 +57,7 @@
   background-color: #03c75a;
 }
 .social_login_kakao {
+  cursor: pointer;
   background-color: #fee500;
 }
 .social_login img {

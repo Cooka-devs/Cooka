@@ -4,7 +4,7 @@ import NewsPagination, { NewItem } from "@/components/NewsPagination";
 import { useEffect, useState } from "react";
 // interface newsItemsProps extends Array<newsItemsProp> {}
 
-const NEWSDATA: NewItem[] = [
+export const NEWSDATA: NewItem[] = [
   {
     imgSrc:
       "https://ichef.bbci.co.uk/news/800/cpsprodpb/4a21/live/77387860-fc31-11ed-92cc-b3a9bf1f67e9.png",

@@ -46,13 +46,14 @@ const JoinContent = ({ closeModal }: any) => {
   const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
   const emailRegExp =
     /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-  const onChangeId = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const onChangeId: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setId(e.target.value);
   };
-  const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeNickname: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setNickname(e.target.value);
   };
-  const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
     if (passwordRegExp.test(e.target.value)) {
       setPasswordMessage("사용가능한 비밀번호 입니다!");

@@ -4,7 +4,7 @@ import PlaceList from "@/components/PlaceList";
 import PlacePageMove from "@/components/PlacePageMove";
 import MakePlaceButton from "@/components/MakePlaceButton";
 import CreateList from "@/components/CreateList";
-const PLACELIST = [
+export const PLACELIST = [
   {
     imgSrc:
       "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230428_91%2F1682638709082udtMM_JPEG%2FIMG_20230423_234810_923.jpg",

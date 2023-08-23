@@ -5,13 +5,22 @@ import {
   kakao_client_Id,
   kakao_redirect_Uri,
 } from "..";
+import { useRouter } from "next/router";
 const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
 const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
 const kakaoLoginPage = () => {
-  const [code, setCode] = useState<any>("");
+  const router = useRouter();
+  const [code, setCode] = useState("");
+
   useEffect(() => {
-    setCode(new URL(window.location.href).searchParams.get("code"));
+    console.log("query??", router.query);
+    if (!router.isReady || !router.query["code"]) return;
+    setCode(router.query["code"].toString());
     console.log("code:", code);
+  }, [router]);
+
+  useEffect(() => {
+    if (!code) return;
     fetch(getTokenUrl, {
       method: "POST",
       headers: {
@@ -39,6 +48,7 @@ const kakaoLoginPage = () => {
       })
     );
   }, [code]);
+
   return (
     <div>
       <div>카카오로그인페이지</div>
