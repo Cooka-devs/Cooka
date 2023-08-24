@@ -7,19 +7,30 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import NewsPagination from "@/components/NewsPagination";
 import CounselingList from "@/components/CounselingList";
+import { useRouter } from "next/router";
 const search = () => {
-  const itemNum = 4;
   const [recipeNum, setRecipeNum] = useState(0);
   const [placeNum, setPlaceNum] = useState(0);
   const [newsNum, setNewsNum] = useState(0);
   const [counselingNum, setCounselingNum] = useState(0);
-  let recipeNum2 = 0;
+
+  const itemNum = 4;
+  const router = useRouter();
+
   const {
     searchCounselingData,
     searchNewsData,
     searchPlaceListData,
     searchRecipeListData,
   } = useSearchItems();
+
+  useEffect(() => {
+    setRecipeNum(0);
+    setPlaceNum(0);
+    setNewsNum(0);
+    setCounselingNum(0);
+  }, [router.query]);
+
   const Lists = useMemo(() => {
     return [
       {
@@ -68,13 +79,14 @@ const search = () => {
     searchCounselingData,
     searchNewsData,
     placeNum,
-    recipeNum2,
+    recipeNum,
     counselingNum,
     newsNum,
   ]);
+
   const onClickLeftHandler = (title: string) => {
     if (title === "레시피") {
-      recipeNum2 != 0 ? (recipeNum2 -= itemNum) : "";
+      recipeNum != 0 ? setRecipeNum((prev) => prev - itemNum) : "";
     }
     if (title === "맛집") {
       placeNum != 0 ? setPlaceNum((prev) => prev - itemNum) : "";
@@ -89,8 +101,8 @@ const search = () => {
 
   const onClickRightHandler = (title: string) => {
     if (title === "레시피") {
-      recipeNum2 + itemNum < searchRecipeListData.length
-        ? (recipeNum2 += itemNum)
+      recipeNum + itemNum < searchRecipeListData.length
+        ? setRecipeNum((prev) => prev + itemNum)
         : "";
     }
     if (title === "맛집") {
@@ -109,6 +121,7 @@ const search = () => {
         : "";
     }
   };
+
   return (
     <div className={Styles.searchpage}>
       <div className={Styles.main_container}>
@@ -116,37 +129,43 @@ const search = () => {
           return (
             <div key={list.title} className={Styles.container_item}>
               <div className={Styles.item_title}>{list.title}</div>
-              <div className={Styles.item_content}>{list.component}</div>
-              <button
-                className={
-                  list.title === "뉴스"
-                    ? Styles.news_arrowleft_btn
-                    : list.title === "질문"
-                    ? Styles.counseling_arrowleft_btn
-                    : Styles.arrowleft_btn
-                }
-                onClick={() => onClickLeftHandler(list.title)}
-                style={{
-                  display: list.data.length === 0 ? "none" : "inline-block",
-                }}
-              >
-                <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-              </button>
-              <button
-                className={
-                  list.title === "뉴스"
-                    ? Styles.news_arrowright_btn
-                    : list.title === "질문"
-                    ? Styles.counseling_arrowright_btn
-                    : Styles.arrowright_btn
-                }
-                onClick={() => onClickRightHandler(list.title)}
-                style={{
-                  display: list.data.length === 0 ? "none" : "inline-block",
-                }}
-              >
-                <ArrowForwardIosIcon className={Styles.arrowbtn} />
-              </button>
+              {list.data.length === 0 ? (
+                <div className={Styles.none_data}>검색된 정보가 없습니다.</div>
+              ) : (
+                <>
+                  <div className={Styles.item_content}>{list.component}</div>
+                  <button
+                    className={
+                      list.title === "뉴스"
+                        ? Styles.news_arrowleft_btn
+                        : list.title === "질문"
+                        ? Styles.counseling_arrowleft_btn
+                        : Styles.arrowleft_btn
+                    }
+                    onClick={() => onClickLeftHandler(list.title)}
+                    style={{
+                      display: list.data.length === 0 ? "none" : "inline-block",
+                    }}
+                  >
+                    <ArrowBackIosNewIcon className={Styles.arrowbtn} />
+                  </button>
+                  <button
+                    className={
+                      list.title === "뉴스"
+                        ? Styles.news_arrowright_btn
+                        : list.title === "질문"
+                        ? Styles.counseling_arrowright_btn
+                        : Styles.arrowright_btn
+                    }
+                    onClick={() => onClickRightHandler(list.title)}
+                    style={{
+                      display: list.data.length === 0 ? "none" : "inline-block",
+                    }}
+                  >
+                    <ArrowForwardIosIcon className={Styles.arrowbtn} />
+                  </button>
+                </>
+              )}
             </div>
           );
         })}

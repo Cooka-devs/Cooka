@@ -66,3 +66,7 @@
 .none_btn {
   display: none;
 }
+.none_data {
+  font-family: "SUITE-Regular";
+  padding-left: 11rem;
+}
