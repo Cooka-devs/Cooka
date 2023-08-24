@@ -1,4 +1,4 @@
-import { OkPacketParams, ResultSetHeader } from "mysql2/promise";
+import { ResultSetHeader } from "mysql2/promise";
 import { DB_QUERY_ERROR } from "../constants/response";
 import { QueriesFunction, QueriesFunctionWithBody } from "../types/queries";
 import { makeSuccessResponse } from "../utils/response";
@@ -8,6 +8,7 @@ export const getUsers: QueriesFunction = async (conn) => {
     const result = await conn.query("SELECT * from user");
     return makeSuccessResponse(result[0]);
   } catch (err) {
+    console.log(err);
     return DB_QUERY_ERROR;
   }
 };
@@ -33,6 +34,7 @@ export const addUser: QueriesFunctionWithBody<AddUserParams> = async (
     const id = (result as ResultSetHeader[])[0].insertId;
     return makeSuccessResponse(id);
   } catch (err) {
+    console.log(err);
     return DB_QUERY_ERROR;
   }
 };
