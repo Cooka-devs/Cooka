@@ -1,4 +1,4 @@
-import { Recipe } from "@/pages/recipe";
+import { Recipe } from "@/types";
 import RecipeItem from "./RecipeItem";
 import Styles from "./index.module.css";
 

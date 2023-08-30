@@ -1,8 +1,4 @@
-import { COUNSELINGDATA } from "@/pages/counseling";
-import { NEWSDATA } from "@/pages/news";
-import { PLACELIST } from "@/pages/place";
-import { RECIPELIST } from "@/pages/recipe";
-
+import { COUNSELINGDATA, NEWSDATA, PLACELIST, RECIPELIST } from "@/data";
 const Search = (text: string) => {
   return {
     searchCounselingData: COUNSELINGDATA.filter((item) =>

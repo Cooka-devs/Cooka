@@ -1,33 +1,29 @@
 import Styles from "./index.module.css";
 import { useEffect, useState } from "react";
-import { Recipe } from "@/types";
+import { PlaceProps } from "@/types";
 import { useRouter } from "next/router";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
-import { RECIPECOMMENTS, RECIPELIST } from "@/data";
-const RecipeDetail = () => {
+import { PLACECOMMENTS, PLACELIST } from "@/data";
+const PlaceDetail = () => {
   const router = useRouter();
-  const [post, setPost] = useState<Recipe>();
-
-  const comments = useGetComments(RECIPECOMMENTS);
+  const [post, setPost] = useState<PlaceProps>();
+  const comments = useGetComments(PLACECOMMENTS);
   useEffect(() => {
     const postId = router.query.id;
     if (!postId) return;
-    const post = RECIPELIST.find((post) => post.id === +postId);
+    const post = PLACELIST.find((post) => post.id === +postId);
     if (!post) return;
     setPost(post);
   }, [router.query.id]);
   return (
     <div>
       {post ? (
-        <div className={Styles.recipe_itemdetail}>
-          <div className={Styles.title}>
-            <span>{`[${post?.category}]`}</span>
-            <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
-          </div>
+        <div className={Styles.place_itemdetail}>
+          <div className={Styles.title}>{post.title}</div>
           <div style={{ paddingTop: "1rem", color: "gray" }}>
             작성자 : {post.writer}
           </div>
@@ -50,10 +46,7 @@ const RecipeDetail = () => {
           </div>
           <Divider />
           <img src={post.imgSrc} alt={post.imgAlt} className={Styles.img} />
-          <div
-            dangerouslySetInnerHTML={{ __html: post.recipe }}
-            style={{ marginBottom: "10rem" }}
-          />
+
           <Divider />
           <textarea
             placeholder="댓글을 입력하세요!"
@@ -72,4 +65,4 @@ const RecipeDetail = () => {
     </div>
   );
 };
-export default RecipeDetail;
+export default PlaceDetail;

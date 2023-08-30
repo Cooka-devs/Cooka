@@ -1,12 +1,5 @@
 import Styles from "./index.module.css";
-
-export interface NewItem {
-  imgSrc: string;
-  imgArt: string;
-  title: string;
-  url: string;
-  date: string;
-}
+import { NewItem } from "@/types";
 
 interface NewsItemsProps {
   items: NewItem[];

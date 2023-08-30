@@ -1,7 +1,7 @@
 import Styles from "./index.module.css";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,

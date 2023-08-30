@@ -1,6 +1,6 @@
 import PlaceItem from "./PlaceItem";
 import Styles from "./index.module.css";
-import { PlaceProps } from "@/pages/place";
+import { PlaceProps } from "@/types";
 interface PlaceListProps {
   items: PlaceProps[];
 }

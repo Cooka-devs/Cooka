@@ -24,22 +24,7 @@
   min-height: 30rem;
   border-bottom: 1px solid black;
 }
-.detail_comments {
-  padding-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid lightgray;
-}
-.comment_name {
-  display: flex;
-  gap: 1rem;
-  font-size: 1.8rem;
-  color: #747474;
-}
-.comment_comment {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
+
 .comment_input_text {
   height: 150px;
   border-radius: 5px;

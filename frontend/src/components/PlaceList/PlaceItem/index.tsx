@@ -1,13 +1,18 @@
 import Styles from "./index.module.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
-import { PlaceProps } from "@/pages/place";
+import { PlaceProps } from "@/types";
+import { useRouter } from "next/router";
 interface Place {
   item: PlaceProps;
 }
 const PlaceItem = ({ item }: Place) => {
+  const router = useRouter();
   return (
-    <div className={Styles.list_item}>
+    <div
+      className={Styles.list_item}
+      onClick={() => router.push({ pathname: `place/${item.id}` })}
+    >
       <img src={item.imgSrc} alt={item.imgAlt} />
       <div className={Styles.list_date}>{item.date}</div>
       <div className={Styles.list_title_row}>

@@ -8,7 +8,7 @@ interface PageMoveProps {
   pageMove: any;
   currentPage: number;
 }
-const CounselingCommentsPageMove = ({
+const CommentsPageMove = ({
   totalPosts,
   postsPerPage,
   pageMove,
@@ -77,4 +77,4 @@ const CounselingCommentsPageMove = ({
     </div>
   );
 };
-export default CounselingCommentsPageMove;
+export default CommentsPageMove;

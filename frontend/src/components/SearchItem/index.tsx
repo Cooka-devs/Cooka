@@ -1,10 +1,6 @@
-import { COUNSELINGDATA, CsItem } from "@/pages/counseling";
-import { NEWSDATA } from "@/pages/news";
-import { PLACELIST } from "@/pages/place";
-import { RECIPELIST } from "@/pages/recipe";
-import { NewItem } from "../NewsPagination";
-import { PlaceProps } from "@/pages/place";
-import { Recipe } from "@/pages/recipe";
+import { Recipe, PlaceProps, NewItem, CsItem } from "@/types";
+import { COUNSELINGDATA, NEWSDATA, PLACELIST, RECIPELIST } from "@/data";
+
 const searchCounselingData: CsItem[] = [];
 const searchNewsData: NewItem[] = [];
 const searchPlaceListData: PlaceProps[] = [];

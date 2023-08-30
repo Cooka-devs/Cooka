@@ -1,4 +1,4 @@
-import { CsItem } from "@/pages/counseling";
+import { CsItem } from "@/types";
 import Styles from "./index.module.css";
 import { useRouter } from "next/router";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
