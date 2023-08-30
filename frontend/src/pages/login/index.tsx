@@ -10,8 +10,8 @@ export const kakao_Secret_code = process.env.NEXT_PUBLIC_KAKAO_SECRET;
 export const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_client_Id}&redirect_uri=${kakao_redirect_Uri}&response_type=code`;
 
 export const naver_client_Id = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
-export const naver_redirect_Uri = process.env.NEXT_REDIRECT_URL;
-const naver_state = `test`;
+export const naver_redirect_Uri = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URL;
+export const naver_state = process.env.NEXT_PUBLIC_NAVER_STATE;
 const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_client_Id}&redirect_uri=${naver_redirect_Uri}&state=${naver_state}`;
 const LoginPage = () => {
   const router = useRouter();

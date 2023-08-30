@@ -1,9 +1,10 @@
 import Styles from "./index.module.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
-
+import { useRouter } from "next/router";
 export interface RecipeItemProps {
   item: {
+    id: number;
     imgSrc: string;
     imgAlt: string;
     title: string;
@@ -15,8 +16,12 @@ export interface RecipeItemProps {
 }
 
 const RecipeItem = ({ item }: RecipeItemProps) => {
+  const router = useRouter();
   return (
-    <div className={Styles.list_item}>
+    <div
+      className={Styles.list_item}
+      onClick={() => router.push({ pathname: `recipe/${item.id}` })}
+    >
       <img src={item.imgSrc} alt={item.imgAlt} />
       <div className={Styles.list_date}>2022. 01. 05</div>
       <div className={Styles.list_title_row}>

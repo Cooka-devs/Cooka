@@ -14,6 +14,7 @@ const CONTAINERS = [
           itemTitle: "요리제목",
           likes: 0,
           views: 0,
+          recipe: "",
         },
         {
           imgSrc:
@@ -22,6 +23,7 @@ const CONTAINERS = [
           itemTitle: "요리제목",
           likes: 0,
           views: 0,
+          recipe: "",
         },
         {
           imgSrc:
@@ -30,6 +32,7 @@ const CONTAINERS = [
           itemTitle: "요리제목",
           likes: 0,
           views: 0,
+          recipe: "",
         },
         {
           imgSrc:
@@ -38,6 +41,7 @@ const CONTAINERS = [
           itemTitle: "요리제목",
           likes: 0,
           views: 0,
+          recipe: "",
         },
       ],
     },

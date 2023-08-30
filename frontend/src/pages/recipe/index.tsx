@@ -6,6 +6,7 @@ import Styles from "./index.module.css";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
 export const RECIPELIST = [
   {
+    id: 1,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -14,8 +15,12 @@ export const RECIPELIST = [
     likes: 0,
     comments: 0,
     isHot: true,
+    recipe: "<p>만드는법 : 잘</p> ",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 2,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -23,8 +28,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 3,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -33,8 +42,12 @@ export const RECIPELIST = [
     likes: 0,
     comments: 0,
     isHot: true,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 4,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -43,8 +56,12 @@ export const RECIPELIST = [
     likes: 0,
     comments: 0,
     isHot: false,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 5,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -53,8 +70,12 @@ export const RECIPELIST = [
     likes: 0,
     comments: 0,
     isHot: true,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 6,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -62,8 +83,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 7,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -71,8 +96,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 8,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -80,8 +109,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 9,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -89,8 +122,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 10,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -98,8 +135,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 11,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -107,8 +148,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 12,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -116,8 +161,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 13,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -125,8 +174,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 14,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -134,8 +187,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 15,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -143,8 +200,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 16,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -152,8 +213,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 17,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -161,8 +226,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 18,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -170,8 +239,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 19,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -179,8 +252,12 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
   {
+    id: 20,
     imgSrc:
       "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
     imgAlt: "recipelist",
@@ -188,16 +265,23 @@ export const RECIPELIST = [
     category: "한식",
     likes: 0,
     comments: 0,
+    recipe: "",
+    date: "2023-08-30",
+    writer: "승휘",
   },
 ];
 
 export interface Recipe {
+  id: number;
   imgSrc: string;
   imgAlt: string;
   title: string;
   likes: number;
   comments: number;
   category: string;
+  recipe: string;
+  date: string;
+  writer: string;
 }
 console.log(RECIPELIST[0]);
 export default function RecipePage() {

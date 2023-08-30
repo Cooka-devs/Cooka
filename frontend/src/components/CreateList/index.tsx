@@ -46,11 +46,7 @@ interface TextType {
 const CreateList = ({ textType }: TextType) => {
   const [text, setText] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [type, setType] = useState<string>("");
 
-  useEffect(() => {
-    setType(textType);
-  }, []);
   const onChangeText = (e: string) => {
     setText(e);
     console.log("text", e);
@@ -66,9 +62,9 @@ const CreateList = ({ textType }: TextType) => {
         <div>
           <input
             placeholder={
-              type === "recipe"
+              textType === "recipe"
                 ? `요리명을 입력하세요!`
-                : type === "place"
+                : textType === "place"
                 ? "맛집명을 입력하세요"
                 : ""
             }
@@ -77,7 +73,7 @@ const CreateList = ({ textType }: TextType) => {
           />
         </div>
         <div>
-          {type === "recipe" ? (
+          {textType === "recipe" ? (
             <ReactQuill
               onChange={onChangeText}
               modules={modules}
@@ -85,7 +81,7 @@ const CreateList = ({ textType }: TextType) => {
               style={{ height: "64.219rem" }}
               placeholder="레시피를 입력하세요!"
             />
-          ) : type === "place" ? (
+          ) : textType === "place" ? (
             <ReactQuill
               onChange={onChangeText}
               modules={modules}

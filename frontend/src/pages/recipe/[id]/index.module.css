@@ -1,0 +1,34 @@
+.recipe_itemdetail {
+  width: 70rem;
+  min-height: 90rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  padding-top: 5rem;
+}
+.title {
+  font-size: 3rem;
+}
+.list_likes {
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.like_span {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: gray;
+}
+
+.like_icon {
+  margin-top: 2px;
+}
+.img {
+  width: 70rem;
+  margin-top: 2rem;
+}
