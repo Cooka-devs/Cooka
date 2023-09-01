@@ -43,6 +43,9 @@ const Header = () => {
             <Link href="/login">
               <PersonOutlineIcon className={Styles.login_icon} />
             </Link>
+            <Link href="/mypage">
+              <PersonOutlineIcon className={Styles.login_icon} />
+            </Link>
           </span>
         </div>
       </div>

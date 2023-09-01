@@ -1,7 +1,4 @@
-import { NewItem } from "@/components/NewsPagination";
-import { CsItem } from "@/pages/counseling";
-import { PlaceProps } from "@/pages/place";
-import { Recipe } from "@/pages/recipe";
+import { NewItem, CsItem, PlaceProps, Recipe } from "@/types";
 import Search from "@/utilities/search";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";

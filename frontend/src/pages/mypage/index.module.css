@@ -1,0 +1,49 @@
+.mypage {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  width: 120rem;
+  margin: auto;
+}
+.mypage_head {
+  display: flex;
+}
+.head_left {
+  width: 30rem;
+  padding-left: 1rem;
+}
+.head_right {
+  padding-left: 1rem;
+  width: 89rem;
+}
+.mypage_container {
+  display: flex;
+  flex-direction: row;
+  width: 120rem;
+  min-height: 90rem;
+  margin: auto;
+}
+.snb_column {
+  display: flex;
+  flex-direction: column;
+  width: 30rem;
+  padding: 1rem;
+  gap: 1rem;
+}
+.content {
+  width: 90rem;
+  padding-top: 3rem;
+}
+.mypage h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+.snb_subhead {
+  font-size: 2.5rem;
+  padding-top: 2rem;
+}
+.snb_menu {
+  padding-left: 3rem;
+}
+.snb_menu li {
+  margin-bottom: 0.5rem;
+}

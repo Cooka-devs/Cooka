@@ -21,7 +21,7 @@ export interface Recipe {
 export interface CsItem {
   id: number;
   title: string;
-  nickname: string;
+  writer: string;
   content: string;
   likes: number;
   comments: number;
@@ -45,4 +45,10 @@ export interface NewItem {
   title: string;
   url: string;
   date: string;
+}
+export interface User {
+  id: string;
+  email: string;
+  nickname: string;
+  status: string;
 }
