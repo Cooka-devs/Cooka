@@ -25,14 +25,3 @@
   box-sizing: border-box;
   border-bottom: 1px solid black;
 }
-.cs_maker {
-  position: absolute;
-  right: 2rem;
-}
-.btn_maker {
-  font-size: 2.5rem;
-  border-radius: 0.6rem;
-  border: 1px solid black;
-  width: 15rem;
-  height: 5rem;
-}

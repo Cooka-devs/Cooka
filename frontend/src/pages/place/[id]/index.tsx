@@ -1,24 +1,15 @@
 import Styles from "./index.module.css";
-import { useEffect, useState } from "react";
-import { PlaceProps } from "@/types";
-import { useRouter } from "next/router";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
+import useGetPost from "@/hooks/useGetPost";
 import ShowComment from "@/components/ShowComment";
 import { PLACECOMMENTS, PLACELIST } from "@/data";
+
 const PlaceDetail = () => {
-  const router = useRouter();
-  const [post, setPost] = useState<PlaceProps>();
   const comments = useGetComments(PLACECOMMENTS);
-  useEffect(() => {
-    const postId = router.query.id;
-    if (!postId) return;
-    const post = PLACELIST.find((post) => post.id === +postId);
-    if (!post) return;
-    setPost(post);
-  }, [router.query.id]);
+  const post = useGetPost(PLACELIST);
   return (
     <div>
       {post ? (

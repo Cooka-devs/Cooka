@@ -75,9 +75,6 @@ const CounselingPageMove = ({
             style={{ width: "3rem", height: "3rem", paddingTop: "0.5rem" }}
           />
         </button>
-        <div className={Styles.cs_maker}>
-          <button className={Styles.btn_maker}>작성하기</button>
-        </div>
       </div>
     </div>
   );

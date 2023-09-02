@@ -25,12 +25,17 @@ const Counseling = () => {
   return (
     <div className={Styles.counselingpage}>
       <CounselingList items={CurrentPost(list)} />
-      <CounselingPageMove
-        totalPosts={list.length}
-        postsPerPage={itemnum}
-        pageMove={setCurrentPage}
-        currentPage={currentPage}
-      />
+      <div className={Styles.pagemove}>
+        <CounselingPageMove
+          totalPosts={list.length}
+          postsPerPage={itemnum}
+          pageMove={setCurrentPage}
+          currentPage={currentPage}
+        />
+        <div className={Styles.cs_maker}>
+          <button className={Styles.btn_maker}>작성하기</button>
+        </div>
+      </div>
     </div>
   );
 };

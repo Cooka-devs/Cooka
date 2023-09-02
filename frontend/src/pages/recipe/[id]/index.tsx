@@ -8,18 +8,11 @@ import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
 import { RECIPECOMMENTS, RECIPELIST } from "@/data";
+import useGetPost from "@/hooks/useGetPost";
 const RecipeDetail = () => {
-  const router = useRouter();
-  const [post, setPost] = useState<Recipe>();
-
   const comments = useGetComments(RECIPECOMMENTS);
-  useEffect(() => {
-    const postId = router.query.id;
-    if (!postId) return;
-    const post = RECIPELIST.find((post) => post.id === +postId);
-    if (!post) return;
-    setPost(post);
-  }, [router.query.id]);
+  const post = useGetPost(RECIPELIST);
+
   return (
     <div>
       {post ? (

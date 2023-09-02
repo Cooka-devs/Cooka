@@ -6,20 +6,11 @@ import { CsItem } from "@/types";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
 import { COUNSELINGCOMMENTS } from "@/data";
+import useGetPost from "@/hooks/useGetPost";
 
 const CounselingDetail = () => {
-  const router = useRouter();
-  const [post, setPost] = useState<CsItem>();
-
   const comments = useGetComments(COUNSELINGCOMMENTS);
-  //const post = useGetPost(COUNSELINGDATA)
-  useEffect(() => {
-    const postId = router.query.id;
-    if (!postId) return;
-    const post = COUNSELINGDATA.find((post) => post.id === +postId);
-    if (!post) return;
-    setPost(post);
-  }, [router.query.id]);
+  const post = useGetPost(COUNSELINGDATA);
 
   return (
     <div>
@@ -27,7 +18,7 @@ const CounselingDetail = () => {
         <div className={Styles.cs_itemdetail}>
           <h1>{post.title}</h1>
           <div className={Styles.detail_name}>
-            <div>{post.nickname}</div>
+            <div>{post.writer}</div>
             <div>|</div>
             <div>{post.date}</div>
           </div>
