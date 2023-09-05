@@ -7,6 +7,46 @@ import CreateList from "@/components/CreateList";
 import { PlaceProps } from "@/types";
 import { PLACELIST } from "@/data";
 
+// interface A {
+//   type: "A";
+//   hello: "Hello";
+// }
+
+// interface B {
+//   type: "b";
+//   world: "World";
+// }
+
+// const printMessage = (type: A) => {
+//   console.log(type.hello);
+// };
+
+// const getType = (): A | B => {
+//   const rand = Math.random();
+
+//   if (rand % 2 === 0) {
+//     return {
+//       type: "A",
+//       hello: "Hello",
+//     };
+//   } else {
+//     return {
+//       type: "b",
+//       world: "World",
+//     };
+//   }
+// };
+
+// runtime에 동작하는 코드야 (이게 무슨말이냐??)
+// compile 타임과, runtime
+// ide에서 작성을하고 그걸 컴파일
+// const type = getType();
+// if ("type" in type && type["type"] === "A") {
+//   printMessage(type);
+// }
+
+// generic type
+
 const Place = () => {
   const [onplace, setOnPlace] = useState<boolean>(false);
   const [list, setList] = useState<PlaceProps[]>([]);

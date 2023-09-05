@@ -58,5 +58,26 @@ const COUNSELINGCOMMENTS: Comment[] = [
     comment: `버리시는걸 추천합니다!`,
     date: "2023-08-15",
   },
+  {
+    id: 8,
+    postId: 0,
+    nickname: "승휘",
+    comment: `버리시는걸 추천합니다!`,
+    date: "2023-08-15",
+  },
+  {
+    id: 9,
+    postId: 1,
+    nickname: "승휘",
+    comment: `버리시는걸 추천합니다!`,
+    date: "2023-08-15",
+  },
+  {
+    id: 10,
+    postId: 1,
+    nickname: "승휘",
+    comment: `test1212121`,
+    date: "2023-08-15",
+  },
 ];
 export default COUNSELINGCOMMENTS;

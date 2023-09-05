@@ -1,12 +1,11 @@
-export interface Comment {
-  id: number;
+export interface Comment extends Rowable {
   postId: number;
   nickname: string;
   comment: string;
   date: string;
 }
-export interface Recipe {
-  id: number;
+
+export interface Recipe extends Rowable {
   imgSrc: string;
   imgAlt: string;
   title: string;
@@ -18,8 +17,8 @@ export interface Recipe {
   writer: string;
   isHot?: boolean;
 }
-export interface CsItem {
-  id: number;
+
+export interface CsItem extends Rowable {
   title: string;
   writer: string;
   content: string;
@@ -27,8 +26,8 @@ export interface CsItem {
   comments: number;
   date: string;
 }
-export interface PlaceProps {
-  id: number;
+
+export interface PlaceProps extends Rowable {
   imgSrc: string;
   imgAlt: string;
   title: string;
@@ -39,6 +38,7 @@ export interface PlaceProps {
   date: string;
   writer: string;
 }
+
 export interface NewItem {
   imgSrc: string;
   imgArt: string;
@@ -46,9 +46,53 @@ export interface NewItem {
   url: string;
   date: string;
 }
-export interface User {
-  id: string;
+
+export interface User extends Rowable {
   email: string;
   nickname: string;
   status: string;
+}
+
+export interface Rowable {
+  id: number;
+}
+
+export type Table = Rowable[];
+
+// prefix , suffix
+
+// is, has -> boolean
+// should -> boolean
+
+// on, handle -> callback function
+
+// -able -> struct 구조를 만들 때 implement 구조를 만들때 자주 사용
+
+export interface Printable {
+  Print: () => void;
+}
+
+class Person implements Printable {
+  name: string;
+  age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  Print() {
+    console.log(
+      `안녕하세요. 제이름은 ${this.name}이고, 제 나이는 ${this.age}입니다.`
+    );
+  }
+}
+
+class HighPerson extends Person implements Printable {
+  money: number;
+
+  constructor(name: string, age: number, money: number) {
+    super(name, age);
+    this.money = money;
+  }
 }

@@ -1,13 +1,15 @@
 import { RecipeList } from "@/components";
-import Styles from "./index.module.css";
-import { useEffect, useState } from "react";
-import { CsItem, PlaceProps, Recipe, User } from "@/types";
-import SearchUserData from "@/components/SearchUserData";
-import PlaceList from "@/components/PlaceList";
 import CounselingList from "@/components/CounselingList";
-import NewsPageMove from "@/components/RecipePageMove";
-import PlacePageMove from "@/components/PlacePageMove";
 import CounselingPageMove from "@/components/CounselingPageMove";
+import PlaceList from "@/components/PlaceList";
+import PlacePageMove from "@/components/PlacePageMove";
+import NewsPageMove from "@/components/RecipePageMove";
+import SearchUserData from "@/components/SearchUserData";
+import { CsItem, PlaceProps, Recipe, Table, User } from "@/types";
+import getMyComments from "@/utilities/getMyComments";
+import { useEffect, useState } from "react";
+import Styles from "./index.module.css";
+
 const Mypage = () => {
   const [user, setUser] = useState<User>();
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -21,17 +23,16 @@ const Mypage = () => {
 
   const userData = {
     status: "user",
-    id: "tmdgnl1201",
+    id: 13,
     nickname: "승휘",
     email: "tmdgnl1201@naver.com",
   };
 
-  const CurrentPost = (post: (CsItem | Recipe | PlaceProps)[]) => {
-    let currentPosts: (CsItem | Recipe | PlaceProps)[] = [];
-    currentPosts = post.slice(indexOfFirst, indexOfLast);
-    return currentPosts;
+  const CurrentPost = <T extends Table>(posts: T): T => {
+    return posts.slice(indexOfFirst, indexOfLast) as T;
   };
-  const noData = (data: string) => {
+
+  const noData = () => {
     return (
       <div style={{ paddingLeft: "1rem" }}>게시물이 존재하지 않습니다.</div>
     );
@@ -52,7 +53,7 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData("no");
+        return noData();
       }
     } else if (type === "내가작성한 맛집") {
       if (myPlace?.length) {
@@ -68,7 +69,7 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData("no");
+        return noData();
       }
     } else if (type === "내가작성한 질문") {
       if (myCs?.length) {
@@ -84,12 +85,27 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData("no");
+        return noData();
       }
+    } else if (checkType === "내가댓글단 게시물") {
+      if (user) {
+        const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
+          getMyComments(user.nickname);
+        return (
+          <div>
+            <div>레시피</div>
+            <RecipeList items={uniqueRecipeList} />
+            <div>맛집</div>
+            <PlaceList items={uniquePlaceList} />
+            <div>상담소</div>
+            <CounselingList items={uniqueCsList} />
+          </div>
+        );
+      } else return;
     } else if (type === "마이페이지") {
       return <div style={{ paddingLeft: "1rem" }}>클릭해주세요</div>;
     } else {
-      return noData("마이페이지");
+      return noData();
     }
   };
   useEffect(() => {
@@ -101,6 +117,7 @@ const Mypage = () => {
     setMyPlace(myPlace);
     setCurrentPage(1);
   }, [checkType]);
+
   return (
     //사람버튼 로그인상태시 마우스 올리면 로그아웃 마이페이지 노출 => 마이페이지화면
     <div className={Styles.mypage}>
@@ -109,7 +126,7 @@ const Mypage = () => {
           className={Styles.head_left}
           onClick={() => setCheckType("마이페이지")}
         >
-          마이페이지
+          <button className={Styles.head_btn}>마이페이지</button>
         </h1>
         <div className={Styles.head_right}>
           <h1 style={{}}>{checkType}</h1>
@@ -120,20 +137,22 @@ const Mypage = () => {
           <div className={Styles.snb_subhead}>내가 작성한글</div>
           <ul className={Styles.snb_menu}>
             <li onClick={() => setCheckType("내가작성한 레시피")}>
-              나만의 레시피
+              <button className={Styles.li_btn}>나만의 레시피</button>
             </li>
             <li onClick={() => setCheckType("내가작성한 맛집")}>
-              이런곳도 있어요!
+              <button className={Styles.li_btn}>이런곳도 있어요!</button>
             </li>
-            <li onClick={() => setCheckType("내가작성한 질문")}>요리연구소</li>
+            <li onClick={() => setCheckType("내가작성한 질문")}>
+              <button className={Styles.li_btn}>요리연구소</button>
+            </li>
           </ul>
           <div className={Styles.snb_subhead}>나의 관심목록</div>
           <ul className={Styles.snb_menu}>
             <li onClick={() => setCheckType("내가추천한 게시물")}>
-              추천한 목록
+              <button className={Styles.li_btn}>추천한 목록</button>
             </li>
             <li onClick={() => setCheckType("내가댓글단 게시물")}>
-              댓글단 목록
+              <button className={Styles.li_btn}>댓글단 목록</button>
             </li>
           </ul>
         </div>

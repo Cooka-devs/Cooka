@@ -10,6 +10,7 @@ import { PLACECOMMENTS, PLACELIST } from "@/data";
 const PlaceDetail = () => {
   const comments = useGetComments(PLACECOMMENTS);
   const post = useGetPost(PLACELIST);
+
   return (
     <div>
       {post ? (

@@ -47,3 +47,12 @@
 .snb_menu li {
   margin-bottom: 0.5rem;
 }
+.li_btn {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+}
+.head_btn {
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "SUITE-Regular";
+}
