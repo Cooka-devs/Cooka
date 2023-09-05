@@ -8,7 +8,7 @@ import { isIncludeUndefined } from "../utils/request";
 export const setUserRoutes = (app: Express, conn: Pool) => {
   app.get("/users", async (req, res) => {
     const response = await getUsers(conn);
-    res.status(response.code).json(response);
+    res.status(response.code).json(response); //성공시 code=200 실패시code=500
   });
 
   app.post("/users", async (req: RequestGeneric<AddUserParams>, res) => {
