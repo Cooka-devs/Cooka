@@ -56,3 +56,14 @@
   font-weight: 700;
   font-family: "SUITE-Regular";
 }
+.mycommentpage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.head_name {
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 2.5rem;
+}

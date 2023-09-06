@@ -62,12 +62,5 @@ const RECIPECOMMENTS: Comment[] = [
     test121test121test121test121test121test121`,
     date: "2023-08-15",
   },
-  {
-    id: 8,
-    postId: 1,
-    nickname: "승휘",
-    comment: `답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11답변테스트11`,
-    date: "2023-08-15",
-  },
 ];
 export default RECIPECOMMENTS;

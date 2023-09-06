@@ -34,7 +34,9 @@ const Mypage = () => {
 
   const noData = () => {
     return (
-      <div style={{ paddingLeft: "1rem" }}>게시물이 존재하지 않습니다.</div>
+      <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
+        게시물이 존재하지 않습니다.
+      </div>
     );
   };
 
@@ -92,13 +94,79 @@ const Mypage = () => {
         const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
           getMyComments(user.nickname);
         return (
-          <div>
-            <div>레시피</div>
-            <RecipeList items={uniqueRecipeList} />
-            <div>맛집</div>
-            <PlaceList items={uniquePlaceList} />
-            <div>상담소</div>
-            <CounselingList items={uniqueCsList} />
+          <div className={Styles.mycommentpage}>
+            <div>
+              <div>
+                <div className={Styles.head_name}>레시피</div>
+                {uniqueRecipeList.length > 3 ? (
+                  <div
+                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
+                  >
+                    <button
+                      className={Styles.li_btn}
+                      onClick={() => setCheckType("댓글 레시피자세히보기")}
+                    >
+                      자세히보기
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              {uniqueRecipeList.length ? (
+                <RecipeList items={uniqueRecipeList.slice(0, 3)} />
+              ) : (
+                noData()
+              )}
+            </div>
+            <div>
+              <div style={{ position: "relative" }}>
+                <div className={Styles.head_name}>맛집</div>
+                {uniquePlaceList.length > 3 ? (
+                  <div
+                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
+                  >
+                    <button
+                      className={Styles.li_btn}
+                      onClick={() => setCheckType("댓글 맛집자세히보기")}
+                    >
+                      자세히보기
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              {uniquePlaceList.length ? (
+                <PlaceList items={uniquePlaceList.slice(0, 3)} />
+              ) : (
+                noData()
+              )}
+            </div>
+            <div>
+              <div>
+                <div className={Styles.head_name}>상담소</div>
+                {uniqueCsList.length > 3 ? (
+                  <div
+                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
+                  >
+                    <button
+                      className={Styles.li_btn}
+                      onClick={() => setCheckType("댓글 상담자세히보기")}
+                    >
+                      자세히보기
+                    </button>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              {uniqueCsList.length ? (
+                <CounselingList items={uniqueCsList.slice(0, 3)} />
+              ) : (
+                noData()
+              )}
+            </div>
           </div>
         );
       } else return;
@@ -108,6 +176,7 @@ const Mypage = () => {
       return noData();
     }
   };
+
   useEffect(() => {
     setUser(userData);
     if (!user) return;

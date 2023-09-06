@@ -73,5 +73,38 @@ const PLACECOMMENTS: Comment[] = [
     test121test121test121test121test121test121`,
     date: "2023-08-15",
   },
+  {
+    id: 9,
+    postId: 3,
+    nickname: "승휘",
+    comment: `test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121`,
+    date: "2023-08-15",
+  },
+  {
+    id: 10,
+    postId: 4,
+    nickname: "승휘",
+    comment: `test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121`,
+    date: "2023-08-15",
+  },
+  {
+    id: 11,
+    postId: 5,
+    nickname: "승휘",
+    comment: `test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121test121t
+    est121test121test121test121test121test121test121test121test121test121test121
+    test121test121test121test121test121test121`,
+    date: "2023-08-15",
+  },
 ];
 export default PLACECOMMENTS;
