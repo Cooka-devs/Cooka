@@ -3,7 +3,6 @@
   margin: auto;
   font-size: 2rem;
   min-height: 120rem;
-  background-color: #f6f6f6;
 }
 
 .main_container {
@@ -34,4 +33,6 @@
 .main_ad_item {
   height: 200px;
   width: 300px;
+  background-color: aliceblue;
+  text-align: center;
 }

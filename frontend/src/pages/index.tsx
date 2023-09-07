@@ -9,36 +9,36 @@ const CONTAINERS = [
       items: [
         {
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "요리제목",
+          itemTitle: "한우 된장찌개!",
           likes: 0,
           views: 0,
           recipe: "",
         },
         {
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "요리제목",
+          itemTitle: "한우 된장찌개!",
           likes: 0,
           views: 0,
           recipe: "",
         },
         {
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "요리제목",
+          itemTitle: "한우 된장찌개!",
           likes: 0,
           views: 0,
           recipe: "",
         },
         {
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "요리제목",
+          itemTitle: "한우 된장찌개!",
           likes: 0,
           views: 0,
           recipe: "",
@@ -121,14 +121,9 @@ export default function Home() {
       <div className={Styles.main_container}>
         <div className={Styles.main_item}>
           <div className={Styles.main_ad}>
-            {/* <img
-          src="https://img.etnews.com/photonews/2007/1321919_20200721151233_568_0001.jpg"
-          className={Styles.main_ad_item}
-          alt="ad1"
-        /> */}
+            <div className={Styles.main_ad_item}>ad1</div>
             <div className={Styles.main_ad_item}>ad2</div>
             <div className={Styles.main_ad_item}>ad3</div>
-            <Button>하이</Button>
           </div>
         </div>
         <div className={Styles.best_container}>

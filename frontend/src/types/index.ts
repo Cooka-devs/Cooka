@@ -51,6 +51,8 @@ export interface User extends Rowable {
   email: string;
   nickname: string;
   status: string;
+  profileImgSrc: string;
+  introduction: string;
 }
 
 export interface Rowable {

@@ -67,3 +67,56 @@
   font-weight: 700;
   font-size: 2.5rem;
 }
+.img_preview {
+  width: 30rem;
+  height: 30rem;
+}
+.profile_img {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  margin-bottom: 3rem;
+}
+.profile {
+  padding-left: 1rem;
+}
+.profile input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+}
+.upload_btn {
+  display: inline-block;
+  font-size: 2rem;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: rgb(240, 238, 232);
+  color: black;
+  font-family: "SUITE-Regular";
+  transition: all 0.5s;
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-0.5rem);
+  }
+}
+.introduction {
+  margin-top: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  min-height: 30rem;
+  width: 100%;
+  background-color: rgb(242, 241, 238);
+  box-shadow: 1rem 1rem 1rem rgb(226, 223, 217);
+}
+.introduction_text_edit {
+  background-color: rgb(242, 241, 238);
+  border: none;
+  outline: none;
+  width: 100%;
+  min-height: 30rem;
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+}

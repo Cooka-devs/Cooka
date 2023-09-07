@@ -8,8 +8,8 @@ import SearchUserData from "@/components/SearchUserData";
 import { CsItem, PlaceProps, Recipe, Table, User } from "@/types";
 import getMyComments from "@/utilities/getMyComments";
 import { useEffect, useState } from "react";
-import Styles from "./index.module.css";
-
+import Styles from "./index.module.scss";
+import { useRef } from "react";
 const Mypage = () => {
   const [user, setUser] = useState<User>();
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -17,6 +17,10 @@ const Mypage = () => {
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
   const [myCs, setMyCs] = useState<CsItem[]>();
   const [currentPage, setCurrentPage] = useState(1);
+  const [imgFile, setImgFile] = useState<any>(""); //any수정하기
+  const [profileEdit, setProfileEdit] = useState<boolean>(false);
+  const [profileText, setProfileText] = useState<string>();
+  const imgRef = useRef<HTMLInputElement>(null);
   const ITEMNUM = 9;
   const indexOfLast = currentPage * ITEMNUM;
   const indexOfFirst = indexOfLast - ITEMNUM;
@@ -26,8 +30,29 @@ const Mypage = () => {
     id: 13,
     nickname: "승휘",
     email: "tmdgnl1201@naver.com",
+    profileImgSrc: "",
+    introduction: "wewe",
   };
-
+  const onChangeProfileText = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setProfileText(event.target.value);
+    console.log(profileText);
+  };
+  const saveImgFile = () => {
+    if (imgRef.current != null && imgRef.current.files != null) {
+      const file = imgRef.current.files[0];
+      if (file === undefined) {
+        return;
+      } else {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setImgFile(reader.result);
+        };
+      }
+    } else return;
+  };
   const CurrentPost = <T extends Table>(posts: T): T => {
     return posts.slice(indexOfFirst, indexOfLast) as T;
   };
@@ -171,7 +196,99 @@ const Mypage = () => {
         );
       } else return;
     } else if (type === "마이페이지") {
-      return <div style={{ paddingLeft: "1rem" }}>클릭해주세요</div>;
+      return (
+        <div className={Styles.profile}>
+          <div>프로필 이미지 등록</div>
+          <div className={Styles.profile_img}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={imgFile ? imgFile : `nonuser.webp`}
+                alt="프로필 이미지"
+                className={Styles.img_preview}
+              />
+              <div>이미지 미리보기</div>
+            </div>
+            <div>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={saveImgFile}
+                ref={imgRef}
+                id="upload"
+              />
+              <label htmlFor="upload" className={Styles.upload_btn}>
+                업로드
+              </label>
+              <button
+                className={Styles.upload_btn}
+                style={{ marginLeft: "1rem" }}
+              >
+                등록완료
+                {/**등록완료 버튼 클릭시 fetch POST imgFile(암호화되있는듯 ? 엄청김 변환하는법알아내기)) */}
+              </button>
+              <div style={{ paddingTop: "2rem" }}>
+                <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
+                <div>등록완료를 눌러야 저장됩니다!</div>
+              </div>
+            </div>
+          </div>
+          <div>프로필 소개</div>
+          <div className={Styles.introduction}>
+            {user?.introduction && !profileEdit ? (
+              <div className={Styles.introduction_text}>
+                {user.introduction}
+              </div>
+            ) : profileEdit ? (
+              <textarea
+                onChange={onChangeProfileText}
+                className={Styles.introduction_text_edit}
+              >
+                {user?.introduction}
+              </textarea>
+            ) : (
+              "자기소개를 입력해보세요!"
+            )}
+          </div>
+          <div
+            style={{
+              paddingTop: "3rem",
+              display: "flex",
+              gap: "1rem",
+              justifyContent: "right",
+            }}
+          >
+            {profileEdit ? (
+              <>
+                <button
+                  className={Styles.upload_btn}
+                  onClick={() => setProfileEdit(false)}
+                >
+                  수정취소
+                </button>
+                <button className={Styles.upload_btn}>수정완료</button>
+                {/**수정완료 클릭시 user.introduction를
+                 * profileText 로 fetch update
+                 */}
+              </>
+            ) : (
+              <button
+                className={Styles.upload_btn}
+                onClick={() => {
+                  setProfileEdit(true);
+                }}
+              >
+                수정
+              </button>
+            )}
+          </div>
+        </div>
+      );
     } else {
       return noData();
     }
