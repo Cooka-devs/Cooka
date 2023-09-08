@@ -8,6 +8,7 @@ const CONTAINERS = [
       title: "화제의 레시피",
       items: [
         {
+          id: 1,
           imgSrc:
             "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
@@ -17,6 +18,7 @@ const CONTAINERS = [
           recipe: "",
         },
         {
+          id: 2,
           imgSrc:
             "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
@@ -26,6 +28,7 @@ const CONTAINERS = [
           recipe: "",
         },
         {
+          id: 3,
           imgSrc:
             "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
@@ -35,6 +38,7 @@ const CONTAINERS = [
           recipe: "",
         },
         {
+          id: 4,
           imgSrc:
             "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
           imgAlt: "bestcontent",
@@ -51,26 +55,26 @@ const CONTAINERS = [
       title: "인기 쉐프",
       items: [
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+          id: 0,
+          imgSrc: "nonuser.webp",
           imgAlt: "bestcontent",
           itemTitle: "쉐프",
         },
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+          id: 0,
+          imgSrc: "nonuser.webp",
           imgAlt: "bestcontent",
           itemTitle: "쉐프",
         },
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+          id: 0,
+          imgSrc: "nonuser.webp",
           imgAlt: "bestcontent",
           itemTitle: "쉐프",
         },
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+          id: 0,
+          imgSrc: "nonuser.webp",
           imgAlt: "bestcontent",
           itemTitle: "쉐프",
         },
@@ -82,16 +86,12 @@ const CONTAINERS = [
       title: "화제의 고민",
       items: [
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "고민",
+          id: 0,
+          content: "개봉한 파스타소스 유통기한?",
         },
         {
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "고민",
+          id: 1,
+          content: "개봉한 파스타소스 유통기한?",
         },
       ],
     },
@@ -99,16 +99,18 @@ const CONTAINERS = [
       title: "화제의 맛집",
       items: [
         {
+          id: 0,
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220216_86%2F16450062673229pD9x_JPEG%2FScreenshot_20220216-184157_NAVER.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "맛집",
+          itemTitle: "오늘 와인한잔",
         },
         {
+          id: 1,
           imgSrc:
-            "https://cdn.pixabay.com/photo/2023/06/15/17/07/sun-8066051_640.jpg",
+            "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230428_91%2F1682638709082udtMM_JPEG%2FIMG_20230423_234810_923.jpg",
           imgAlt: "bestcontent",
-          itemTitle: "맛집",
+          itemTitle: "정육점 김씨",
         },
       ],
     },

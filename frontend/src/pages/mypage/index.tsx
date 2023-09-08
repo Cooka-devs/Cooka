@@ -16,10 +16,16 @@ const Mypage = () => {
   const [myRecipe, setMyRecipe] = useState<Recipe[]>();
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
   const [myCs, setMyCs] = useState<CsItem[]>();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [imgFile, setImgFile] = useState<any>(""); //any수정하기
   const [profileEdit, setProfileEdit] = useState<boolean>(false);
   const [profileText, setProfileText] = useState<string>();
+
+  const [uniqueCsList, setUniqueCsList] = useState<CsItem[]>();
+  const [uniqueRecipeList, setUniqueRecipeList] = useState<Recipe[]>();
+  const [uniquePlaceList, setUniquePlaceList] = useState<PlaceProps[]>();
+
   const imgRef = useRef<HTMLInputElement>(null);
   const ITEMNUM = 9;
   const indexOfLast = currentPage * ITEMNUM;
@@ -114,16 +120,14 @@ const Mypage = () => {
       } else {
         return noData();
       }
-    } else if (checkType === "내가댓글단 게시물") {
+    } else if (type === "내가댓글단 게시물") {
       if (user) {
-        const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
-          getMyComments(user.nickname);
         return (
           <div className={Styles.mycommentpage}>
             <div>
               <div>
                 <div className={Styles.head_name}>레시피</div>
-                {uniqueRecipeList.length > 3 ? (
+                {uniqueRecipeList && uniqueRecipeList.length > 3 ? (
                   <div
                     style={{ position: "absolute", right: "1rem", bottom: "0" }}
                   >
@@ -138,7 +142,7 @@ const Mypage = () => {
                   ""
                 )}
               </div>
-              {uniqueRecipeList.length ? (
+              {uniqueRecipeList && uniqueRecipeList.length ? (
                 <RecipeList items={uniqueRecipeList.slice(0, 3)} />
               ) : (
                 noData()
@@ -147,13 +151,15 @@ const Mypage = () => {
             <div>
               <div style={{ position: "relative" }}>
                 <div className={Styles.head_name}>맛집</div>
-                {uniquePlaceList.length > 3 ? (
+                {uniquePlaceList && uniquePlaceList.length > 3 ? (
                   <div
                     style={{ position: "absolute", right: "1rem", bottom: "0" }}
                   >
                     <button
                       className={Styles.li_btn}
-                      onClick={() => setCheckType("댓글 맛집자세히보기")}
+                      onClick={() => {
+                        setCheckType("댓글 맛집자세히보기");
+                      }}
                     >
                       자세히보기
                     </button>
@@ -162,7 +168,7 @@ const Mypage = () => {
                   ""
                 )}
               </div>
-              {uniquePlaceList.length ? (
+              {uniquePlaceList && uniquePlaceList.length ? (
                 <PlaceList items={uniquePlaceList.slice(0, 3)} />
               ) : (
                 noData()
@@ -171,7 +177,7 @@ const Mypage = () => {
             <div>
               <div>
                 <div className={Styles.head_name}>상담소</div>
-                {uniqueCsList.length > 3 ? (
+                {uniqueCsList && uniqueCsList.length > 3 ? (
                   <div
                     style={{ position: "absolute", right: "1rem", bottom: "0" }}
                   >
@@ -186,7 +192,7 @@ const Mypage = () => {
                   ""
                 )}
               </div>
-              {uniqueCsList.length ? (
+              {uniqueCsList && uniqueCsList.length ? (
                 <CounselingList items={uniqueCsList.slice(0, 3)} />
               ) : (
                 noData()
@@ -289,8 +295,48 @@ const Mypage = () => {
           </div>
         </div>
       );
-    } else {
-      return noData();
+    } else if (checkType === "댓글 맛집자세히보기") {
+      if (uniquePlaceList && uniquePlaceList.length) {
+        return (
+          <>
+            <PlaceList items={CurrentPost(uniquePlaceList)} />
+            <PlacePageMove
+              totalPosts={uniquePlaceList.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
+    } else if (checkType === "댓글 레시피자세히보기") {
+      if (uniqueRecipeList && uniqueRecipeList.length) {
+        return (
+          <>
+            <RecipeList items={CurrentPost(uniqueRecipeList)} />
+            <NewsPageMove
+              totalPosts={uniqueRecipeList.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
+    } else if (checkType === "댓글 상담자세히보기") {
+      if (uniqueCsList && uniqueCsList.length) {
+        return (
+          <>
+            <CounselingList items={CurrentPost(uniqueCsList)} />
+            <CounselingPageMove
+              totalPosts={uniqueCsList.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
     }
   };
 
@@ -302,6 +348,12 @@ const Mypage = () => {
     setMyCs(myCs);
     setMyPlace(myPlace);
     setCurrentPage(1);
+    const { uniqueCsList, uniqueRecipeList, uniquePlaceList } = getMyComments(
+      user.nickname
+    );
+    setUniqueCsList(uniqueCsList);
+    setUniqueRecipeList(uniqueRecipeList);
+    setUniquePlaceList(uniquePlaceList);
   }, [checkType]);
 
   return (

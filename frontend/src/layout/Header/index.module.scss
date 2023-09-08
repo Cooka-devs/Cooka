@@ -1,6 +1,6 @@
 .header {
   width: 120rem;
-  height: 10rem;
+  height: 15rem;
   margin: auto;
   font-size: 2rem;
   position: relative;
@@ -11,11 +11,14 @@
   display: flex;
   gap: 3rem;
   padding-top: 3rem;
+  align-items: center;
 }
 .header_main_logo {
   width: 28rem;
 }
-
+.logo_img {
+  width: 50%;
+}
 .search_text {
   width: 40rem;
   height: 5rem;

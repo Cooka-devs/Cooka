@@ -18,7 +18,9 @@ const Header = () => {
       <div className={Styles.header}>
         <div className={Styles.header_main}>
           <span className={Styles.header_main_logo}>
-            <Link href="/">로고img</Link>
+            <Link href="/">
+              <img src={`temporaryLogo.png`} className={Styles.logo_img} />
+            </Link>
           </span>
           <span className={Styles.header_searchbox}>
             <input

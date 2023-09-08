@@ -1,6 +1,19 @@
 import { PlaceProps } from "@/types";
 const PLACELIST: PlaceProps[] = [
   {
+    id: 0,
+    imgSrc:
+      "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220216_86%2F16450062673229pD9x_JPEG%2FScreenshot_20220216-184157_NAVER.jpg",
+    imgAlt: "맛집이미지",
+    title: "오늘 와인한잔",
+    content: "",
+    likes: 0,
+    comments: 0,
+    isHot: true,
+    date: "2023-08-17",
+    writer: "승휘",
+  },
+  {
     id: 1,
     imgSrc:
       "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230428_91%2F1682638709082udtMM_JPEG%2FIMG_20230423_234810_923.jpg",
