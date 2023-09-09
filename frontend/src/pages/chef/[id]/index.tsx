@@ -1,9 +1,15 @@
-import { User } from "@/types";
+import { CsItem, PlaceProps, User } from "@/types";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SearchUserData from "@/components/SearchUserData";
 import Styles from "./index.module.css";
+import ContentsByUser from "@/components/ContentsByUser";
+import { Recipe } from "@/types";
 const chefDetail = () => {
+  const [checkType, setCheckType] = useState<string>();
+  const [myRecipe, setMyRecipe] = useState<Recipe[]>();
+  const [myPlace, setMyPlace] = useState<PlaceProps[]>();
+  const [myCs, setMyCs] = useState<CsItem[]>();
   const router = useRouter();
   const chefId = router.query.id;
   //해당id를 가진 유저의 get
@@ -22,7 +28,9 @@ const chefDetail = () => {
   };
   useEffect(() => {
     const { myRecipe, myCs, myPlace } = SearchUserData(userData);
-    console.log(myRecipe, myCs, myPlace);
+    setMyCs(myCs);
+    setMyPlace(myPlace);
+    setMyRecipe(myRecipe);
   }, [router.query.id]);
   return (
     <div className={Styles.chefpage}>
@@ -35,6 +43,12 @@ const chefDetail = () => {
         />
         <div className={Styles.profile_text}>{userData.introduction}</div>
       </div>
+      <ContentsByUser
+        uniqueRecipeList={myRecipe}
+        uniqueCsList={myCs}
+        uniquePlaceList={myPlace}
+        onClick={setCheckType}
+      />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import getMyComments from "@/utilities/getMyComments";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.scss";
 import { useRef } from "react";
+import ContentsByUser from "@/components/ContentsByUser";
 const Mypage = () => {
   const [user, setUser] = useState<User>();
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -123,82 +124,12 @@ const Mypage = () => {
     } else if (type === "내가댓글단 게시물") {
       if (user) {
         return (
-          <div className={Styles.mycommentpage}>
-            <div>
-              <div>
-                <div className={Styles.head_name}>레시피</div>
-                {uniqueRecipeList && uniqueRecipeList.length > 3 ? (
-                  <div
-                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
-                  >
-                    <button
-                      className={Styles.li_btn}
-                      onClick={() => setCheckType("댓글 레시피자세히보기")}
-                    >
-                      자세히보기
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {uniqueRecipeList && uniqueRecipeList.length ? (
-                <RecipeList items={uniqueRecipeList.slice(0, 3)} />
-              ) : (
-                noData()
-              )}
-            </div>
-            <div>
-              <div style={{ position: "relative" }}>
-                <div className={Styles.head_name}>맛집</div>
-                {uniquePlaceList && uniquePlaceList.length > 3 ? (
-                  <div
-                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
-                  >
-                    <button
-                      className={Styles.li_btn}
-                      onClick={() => {
-                        setCheckType("댓글 맛집자세히보기");
-                      }}
-                    >
-                      자세히보기
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {uniquePlaceList && uniquePlaceList.length ? (
-                <PlaceList items={uniquePlaceList.slice(0, 3)} />
-              ) : (
-                noData()
-              )}
-            </div>
-            <div>
-              <div>
-                <div className={Styles.head_name}>상담소</div>
-                {uniqueCsList && uniqueCsList.length > 3 ? (
-                  <div
-                    style={{ position: "absolute", right: "1rem", bottom: "0" }}
-                  >
-                    <button
-                      className={Styles.li_btn}
-                      onClick={() => setCheckType("댓글 상담자세히보기")}
-                    >
-                      자세히보기
-                    </button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              {uniqueCsList && uniqueCsList.length ? (
-                <CounselingList items={uniqueCsList.slice(0, 3)} />
-              ) : (
-                noData()
-              )}
-            </div>
-          </div>
+          <ContentsByUser
+            uniqueRecipeList={uniqueRecipeList}
+            uniquePlaceList={uniquePlaceList}
+            uniqueCsList={uniqueCsList}
+            onClick={setCheckType}
+          />
         );
       } else return;
     } else if (type === "마이페이지") {

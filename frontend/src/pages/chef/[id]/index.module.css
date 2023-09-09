@@ -10,6 +10,7 @@
 .chef_profile {
   display: flex;
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 .profile_img {
   width: 30rem;
