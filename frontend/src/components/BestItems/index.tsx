@@ -22,8 +22,8 @@ const BestItems = ({ title, items }: BestItemsProps) => {
     if (title === "화제의 레시피") {
       router.push(`/recipe/${id}`);
     } else if (title === "인기 쉐프") {
-    } // 구현하기
-    else if (title === "화제의 고민") {
+      router.push(`/chef/${id}`);
+    } else if (title === "화제의 고민") {
       router.push(`/counseling/${id}`);
     } else if (title === "화제의 맛집") {
       router.push(`/place/${id}`);
@@ -32,7 +32,6 @@ const BestItems = ({ title, items }: BestItemsProps) => {
   return (
     <div className={Styles.main_item}>
       <div style={{ fontWeight: "700" }}>{title}</div>
-      <Divider />
       <div className={Styles.bestcontainer}>
         {items.map((item, index) => {
           return (

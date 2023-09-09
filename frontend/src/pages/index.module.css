@@ -8,6 +8,7 @@
 .main_container {
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
 .flex_row {
@@ -31,8 +32,9 @@
 }
 
 .main_ad_item {
-  height: 200px;
-  width: 300px;
+  height: 20rem;
+  width: 30rem;
   background-color: aliceblue;
   text-align: center;
+  line-height: 20rem;
 }

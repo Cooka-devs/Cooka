@@ -36,7 +36,7 @@ const Mypage = () => {
     id: 13,
     nickname: "승휘",
     email: "tmdgnl1201@naver.com",
-    profileImgSrc: "",
+    profileImgSrc: "nonuser.webp",
     introduction: "wewe",
   };
   const onChangeProfileText = (
@@ -214,7 +214,7 @@ const Mypage = () => {
               }}
             >
               <img
-                src={imgFile ? imgFile : `nonuser.webp`}
+                src={imgFile ? imgFile : user?.profileImgSrc}
                 alt="프로필 이미지"
                 className={Styles.img_preview}
               />

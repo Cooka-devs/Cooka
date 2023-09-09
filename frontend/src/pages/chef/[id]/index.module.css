@@ -1,0 +1,25 @@
+.chefpage {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  width: 120rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.chef_profile {
+  display: flex;
+  gap: 1rem;
+}
+.profile_img {
+  width: 30rem;
+  height: 30rem;
+}
+.profile_text {
+  width: 89rem;
+  word-wrap: break-word;
+  padding: 1rem;
+  min-height: 30rem;
+  border-radius: 1rem;
+  box-shadow: 1rem 1rem 1rem rgb(226, 223, 217);
+}
