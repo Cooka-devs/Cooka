@@ -17,7 +17,7 @@ const CounselingList = ({ items }: CsItemProps) => {
             className={Styles.csitem}
             key={index}
             onClick={() => {
-              router.push({ pathname: `counseling/${item.id}` });
+              router.push({ pathname: `/counseling/${item.id}` });
             }}
           >
             <div className={Styles.item_date}>{item.date}</div>

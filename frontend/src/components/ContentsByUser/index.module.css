@@ -5,7 +5,7 @@
 .mycommentpage {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 4rem;
   width: 90rem;
 }
 .head_name {

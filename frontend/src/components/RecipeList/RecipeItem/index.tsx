@@ -20,7 +20,7 @@ const RecipeItem = ({ item }: RecipeItemProps) => {
   return (
     <div
       className={Styles.list_item}
-      onClick={() => router.push({ pathname: `recipe/${item.id}` })}
+      onClick={() => router.push({ pathname: `/recipe/${item.id}` })}
     >
       <img src={item.imgSrc} alt={item.imgAlt} />
       <div className={Styles.list_date}>2022. 01. 05</div>

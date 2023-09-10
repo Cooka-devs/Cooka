@@ -11,7 +11,7 @@ const PlaceItem = ({ item }: Place) => {
   return (
     <div
       className={Styles.list_item}
-      onClick={() => router.push({ pathname: `place/${item.id}` })}
+      onClick={() => router.push({ pathname: `/place/${item.id}` })}
     >
       <img src={item.imgSrc} alt={item.imgAlt} />
       <div className={Styles.list_date}>{item.date}</div>
