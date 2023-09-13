@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "build": "tsc",
+    "forever": "forever start -c ts-node ."
   },
   "author": "",
   "license": "ISC",
