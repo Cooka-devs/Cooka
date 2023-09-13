@@ -2,7 +2,7 @@ import mysql, { Pool } from "mysql2/promise";
 
 export const connectDB = async (cb: (connection: Pool) => void) => {
   const pool = mysql.createPool({
-    host: "127.0.0.1",
+    host: process.env.host,
     user: process.env.user,
     password: process.env.password,
     database: process.env.database,
