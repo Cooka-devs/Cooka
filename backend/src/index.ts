@@ -9,7 +9,7 @@ import { isIncludeUndefined } from "./utils/request";
 import { RequestGeneric } from "./types/request";
 import { makeSuccessResponse } from "./utils/response";
 //package.json에서 "main": "src/index.ts"이므로 여기서부터 시작
-const PORT = 8000; // port를 8000번으로
+const PORT = 3306; // port를 8000번으로
 
 connectDB((pool) => {
   const app = express();
