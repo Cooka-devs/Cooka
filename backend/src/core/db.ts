@@ -6,6 +6,7 @@ export const connectDB = async (cb: (connection: Pool) => void) => {
     user: process.env.USER,
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
+    socketPath: "/tmp/mysql.sock",
   });
 
   try {
