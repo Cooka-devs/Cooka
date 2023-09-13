@@ -8,7 +8,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import NewsPagination from "@/components/NewsPagination";
 import CounselingList from "@/components/CounselingList";
 import { useRouter } from "next/router";
-const search = () => {
+const Search = () => {
   const [recipeNum, setRecipeNum] = useState(0);
   const [placeNum, setPlaceNum] = useState(0);
   const [newsNum, setNewsNum] = useState(0);
@@ -173,4 +173,4 @@ const search = () => {
     </div>
   );
 };
-export default search;
+export default Search;

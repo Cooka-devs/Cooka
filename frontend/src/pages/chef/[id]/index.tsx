@@ -5,7 +5,7 @@ import SearchUserData from "@/components/SearchUserData";
 import Styles from "./index.module.css";
 import ContentsByUser from "@/components/ContentsByUser";
 import { Recipe } from "@/types";
-const chefDetail = () => {
+const ChefDetail = () => {
   const [checkType, setCheckType] = useState<string>();
   const [myRecipe, setMyRecipe] = useState<Recipe[]>();
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
@@ -52,4 +52,4 @@ const chefDetail = () => {
     </div>
   );
 };
-export default chefDetail;
+export default ChefDetail;
