@@ -7,7 +7,6 @@ interface ModalProps {
 }
 
 const Modal = ({ closeModal, content }: ModalProps) => {
-  console.log(content);
   return (
     <div className={Styles.modal}>
       <div className={Styles.modal_container}>

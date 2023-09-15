@@ -1,7 +1,9 @@
 import { Button, Divider } from "@/components";
 import Styles from "./index.module.css";
 import BestItems from "@/components/BestItems";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { User } from "@/types";
 const CONTAINERS = [
   [
     {
@@ -118,6 +120,17 @@ const CONTAINERS = [
 ];
 
 export default function Home() {
+  useEffect(() => {
+    // axios
+    //   .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`, {
+    //     name: "승휘",
+    //     nickname: "승휘",
+    //     phone_number: "010-5045-9248",
+    //     login_type: "user",
+    //     social_id: 2,
+    //   })
+  }, []);
+
   return (
     <div className={Styles.main}>
       <div className={Styles.main_container}>

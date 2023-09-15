@@ -1,7 +1,7 @@
 import Styles from "./index.module.css";
 import { useState, useEffect, useCallback } from "react";
 import Modal from "@/components/Modal";
-import JoinContent from "@/components/JoinContent";
+import JoinContent from "@/pages/join";
 import { useRouter } from "next/router";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
@@ -16,15 +16,6 @@ const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=c
 const LoginPage = () => {
   const router = useRouter();
 
-  const [onModal, setOnModal] = useState<boolean>(false);
-
-  const openModal = () => {
-    setOnModal(true);
-  };
-  const closeModal = () => {
-    setOnModal(false);
-  };
-
   const kakaoLoginHandler = useCallback(() => {
     router.push(kakao_Auth_Uri);
   }, [router]);
@@ -34,14 +25,6 @@ const LoginPage = () => {
 
   return (
     <div style={{ paddingTop: "15rem" }}>
-      {onModal ? (
-        <Modal
-          closeModal={closeModal}
-          content={<JoinContent closeModal={closeModal} />}
-        />
-      ) : (
-        ""
-      )}
       <div className={Styles.loginpage}>
         <div className={Styles.login_title}>
           <h1>로그인</h1>
@@ -60,7 +43,10 @@ const LoginPage = () => {
         </div>
         <div className={Styles.login_btn}>
           <button className={Styles.login_btnitem}>로그인</button>
-          <button className={Styles.login_btnitem} onClick={() => openModal()}>
+          <button
+            className={Styles.login_btnitem}
+            onClick={() => router.push(`/join`)}
+          >
             회원가입
           </button>
         </div>

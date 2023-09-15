@@ -4,10 +4,13 @@ import { Header, Footer, Layout } from "@/layout";
 import LoginPage from "./login";
 import kakao from "./login/kakao";
 import naver from "./login/naver";
+import JoinContent from "./join";
 
 export default function App({ Component, pageProps }: AppProps) {
   switch (Component) {
     case LoginPage:
+      return <Component {...pageProps} />;
+    case JoinContent:
       return <Component {...pageProps} />;
     case kakao:
       return <Component {...pageProps} />;

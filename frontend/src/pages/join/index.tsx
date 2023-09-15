@@ -1,57 +1,42 @@
 import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
-interface UserProps {
-  id: string;
-  password: string;
-  nickname: string;
-  email?: string;
-}
+import axios from "axios";
+import { useRouter } from "next/router";
+import { User } from "@/types";
 
-const USERDATA = [
-  {
-    id: "test11",
-    password: "test1!1!",
-    nickname: "우힛히힛",
-    email: "test11@naver.com",
-  },
-  {
-    id: "test12",
-    password: "test1!1!",
-    nickname: "우힛히홋",
-    email: "test12@naver.com",
-  },
-];
 const JoinContent = ({ closeModal }: any) => {
-  const [user, setUser] = useState<UserProps[]>([]); //DB에서 불러온 user 목록
+  const [users, setUsers] = useState<User[]>([]); //DB에서 불러온 user 목록
 
   //유효성검사에 따른 상태메시지
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
   const [idMessage, setIdMessage] = useState<string>("");
   const [passwordMessage, setPasswordMessage] = useState<string>("");
   const [checkPasswordMessage, setCheckPasswordMessage] = useState<string>("");
-  const [emailMessage, setEmailMessage] = useState<string>("");
+  const [phoneMessage, setPhoneMessage] = useState<string>("");
   //입력된 nickname,id,password,
   const [nickname, setNickname] = useState<string>("");
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
+  const [phoneNum, setPhoneNum] = useState<string>("");
   // 유효성검사
   const [isNickname, setIsNickname] = useState<boolean>(false);
   const [isId, setIsId] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
-  const [isEmail, setIsEmail] = useState<boolean>(true);
+  const [isPhoneNum, setIsPhoneNum] = useState<boolean>(false);
 
   const idRegExp = /^[a-zA-z0-9]{6,12}$/;
   const nicknameRegExp = /^[가-힣]{2,8}$/;
   const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-  const emailRegExp =
-    /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-
+  const phoneNumRegExp = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+  const router = useRouter();
   const onChangeId: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setId(e.target.value);
   };
   const onChangeNickname: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setNickname(e.target.value);
+  };
+  const onChangePhoneNum: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPhoneNum(e.target.value);
   };
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
@@ -63,6 +48,7 @@ const JoinContent = ({ closeModal }: any) => {
       );
     }
   };
+
   const onChangePasswordCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === password) {
       if (!passwordRegExp.test(e.target.value)) {
@@ -79,12 +65,13 @@ const JoinContent = ({ closeModal }: any) => {
       setCheckPasswordMessage("비밀번호가 불일치합니다");
     }
   };
+
   const onClickCheckId = () => {
     if (idRegExp.test(id)) {
       setIsId(true);
       setIdMessage("사용가능한 아이디입니다!");
-      user.map((item) => {
-        if (item.id === id) {
+      users.map((item) => {
+        if (item.login_id === id) {
           setIsId(false);
           setIdMessage("이미사용중인 아이디입니다!");
         }
@@ -94,11 +81,12 @@ const JoinContent = ({ closeModal }: any) => {
       setIdMessage("6~12사이 대소문자 또는 숫자만 입력해 주세요!");
     }
   };
+
   const onClickCheckNickName = () => {
     if (nicknameRegExp.test(nickname)) {
       setIsNickname(true);
       setNicknameMessage("사용가능한 닉네임입니다!");
-      user.map((item) => {
+      users.map((item) => {
         if (item.nickname === nickname) {
           setIsNickname(false);
           setNicknameMessage("이미사용중인 닉네임입니다!");
@@ -109,33 +97,43 @@ const JoinContent = ({ closeModal }: any) => {
       setNicknameMessage("2~8사이 한글만 입력해 주세요!");
     }
   };
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    if (e.target.value === "") {
-      setIsEmail(true);
-      setEmailMessage("");
+
+  const onClickPhoneNum = () => {
+    if (phoneNumRegExp.test(phoneNum)) {
+      setIsPhoneNum(true);
+      setPhoneMessage("사용가능한 휴대폰번호입니다.");
+      users.map((item) => {
+        if (item.phone_number === phoneNum) {
+          setIsPhoneNum(false);
+          setPhoneMessage("이미가입한 휴대폰번호입니다.");
+        }
+      });
     } else {
-      if (emailRegExp.test(email)) {
-        setIsEmail(true);
-        setEmailMessage("사용가능한 이메일입니다");
-      } else {
-        setIsEmail(false);
-        setEmailMessage("이메일 형식이 잘못되었습니다");
-      }
+      setIsPhoneNum(false);
+      setPhoneMessage("-를 포함하여 입력바랍니다.");
     }
   };
+
   const onClickJoin = () => {
-    if (isId && isEmail && isPassword && isNickname) {
-      //post 쏘기
+    if (isId && isPhoneNum && isPassword && isNickname) {
+      console.log("성공");
     } else {
       alert("양식에맞게 입력 부탁드립니다!");
     }
   };
+
   useEffect(() => {
-    setUser(USERDATA);
+    const getUser = axios(
+      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
+    )
+      .then((res) => res.data)
+      .then((res) => res.data)
+      .then((res) => {
+        setUsers(res), console.log(res);
+      });
   }, []);
   return (
-    <div className={Styles.joinmodal}>
+    <div className={Styles.join}>
       <div className={Styles.join_title}>
         <h1>회원가입</h1>
         <div>cooka 회원이 되어 다양한 혜택을 받아보세요!</div>
@@ -208,21 +206,29 @@ const JoinContent = ({ closeModal }: any) => {
         </div>
       </div>
       <div>
-        <div style={{ paddingLeft: "0.8rem" }}>e-mail</div>
+        <div>
+          <span style={{ color: "red" }}>*</span>휴대폰번호
+        </div>
         <input
           type="text"
           className={Styles.input_text}
-          onChange={onChangeEmail}
+          onChange={onChangePhoneNum}
         />
-        <div className={isEmail ? Styles.okmessage : Styles.nomessage}>
-          {emailMessage}
+        <button className={Styles.check_btn} onClick={() => onClickPhoneNum()}>
+          중복확인
+        </button>
+        <div className={isPhoneNum ? Styles.okmessage : Styles.nomessage}>
+          {phoneMessage}
         </div>
       </div>
       <div className={Styles.gojoin}>
         <button className={Styles.gojoin_btn} onClick={onClickJoin}>
           가입하기
         </button>
-        <button className={Styles.gojoin_btn} onClick={closeModal}>
+        <button
+          className={Styles.gojoin_btn}
+          onClick={() => router.push(`/login`)}
+        >
           돌아가기
         </button>
       </div>

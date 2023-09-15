@@ -48,11 +48,18 @@ export interface NewItem {
 }
 
 export interface User extends Rowable {
-  email: string;
-  nickname: string;
-  status: string;
-  profileImgSrc: string;
-  introduction: string;
+  id: number; //index
+  name: string; //회원 이름
+  login_id: string; //회원 id
+  login_password: string; // 회원비밀번호
+  login_type: string; //유저인지 관리자인지 판단
+  nickname: string; //회원 닉네임
+  phone_number: string; //회원 휴대폰번호
+  social_id: number; //네이버,카카오 로그인을 구분하기위해 사용
+  created_at?: string; // 회원가입한 시간
+  updated_at?: string; // 수정한 시간
+  profile_img: string; //프로필 이미지
+  profile_text?: string; // 프로필 소갯말
 }
 
 export interface Rowable {
