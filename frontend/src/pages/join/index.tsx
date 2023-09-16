@@ -18,6 +18,7 @@ const JoinContent = ({ closeModal }: any) => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [phoneNum, setPhoneNum] = useState<string>("");
+  const [name, setName] = useState<string>("");
   // 유효성검사
   const [isNickname, setIsNickname] = useState<boolean>(false);
   const [isId, setIsId] = useState<boolean>(false);
@@ -37,6 +38,9 @@ const JoinContent = ({ closeModal }: any) => {
   };
   const onChangePhoneNum: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPhoneNum(e.target.value);
+  };
+  const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setName(e.target.value);
   };
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
@@ -116,7 +120,20 @@ const JoinContent = ({ closeModal }: any) => {
 
   const onClickJoin = () => {
     if (isId && isPhoneNum && isPassword && isNickname) {
-      console.log("성공");
+      axios
+        .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`, {
+          name: name,
+          nickname: nickname,
+          phone_number: phoneNum,
+          login_type: "user",
+          social_id: 0,
+          login_id: id,
+          login_password: password,
+          profile_img: "noneuser",
+          profile_text: "자기소개를 입력해주세요",
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     } else {
       alert("양식에맞게 입력 부탁드립니다!");
     }
@@ -137,6 +154,16 @@ const JoinContent = ({ closeModal }: any) => {
       <div className={Styles.join_title}>
         <h1>회원가입</h1>
         <div>cooka 회원이 되어 다양한 혜택을 받아보세요!</div>
+      </div>
+      <div>
+        <div>
+          <span style={{ color: "red" }}>*</span>성함
+        </div>
+        <input
+          type="text"
+          className={Styles.input_text}
+          onChange={onChangeName}
+        />
       </div>
       <div>
         <div>

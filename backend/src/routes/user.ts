@@ -1,7 +1,13 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
 import { BAD_REQUEST } from "../constants/response";
-import { AddUserParams, addUser, getUsers } from "../queries/user";
+import {
+  AddUserParams,
+  CurrentUserParams,
+  addUser,
+  getUsers,
+  setCurrentUser,
+} from "../queries/user";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 
@@ -19,4 +25,15 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
     console.log("res?", response);
     res.status(response.code).json(response);
   });
+  app.put(
+    "/currentUser",
+    async (req: RequestGeneric<CurrentUserParams>, res) => {
+      if (!req.body || isIncludeUndefined(req.body)) {
+        return BAD_REQUEST;
+      }
+      const response = await setCurrentUser(conn, req.body);
+      console.log("res?", response);
+      res.status(response.code).json(response);
+    }
+  );
 };

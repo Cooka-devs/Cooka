@@ -32,14 +32,6 @@ const Mypage = () => {
   const indexOfLast = currentPage * ITEMNUM;
   const indexOfFirst = indexOfLast - ITEMNUM;
 
-  const userData = {
-    status: "user",
-    id: 13,
-    nickname: "승휘",
-    email: "tmdgnl1201@naver.com",
-    profileImgSrc: "nonuser.webp",
-    introduction: "wewe",
-  };
   const onChangeProfileText = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -145,7 +137,7 @@ const Mypage = () => {
               }}
             >
               <img
-                src={imgFile ? imgFile : user?.profileImgSrc}
+                src={imgFile ? imgFile : user?.profile_img}
                 alt="프로필 이미지"
                 className={Styles.img_preview}
               />
@@ -177,16 +169,16 @@ const Mypage = () => {
           </div>
           <div>프로필 소개</div>
           <div className={Styles.introduction}>
-            {user?.introduction && !profileEdit ? (
+            {user?.profile_text && !profileEdit ? (
               <div className={Styles.introduction_text}>
-                {user.introduction}
+                {user.profile_text}
               </div>
             ) : profileEdit ? (
               <textarea
                 onChange={onChangeProfileText}
                 className={Styles.introduction_text_edit}
               >
-                {user?.introduction}
+                {user?.profile_text}
               </textarea>
             ) : (
               "자기소개를 입력해보세요!"
@@ -272,6 +264,7 @@ const Mypage = () => {
   };
 
   useEffect(() => {
+    //  current 를 받아와서 User에 저장
     setUser(userData);
     if (!user) return;
     const { myRecipe, myCs, myPlace } = SearchUserData(user);

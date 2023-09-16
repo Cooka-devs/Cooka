@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import Modal from "@/components/Modal";
 import JoinContent from "@/pages/join";
 import { useRouter } from "next/router";
+import { User } from "@/types";
+import axios from "axios";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -14,6 +16,9 @@ export const naver_redirect_Uri = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URL;
 export const naver_state = process.env.NEXT_PUBLIC_NAVER_STATE;
 const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_client_Id}&redirect_uri=${naver_redirect_Uri}&state=${naver_state}`;
 const LoginPage = () => {
+  const [id, setId] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [users, setUsers] = useState<User[]>();
   const router = useRouter();
 
   const kakaoLoginHandler = useCallback(() => {
@@ -23,6 +28,39 @@ const LoginPage = () => {
     router.push(naver_Auth_Uri);
   }, [router]);
 
+  const onChangeId: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setId(e.target.value);
+  };
+  const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPassword(e.target.value);
+  };
+  const onClickJoin = () => {
+    users?.map((item) => {
+      if (item.login_id === id && item.login_password === password) {
+        axios.put(
+          `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/currentUser`,
+          {
+            id: 0,
+            user_index: item.id,
+            login_type: "user",
+            nickname: item.nickname,
+            social_id: item.social_id,
+          }
+        );
+        return;
+      }
+    });
+  };
+  useEffect(() => {
+    const getUser = axios(
+      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
+    )
+      .then((res) => res.data)
+      .then((res) => res.data)
+      .then((res) => {
+        setUsers(res), console.log(res);
+      });
+  }, []);
   return (
     <div style={{ paddingTop: "15rem" }}>
       <div className={Styles.loginpage}>
@@ -34,15 +72,22 @@ const LoginPage = () => {
             type="text"
             placeholder="아이디를 입력하세요!"
             className={Styles.input_text}
+            onChange={onChangeId}
           />
           <input
             type="password"
             placeholder="비밀번호를 입력하세요!"
             className={Styles.input_text}
+            onChange={onChangePassword}
           />
         </div>
         <div className={Styles.login_btn}>
-          <button className={Styles.login_btnitem}>로그인</button>
+          <button
+            className={Styles.login_btnitem}
+            onClick={() => onClickJoin()}
+          >
+            로그인
+          </button>
           <button
             className={Styles.login_btnitem}
             onClick={() => router.push(`/join`)}
