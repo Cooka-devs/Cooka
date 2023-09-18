@@ -19,6 +19,7 @@ const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [users, setUsers] = useState<User[]>();
+  const [loginCheck, setLoginCheck] = useState<boolean>(false);
   const router = useRouter();
 
   const kakaoLoginHandler = useCallback(() => {
@@ -37,6 +38,8 @@ const LoginPage = () => {
   const onClickJoin = () => {
     users?.map((item) => {
       if (item.login_id === id && item.login_password === password) {
+        setLoginCheck(true);
+        console.log("true");
         axios.put(
           `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/currentUser`,
           {
@@ -50,6 +53,10 @@ const LoginPage = () => {
         return;
       }
     });
+    console.log(loginCheck);
+    if (!loginCheck) {
+      alert("존재하지않는 계정입니다.");
+    }
   };
   useEffect(() => {
     const getUser = axios(
