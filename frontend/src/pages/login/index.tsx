@@ -1,7 +1,5 @@
 import Styles from "./index.module.css";
 import { useState, useEffect, useCallback } from "react";
-import Modal from "@/components/Modal";
-import JoinContent from "@/pages/join";
 import { useRouter } from "next/router";
 import { User } from "@/types";
 import axios from "axios";
@@ -18,8 +16,6 @@ const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=c
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [users, setUsers] = useState<User[]>();
-  const [loginCheck, setLoginCheck] = useState<boolean>(false);
   const router = useRouter();
 
   const kakaoLoginHandler = useCallback(() => {
@@ -36,38 +32,15 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickJoin = () => {
-    users?.map((item) => {
-      if (item.login_id === id && item.login_password === password) {
-        setLoginCheck(true);
-        console.log("true");
-        axios.put(
-          `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/currentUser`,
-          {
-            id: 0,
-            user_index: item.id,
-            login_type: "user",
-            nickname: item.nickname,
-            social_id: item.social_id,
-          }
-        );
-        return;
-      }
-    });
-    console.log(loginCheck);
-    if (!loginCheck) {
-      alert("존재하지않는 계정입니다.");
-    }
+    axios
+      .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/login`, {
+        userId: id,
+        userPw: password,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
-  useEffect(() => {
-    const getUser = axios(
-      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
-    )
-      .then((res) => res.data)
-      .then((res) => res.data)
-      .then((res) => {
-        setUsers(res), console.log(res);
-      });
-  }, []);
+
   return (
     <div style={{ paddingTop: "15rem" }}>
       <div className={Styles.loginpage}>
