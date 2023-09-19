@@ -23,29 +23,7 @@ export interface AddUserParams {
   profile_text?: string;
   social_id: number;
 }
-export interface CurrentUserParams {
-  id: number;
-  user_index: number;
-  login_type: string;
-  nickname: string;
-  social_id: number;
-}
-export const setCurrentUser: QueriesFunctionWithBody<
-  CurrentUserParams
-> = async (conn, params) => {
-  const { id, user_index, login_type, nickname, social_id } = params;
-  try {
-    const result = await conn.execute(
-      "UPDATE currentUser SET (id,user_index,login_type,nickname,social_id) VALUES (?, ?, ?, ?, ?) WHERE id=0",
-      [id, user_index, login_type, nickname, social_id]
-    );
-    const resultId = (result as ResultSetHeader[])[0].insertId;
-    return makeSuccessResponse(resultId);
-  } catch (err) {
-    console.log(`err`, err);
-    return DB_QUERY_ERROR;
-  }
-};
+
 export const addUser: QueriesFunctionWithBody<AddUserParams> = async (
   conn,
   params
