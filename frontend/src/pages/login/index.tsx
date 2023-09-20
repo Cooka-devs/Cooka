@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import { User } from "@/types";
 import axios from "axios";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -32,7 +33,7 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickJoin = () => {
-    axios
+    DefaultAxiosService.instance
       .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/login`, {
         userId: id,
         userPw: password,
@@ -62,6 +63,16 @@ const LoginPage = () => {
           />
         </div>
         <div className={Styles.login_btn}>
+          <button
+            onClick={() => {
+              DefaultAxiosService.instance
+                .get(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/`)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+            }}
+          >
+            asdf
+          </button>
           <button
             className={Styles.login_btnitem}
             onClick={() => onClickJoin()}

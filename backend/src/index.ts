@@ -30,7 +30,12 @@ connectDB((pool) => {
   const MySQLStore = mysqlSession(expressSession);
   const sessionStore = new MySQLStore({}, pool as any);
   app.use(bodyParser.json());
-  app.use(cors());
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
   app.use(
     session({
       secret: "cooka",
@@ -42,7 +47,7 @@ connectDB((pool) => {
 
   app.get("/", (req, res) => {
     try {
-      console.log("req.session", req.session);
+      console.log("req.session", req.session.id);
       if (req.session.isLogined) {
         return res.send({
           isLogin: true,

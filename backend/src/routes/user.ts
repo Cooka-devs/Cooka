@@ -35,10 +35,14 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
           req.session.user_id = result[0].login_id;
           req.session.isLogined = true;
           console.log("OK");
-          req.session.save(() => {
+          req.session.save((err) => {
+            if (err) {
+              res.status(400).json({ message: err });
+            }
             console.log("세션이 저장되었습니다.");
-            console.log(req.session);
-            return res.redirect("/");
+
+            res.header("Access-Control-Expose-Headers", "Set-Cookie");
+            res.status(200).json({ message: req.sessionID });
           });
         } else {
           console.log("no session");
