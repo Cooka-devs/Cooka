@@ -129,7 +129,7 @@ const JoinContent = ({ closeModal }: any) => {
           social_id: 0,
           login_id: id,
           login_password: password,
-          profile_img: "noneuser",
+          profile_img: "/nonuser.webp",
           profile_text: "자기소개를 입력해주세요",
         })
         .then((res) => console.log(res))

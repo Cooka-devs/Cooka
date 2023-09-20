@@ -10,7 +10,6 @@ export interface Recipe extends Rowable {
   imgAlt: string;
   title: string;
   likes: number;
-  comments: number;
   category: string;
   recipe: string;
   date: string;

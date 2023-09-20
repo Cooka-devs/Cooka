@@ -2,7 +2,7 @@ import Styles from "./index.module.css";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-
+import axios from "axios";
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
@@ -47,7 +47,7 @@ const CreateList = ({ textType }: TextType) => {
   const [text, setText] = useState<string>("");
   const [title, setTitle] = useState<string>("");
 
-  const onChangeText = (e: string) => {
+  const onChangeText = (e: any) => {
     setText(e);
     console.log("text", e);
   };
@@ -55,7 +55,24 @@ const CreateList = ({ textType }: TextType) => {
     setTitle(e.target.value);
     console.log("title", e.target.value);
   };
-
+  const onClickCreateList = () => {
+    if (textType === "recipe") {
+      console.log("1");
+      axios
+        .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/recipe`, {
+          nickname: "123", //session에서 user정보를 가져와야함,
+          login_id: "123", //마찬가지
+          img: "23123", // list화면서 보여질 이미지를 따로 받아야하나 ?
+          imgAlt: "recipe Image",
+          content: text,
+          category: "123", //textType이 recipe일때 따로 입력받기
+          title: title,
+          isHot: false,
+        })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <div className={Styles.makeboard}>
       <div className={Styles.makeboard_text}>
@@ -95,7 +112,12 @@ const CreateList = ({ textType }: TextType) => {
         </div>
       </div>
       <div style={{ width: "100%", textAlign: "center", paddingTop: "2rem" }}>
-        <button className={Styles.submit_btn}>작성완료</button>
+        <button
+          className={Styles.submit_btn}
+          onClick={() => onClickCreateList()}
+        >
+          작성완료
+        </button>
       </div>
     </div>
   );

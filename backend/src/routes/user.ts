@@ -17,34 +17,37 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
       return BAD_REQUEST;
     }
     const response = await addUser(conn, req.body);
-    console.log("res?", response);
     res.status(response.code).json(response);
   });
+
   app.post("/login", async (req, res) => {
-    const userId = req.body.userId;
-    const userPw = req.body.userPw;
-    const isUser = (await conn.query(
-      "SELECT * FROM user WHERE login_id = ? AND login_password = ?",
-      [userId, userPw]
-    )) as any;
-    const result = isUser[0];
-    console.log("isUser:", isUser);
-    console.log("result:", result);
-    if (Array.isArray(result) && result.length > 0) {
-      if (req.session) {
-        req.session.uid = result[0].id;
-        req.session.user_id = result[0].login_id;
-        req.session.isLogined = true;
-        req.session.save(function () {
-          res.redirect("/");
-        });
-        console.log("req.session:", req.session);
-        console.log("result:", result[0]);
+    try {
+      const userId = req.body.userId;
+      const userPw = req.body.userPw;
+      const isUser = (await conn.query(
+        "SELECT * FROM user WHERE login_id = ? AND login_password = ?",
+        [userId, userPw]
+      )) as any;
+      const result = isUser[0];
+      if (Array.isArray(result) && result.length > 0) {
+        if (req.session) {
+          req.session.uid = result[0].id;
+          req.session.user_id = result[0].login_id;
+          req.session.isLogined = true;
+          console.log("OK");
+          req.session.save(() => {
+            console.log("세션이 저장되었습니다.");
+            console.log(req.session);
+            return res.redirect("/");
+          });
+        } else {
+          console.log("no session");
+        }
       } else {
-        console.log("3");
+        console.log("result no id");
       }
-    } else {
-      console.log("result no id");
+    } catch (err) {
+      res.status(500).json({ error: "post login error", message: err });
     }
   });
 };

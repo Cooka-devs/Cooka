@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.scss";
 import { useRef } from "react";
 import ContentsByUser from "@/components/ContentsByUser";
+import axios from "axios";
 const Mypage = () => {
   const [user, setUser] = useState<User>();
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -137,7 +138,7 @@ const Mypage = () => {
               }}
             >
               <img
-                src={imgFile ? imgFile : user?.profile_img}
+                src={user?.profile_img}
                 alt="프로필 이미지"
                 className={Styles.img_preview}
               />
@@ -264,8 +265,14 @@ const Mypage = () => {
   };
 
   useEffect(() => {
-    //  current 를 받아와서 User에 저장
-    setUser(userData);
+    const getUser = axios(
+      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
+    )
+      .then((res) => res.data)
+      .then((res) => res.data)
+      .then((res) => {
+        setUser(res[0]), console.log("user:", res[0]);
+      });
     if (!user) return;
     const { myRecipe, myCs, myPlace } = SearchUserData(user);
     setMyRecipe(myRecipe);
