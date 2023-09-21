@@ -40,7 +40,6 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
               res.status(400).json({ message: err });
             }
             console.log("세션이 저장되었습니다.");
-
             res.header("Access-Control-Expose-Headers", "Set-Cookie");
             res.status(200).json({ message: req.sessionID });
           });
@@ -52,6 +51,22 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
       }
     } catch (err) {
       res.status(500).json({ error: "post login error", message: err });
+    }
+  });
+  app.get("/logout", async (req, res) => {
+    try {
+      req.session.destroy((err) => {
+        req.session;
+        if (err) {
+          console.log("logout 400");
+          res.status(400).json({ message: err });
+        }
+        console.log("logout 200");
+        res.status(200).json({ message: req.sessionID });
+      });
+    } catch (err) {
+      console.log("logout 500");
+      res.status(500).json({ error: "get logout error", message: err });
     }
   });
 };

@@ -1,3 +1,8 @@
+export interface CurrentUserProps {
+  isLogin: boolean;
+  user_Uid: number;
+  user_Id: string;
+}
 export interface Comment extends Rowable {
   postId: number;
   nickname: string;

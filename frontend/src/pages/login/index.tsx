@@ -38,7 +38,12 @@ const LoginPage = () => {
         userId: id,
         userPw: password,
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        const status = res.status;
+        if (status === 200) {
+          router.push("/");
+        }
+      })
       .catch((err) => console.log(err));
   };
 
@@ -63,16 +68,6 @@ const LoginPage = () => {
           />
         </div>
         <div className={Styles.login_btn}>
-          <button
-            onClick={() => {
-              DefaultAxiosService.instance
-                .get(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/`)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-            }}
-          >
-            asdf
-          </button>
           <button
             className={Styles.login_btnitem}
             onClick={() => onClickJoin()}

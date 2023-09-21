@@ -2,17 +2,34 @@ import Styles from "./index.module.scss";
 import Link from "next/link";
 import Gnb from "@/layout/Header/Gnb";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Search from "@/utilities/search";
 import { useRouter } from "next/router";
-
+import axios from "axios";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { CurrentUserProps } from "@/types";
+import { getCurrentUser } from "@/fetch/getCurrentUser";
+import { Logout } from "@/components/Logout";
 const Header = () => {
   const [searchText, setSearchText] = useState<string>("");
-
+  const [currentUser, setCurrentUser] = useState<
+    CurrentUserProps | undefined
+  >();
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
   const router = useRouter();
+  useEffect(() => {
+    const setData = async () => {
+      try {
+        const result = await getCurrentUser();
+        setCurrentUser(result);
+      } catch (error) {
+        console.log("error");
+      }
+    };
+    setData();
+  }, []);
   return (
     <div>
       <div className={Styles.header}>
@@ -40,14 +57,19 @@ const Header = () => {
               검색
             </button>
           </span>
-          {/*유저가 존재한다면 link를 마이페이지로 존재안하면 login페이지로 ,로그인이 되있다면 마이페이지로 +커서시 메뉴바 로그아웃/마이페이지*/}
           <span className={Styles.header_main_login}>
-            <Link href="/login">
-              <PersonOutlineIcon className={Styles.login_icon} />
-            </Link>
-            <Link href="/mypage">
-              <PersonOutlineIcon className={Styles.login_icon} />
-            </Link>
+            {currentUser && currentUser.isLogin === true ? (
+              <>
+                <Link href="/mypage">
+                  <PersonOutlineIcon className={Styles.login_icon} />
+                </Link>
+                {<Logout />}
+              </>
+            ) : (
+              <Link href="/login">
+                <PersonOutlineIcon className={Styles.login_icon} />
+              </Link>
+            )}
           </span>
         </div>
       </div>
