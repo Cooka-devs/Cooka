@@ -10,6 +10,8 @@ import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { CurrentUserProps } from "@/types";
 import { getCurrentUser } from "@/fetch/getCurrentUser";
 import { Logout } from "@/components/Logout";
+import { encodePw } from "@/utilities/encodePw";
+import { createSalt } from "@/utilities/createSalt";
 const Header = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [currentUser, setCurrentUser] = useState<

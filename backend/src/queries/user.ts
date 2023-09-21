@@ -11,7 +11,23 @@ export const getUsers: QueriesFunction = async (conn) => {
     return DB_QUERY_ERROR;
   }
 };
-
+export interface GetPwParams {
+  login_id: string;
+}
+export const getPw: QueriesFunctionWithBody<GetPwParams> = async (
+  conn,
+  req
+) => {
+  console.log("getPw:", req);
+  try {
+    const result = await conn.query("SELECT * FROM user WHERE login_id = ?", [
+      req.login_id,
+    ]);
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export interface AddUserParams {
   name: string;
   nickname: string;
@@ -20,8 +36,9 @@ export interface AddUserParams {
   login_password: string;
   login_type: string;
   profile_img: string;
-  profile_text?: string;
+  profile_text: string;
   social_id: number;
+  salt: string;
 }
 export const addUser: QueriesFunctionWithBody<AddUserParams> = async (
   conn,
@@ -37,10 +54,11 @@ export const addUser: QueriesFunctionWithBody<AddUserParams> = async (
     login_password,
     profile_img,
     profile_text,
+    salt,
   } = params;
   try {
     const result = await conn.execute(
-      "INSERT INTO user (name, nickname, phone_number, login_type, social_id, login_id, login_password, profile_img, profile_text) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO user (name, nickname, phone_number, login_type, social_id, login_id, login_password, profile_img, profile_text, salt) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         name,
         nickname,
@@ -51,6 +69,7 @@ export const addUser: QueriesFunctionWithBody<AddUserParams> = async (
         login_password,
         profile_img,
         profile_text,
+        salt,
       ]
     );
     const id = (result as ResultSetHeader[])[0].insertId;

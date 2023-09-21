@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { User } from "@/types";
 import axios from "axios";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { encodePw } from "@/utilities/encodePw";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -33,18 +34,28 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickJoin = () => {
-    DefaultAxiosService.instance
-      .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/login`, {
-        userId: id,
-        userPw: password,
+    axios
+      .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/pw`, {
+        login_id: id,
       })
-      .then((res) => {
-        const status = res.status;
-        if (status === 200) {
-          router.push("/");
+      .then((res) => res.data[0])
+      .then((userData) => {
+        if (userData) {
+          const getPw = encodePw(userData.salt, password);
+          DefaultAxiosService.instance
+            .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/login`, {
+              userId: id,
+              userPw: getPw,
+            })
+            .then((res) => {
+              const status = res.status;
+              if (status === 200) {
+                router.push("/");
+              }
+            })
+            .catch((err) => console.log(err));
         }
-      })
-      .catch((err) => console.log(err));
+      });
   };
 
   return (

@@ -5,13 +5,17 @@ import { AddUserParams, addUser, getUsers } from "../queries/user";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 import { request } from "http";
+import { getPw } from "../queries/user";
 
 export const setUserRoutes = (app: Express, conn: Pool) => {
   app.get("/users", async (req, res) => {
     const response = await getUsers(conn);
     res.status(response.code).json(response); //성공시 code=200 실패시code=500
   });
-
+  app.post("/pw", async (req, res) => {
+    const response = await getPw(conn, req.body);
+    res.status(response.code).json(response.data);
+  });
   app.post("/users", async (req: RequestGeneric<AddUserParams>, res) => {
     if (!req.body || isIncludeUndefined(req.body)) {
       return BAD_REQUEST;

@@ -42,12 +42,12 @@ connectDB((pool) => {
       resave: false,
       saveUninitialized: false,
       store: sessionStore,
+      cookie: { maxAge: 60 * 1000 * 30 },
     })
   );
 
   app.get("/", (req, res) => {
     try {
-      console.log("req.session", req.session.id);
       if (req.session.isLogined) {
         return res.send({
           isLogin: true,

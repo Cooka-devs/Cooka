@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { User } from "@/types";
+import { createSalt } from "@/utilities/createSalt";
+import { encodePw } from "@/utilities/encodePw";
 
 const JoinContent = ({ closeModal }: any) => {
   const [users, setUsers] = useState<User[]>([]); //DB에서 불러온 user 목록
@@ -118,8 +120,12 @@ const JoinContent = ({ closeModal }: any) => {
     }
   };
 
-  const onClickJoin = () => {
+  const onClickJoin = async () => {
     if (isId && isPhoneNum && isPassword && isNickname) {
+      const salt = await createSalt();
+      const encodePassword = encodePw(salt, password);
+      console.log("salt:", salt);
+      console.log("pw:", encodePassword);
       axios
         .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`, {
           name: name,
@@ -128,12 +134,15 @@ const JoinContent = ({ closeModal }: any) => {
           login_type: "user",
           social_id: 0,
           login_id: id,
-          login_password: password,
+          login_password: encodePassword,
           profile_img: "/nonuser.webp",
           profile_text: "자기소개를 입력해주세요",
+          salt: salt,
         })
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
+      alert("회원가입이 완료되었습니다!");
+      router.push("/");
     } else {
       alert("양식에맞게 입력 부탁드립니다!");
     }
