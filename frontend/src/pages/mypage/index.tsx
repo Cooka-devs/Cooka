@@ -12,8 +12,10 @@ import Styles from "./index.module.scss";
 import { useRef } from "react";
 import ContentsByUser from "@/components/ContentsByUser";
 import axios from "axios";
+import { getCurrentUser, searchUser } from "@/fetch/getCurrentUser";
+import { useRouter } from "next/router";
 const Mypage = () => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   const [checkType, setCheckType] = useState<string>("마이페이지");
   const [myRecipe, setMyRecipe] = useState<Recipe[]>();
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
@@ -32,7 +34,7 @@ const Mypage = () => {
   const ITEMNUM = 9;
   const indexOfLast = currentPage * ITEMNUM;
   const indexOfFirst = indexOfLast - ITEMNUM;
-
+  const router = useRouter();
   const onChangeProfileText = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -263,29 +265,28 @@ const Mypage = () => {
       }
     }
   };
-
   useEffect(() => {
-    const getUser = axios(
-      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
-    )
-      .then((res) => res.data)
-      .then((res) => res.data)
-      .then((res) => {
-        setUser(res[0]), console.log("user:", res[0]);
-      });
-    if (!user) return;
-    const { myRecipe, myCs, myPlace } = SearchUserData(user);
-    setMyRecipe(myRecipe);
-    setMyCs(myCs);
-    setMyPlace(myPlace);
-    setCurrentPage(1);
-    const { uniqueCsList, uniqueRecipeList, uniquePlaceList } = getMyComments(
-      user.nickname
-    );
-    setUniqueCsList(uniqueCsList);
-    setUniqueRecipeList(uniqueRecipeList);
-    setUniquePlaceList(uniquePlaceList);
-  }, [checkType]);
+    const getUserData = async () => {
+      const getU = await searchUser();
+      await setUser(getU);
+      if (getU != undefined) {
+        const { myRecipe, myCs, myPlace } = SearchUserData(getU);
+        setMyRecipe(myRecipe);
+        setMyCs(myCs);
+        setMyPlace(myPlace);
+        setCurrentPage(1);
+        const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
+          getMyComments(getU.nickname);
+        setUniqueCsList(uniqueCsList);
+        setUniqueRecipeList(uniqueRecipeList);
+        setUniquePlaceList(uniquePlaceList);
+      } else {
+        alert("로그인이 필요합니다!");
+        router.push("/");
+      }
+    };
+    getUserData();
+  }, []);
 
   return (
     //사람버튼 로그인상태시 마우스 올리면 로그아웃 마이페이지 노출 => 마이페이지화면

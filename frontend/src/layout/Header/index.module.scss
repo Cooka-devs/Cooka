@@ -57,3 +57,19 @@
   box-shadow: none;
   transform: none;
 }
+.header_main_login {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  div {
+    opacity: 0;
+    transform: translateX(-20%);
+    transition: transform 0.3s ease;
+  }
+  &:hover {
+    div {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}

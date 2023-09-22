@@ -18,7 +18,6 @@ export const getPw: QueriesFunctionWithBody<GetPwParams> = async (
   conn,
   req
 ) => {
-  console.log("getPw:", req);
   try {
     const result = await conn.query("SELECT * FROM user WHERE login_id = ?", [
       req.login_id,

@@ -26,6 +26,7 @@ const Header = () => {
       try {
         const result = await getCurrentUser();
         setCurrentUser(result);
+        console.log(result.user_Uid);
       } catch (error) {
         console.log("error");
       }
@@ -68,9 +69,19 @@ const Header = () => {
                 {<Logout />}
               </>
             ) : (
-              <Link href="/login">
-                <PersonOutlineIcon className={Styles.login_icon} />
-              </Link>
+              <>
+                <Link href="/login">
+                  <PersonOutlineIcon className={Styles.login_icon} />
+                </Link>
+                <div>
+                  <button
+                    style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
+                    onClick={() => router.push("/login")}
+                  >
+                    로그인
+                  </button>
+                </div>
+              </>
             )}
           </span>
         </div>

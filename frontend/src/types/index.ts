@@ -63,6 +63,7 @@ export interface User extends Rowable {
   updated_at?: string; // 수정한 시간
   profile_img: string; //프로필 이미지
   profile_text?: string; // 프로필 소갯말
+  salt?: string;
 }
 
 export interface Rowable {
