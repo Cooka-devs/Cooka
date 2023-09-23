@@ -122,7 +122,12 @@ const JoinContent = ({ closeModal }: any) => {
 
   const onClickJoin = async () => {
     if (isId && isPhoneNum && isPassword && isNickname) {
-      const salt = await createSalt();
+      const salt = await createSalt()
+        .then((res) => res)
+        .catch((err) => {
+          console.log(err);
+        });
+      if (!salt) return;
       const encodePassword = encodePw(salt, password);
       console.log("salt:", salt);
       console.log("pw:", encodePassword);

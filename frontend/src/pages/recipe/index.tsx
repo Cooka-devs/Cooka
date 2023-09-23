@@ -4,16 +4,20 @@ import CreateList from "@/components/CreateList";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
-import { Recipe } from "@/types";
+import { Recipe, User } from "@/types";
 import { RECIPELIST } from "@/data";
+import { searchUser } from "@/fetch/getCurrentUser";
+import Modal from "@/components/Modal";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
 export default function RecipePage() {
+  const [modal, setModal] = useState<boolean>(false);
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
+  const [user, setUser] = useState<undefined | User>();
   const itemnum = 9; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
-
   const CurrentPost = (post: Recipe[]) => {
     let currentPosts: Recipe[] = [];
     if (post != undefined) {
@@ -21,8 +25,16 @@ export default function RecipePage() {
     }
     return currentPosts;
   };
+  const closeModal = () => {
+    setModal(false);
+  };
+
   const makeRecipe = () => {
-    setOnRecipe(true);
+    if (user != undefined) {
+      setOnRecipe(true);
+    } else {
+      setModal(true);
+    }
   };
   const listRecipe = () => {
     setOnRecipe(false);
@@ -30,10 +42,22 @@ export default function RecipePage() {
 
   useEffect(() => {
     setList(RECIPELIST); // TODO => 서버에서 들어오는 데이터로 바꾸기
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
   }, []);
 
   return (
     <div>
+      {modal ? (
+        <Modal
+          closeModal={closeModal}
+          content={<WantLoginModalText closeModal={setModal} />}
+        />
+      ) : (
+        ""
+      )}
       <div className={Styles.recipe_container}>
         <div className={Styles.recipe_left}>
           {onRecipe ? (

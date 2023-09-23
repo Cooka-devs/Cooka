@@ -14,8 +14,12 @@ import ContentsByUser from "@/components/ContentsByUser";
 import axios from "axios";
 import { getCurrentUser, searchUser } from "@/fetch/getCurrentUser";
 import { useRouter } from "next/router";
+import Modal from "@/components/Modal";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
 const Mypage = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [modal, setModal] = useState<boolean>(false);
+
   const [checkType, setCheckType] = useState<string>("마이페이지");
   const [myRecipe, setMyRecipe] = useState<Recipe[]>();
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
@@ -54,6 +58,9 @@ const Mypage = () => {
         };
       }
     } else return;
+  };
+  const closeModal = () => {
+    setModal(false);
   };
   const CurrentPost = <T extends Table>(posts: T): T => {
     return posts.slice(indexOfFirst, indexOfLast) as T;
@@ -281,8 +288,7 @@ const Mypage = () => {
         setUniqueRecipeList(uniqueRecipeList);
         setUniquePlaceList(uniquePlaceList);
       } else {
-        alert("로그인이 필요합니다!");
-        router.push("/");
+        setModal(true);
       }
     };
     getUserData();
@@ -291,6 +297,14 @@ const Mypage = () => {
   return (
     //사람버튼 로그인상태시 마우스 올리면 로그아웃 마이페이지 노출 => 마이페이지화면
     <div className={Styles.mypage}>
+      {modal ? (
+        <Modal
+          closeModal={closeModal}
+          content={<WantLoginModalText closeModal={setModal} />}
+        />
+      ) : (
+        ""
+      )}
       <div className={Styles.mypage_head}>
         <h1
           className={Styles.head_left}
