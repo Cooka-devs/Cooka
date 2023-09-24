@@ -9,40 +9,11 @@ import Modal from "../Modal";
 import { WantLoginModalText } from "../WantLoginModalText";
 import { PLACECATEGORY, RECIPECATEGORY } from "@/constants";
 import { getImgInText } from "@/utilities/getImgSrcInText";
+import { useRef, useMemo } from "react";
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
-const imageUploadHanler = () => {
-  const input = document.createElement("input");
-  input.setAttribute("type", "file");
-  input.setAttribute("accept", "image/*");
-  input.addEventListener("change", (e: any) => {
-    const selectImg = e.target.files ? e.target.files[0] : null;
-    if (selectImg) {
-      const formData = new FormData();
-      formData.append("image", selectImg);
-    } else {
-      console.log("no file err");
-    }
-  });
-  input.click();
-};
-const modules = {
-  toolbar: {
-    container: [
-      ["link", "image", "video"],
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike"],
-      ["blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ color: [] }, { background: [] }],
-      [{ align: [] }],
-    ],
-    handlers: {
-      image: imageUploadHanler,
-    },
-  },
-};
+
 const formats = [
   "header",
   "font",
@@ -68,20 +39,55 @@ interface TextType {
   textType: string;
 }
 const CreateList = ({ textType }: TextType) => {
+  const quillRef = useRef(null);
   const [text, setText] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [user, setUser] = useState<undefined | User>();
   const [modal, setModal] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [errText, setErrorText] = useState<string>("");
+
+  const imageUploadHanler = () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.addEventListener("change", async (e: any) => {
+      const selectImg = e.target.files ? e.target.files[0] : null;
+      if (selectImg) {
+        const formData = new FormData();
+        formData.append("image", selectImg);
+        try {
+          const result = await axios.post(
+            `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/image`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log("result:", result);
+          const imgUrl = `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000${result.data.imgSrc}`;
+          console.log("imgUrl:", imgUrl);
+          setText((prev) => prev + `<img src="${imgUrl}"/>`);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        console.log("no file err");
+      }
+    });
+    input.click();
+  };
   const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
   };
   const closeModal = () => {
     setModal(false);
   };
-  const onChangeText = (e: any) => {
-    setText(e);
+  const onChangeText = async (e: any) => {
+    await setText(e);
+    console.log(text);
   };
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -113,7 +119,24 @@ const CreateList = ({ textType }: TextType) => {
       }
     }
   };
-
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          ["link", "image", "video"],
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
+        ],
+        handlers: {
+          image: imageUploadHanler,
+        },
+      },
+    };
+  }, []);
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
@@ -164,6 +187,7 @@ const CreateList = ({ textType }: TextType) => {
             <ReactQuill
               onChange={onChangeText}
               modules={modules}
+              value={text}
               formats={formats}
               style={{ height: "64.219rem" }}
               placeholder="레시피를 입력하세요!"

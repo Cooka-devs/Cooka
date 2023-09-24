@@ -9,6 +9,7 @@ import { getPw } from "../queries/user";
 
 export const setUserRoutes = (app: Express, conn: Pool) => {
   app.get("/users", async (req, res) => {
+    console.log();
     const response = await getUsers(conn);
     res.status(response.code).json(response); //성공시 code=200 실패시code=500
   });

@@ -14,7 +14,9 @@ import session from "express-session";
 import * as expressSession from "express-session";
 import mysqlSession from "express-mysql-session";
 import { setRecipeRoutes } from "./routes/recipe";
-
+import { setImageRoutes } from "./routes/image";
+import multer from "multer";
+import path from "path";
 dotenv.config();
 const PORT = 8000;
 export const DB_OPTIONS: mysql.PoolOptions = {
@@ -36,6 +38,8 @@ connectDB((pool) => {
       credentials: true,
     })
   );
+  app.use("/uploads", express.static(path.join(__dirname, "src", "uploads")));
+
   app.use(
     session({
       secret: "cooka",
@@ -63,7 +67,7 @@ connectDB((pool) => {
   });
   setRecipeRoutes(app, pool);
   setUserRoutes(app, pool);
-
+  setImageRoutes(app);
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
