@@ -44,7 +44,7 @@ const RecipeDetail = () => {
           <Divider />
           <img src={post.imgSrc} alt={post.imgAlt} className={Styles.img} />
           <div
-            dangerouslySetInnerHTML={{ __html: post.recipe }}
+            dangerouslySetInnerHTML={{ __html: post.content }}
             style={{ marginBottom: "10rem" }}
           />
           <Divider />

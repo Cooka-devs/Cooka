@@ -8,10 +8,11 @@ import { PlaceProps } from "@/types";
 import { PLACELIST } from "@/data";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
-
+import { searchUser } from "@/fetch/getCurrentUser";
+import { User } from "@/types";
 const Place = () => {
   const [modal, setModal] = useState<boolean>(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<undefined | User>();
   const [onplace, setOnPlace] = useState<boolean>(false);
   const [list, setList] = useState<PlaceProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
@@ -40,6 +41,11 @@ const Place = () => {
   };
   useEffect(() => {
     setList(PLACELIST);
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
+    fetch();
   }, []);
   return (
     <div>

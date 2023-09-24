@@ -34,3 +34,19 @@
   box-shadow: 0 0.5em 0.5em -0.4em lightgray;
   transform: translateY(-0.5rem);
 }
+.select_option {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 15rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+}
+.err_text {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  text-align: center;
+  padding-top: 2rem;
+  color: red;
+}

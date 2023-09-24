@@ -16,8 +16,9 @@ export interface Recipe extends Rowable {
   title: string;
   likes: number;
   category: string;
-  recipe: string;
-  date: string;
+  content: string;
+  created_at: string;
+  updated_at?: string;
   writer: string;
   isHot?: boolean;
 }

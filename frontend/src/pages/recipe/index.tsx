@@ -46,6 +46,7 @@ export default function RecipePage() {
       const getU = await searchUser();
       setUser(getU);
     };
+    fetch();
   }, []);
 
   return (
