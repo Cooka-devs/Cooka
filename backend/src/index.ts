@@ -38,15 +38,15 @@ connectDB((pool) => {
       credentials: true,
     })
   );
-  app.use("/uploads", express.static(path.join(__dirname, "src", "uploads")));
-
+  app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+  console.log("path.join:", path.join(__dirname, "/uploads"));
   app.use(
     session({
       secret: "cooka",
       resave: false,
       saveUninitialized: false,
       store: sessionStore,
-      cookie: { maxAge: 60 * 1000 * 30 },
+      cookie: { maxAge: 60 * 1000 * 60 * 3 },
     })
   );
 

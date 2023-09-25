@@ -1,6 +1,6 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
-import { AddRecipeListParams, addRecipe } from "../queries/recipe";
+import { AddRecipeListParams, addRecipe, getRecipe } from "../queries/recipe";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 import { BAD_REQUEST } from "../constants/response";
@@ -13,5 +13,9 @@ export const setRecipeRoutes = (app: Express, conn: Pool) => {
     }
     const response = await addRecipe(conn, req.body);
     res.status(response.code).json(response);
+  });
+  app.get("/recipe", async (req, res) => {
+    const response = await getRecipe(conn);
+    res.status(response.code).json(response); //성공시 code=200 실패시code=500
   });
 };

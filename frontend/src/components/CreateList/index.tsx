@@ -39,14 +39,13 @@ interface TextType {
   textType: string;
 }
 const CreateList = ({ textType }: TextType) => {
-  const quillRef = useRef(null);
   const [text, setText] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [user, setUser] = useState<undefined | User>();
   const [modal, setModal] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [errText, setErrorText] = useState<string>("");
-
+  const [mainImg, setMainImg] = useState<string>("최초렌더링실행방지");
   const imageUploadHanler = () => {
     const input = document.createElement("input");
     input.setAttribute("type", "file");
@@ -66,9 +65,7 @@ const CreateList = ({ textType }: TextType) => {
               },
             }
           );
-          console.log("result:", result);
-          const imgUrl = `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000${result.data.imgSrc}`;
-          console.log("imgUrl:", imgUrl);
+          const imgUrl = `${result.data.imgSrc}`;
           setText((prev) => prev + `<img src="${imgUrl}"/>`);
         } catch (err) {
           console.log(err);
@@ -93,30 +90,12 @@ const CreateList = ({ textType }: TextType) => {
     setTitle(e.target.value);
   };
   const onClickCreateList = () => {
-    if (title === "" || text === "" || category === "") {
-      setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
+    const imgSrcInText = getImgInText(text);
+    console.log(imgSrcInText[0].src);
+    if (!imgSrcInText.length) {
+      setMainImg("noneImg.jpg");
     } else {
-      if (user != undefined) {
-        console.log("제목:", title);
-        console.log("내용:", text);
-        // axios
-        //   .post(
-        //     `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/${textType}`,
-        //     {
-        //       writer: user.nickname, //session에서 user정보를 가져와야함,
-        //       imgSrc: "23123", // list화면서 보여질 이미지를 따로 받아야하나 ?
-        //       imgAlt: "recipe Image",
-        //       content: text,
-        //       category: category, //textType이 recipe일때 따로 입력받기
-        //       title: title,
-        //       isHot: false,
-        //     }
-        //   )
-        //   .then((res) => console.log(res))
-        //   .catch((err) => console.log(err));
-      } else {
-        setModal(true);
-      }
+      setMainImg(imgSrcInText[0].src);
     }
   };
   const modules = useMemo(() => {
@@ -137,6 +116,36 @@ const CreateList = ({ textType }: TextType) => {
       },
     };
   }, []);
+  useEffect(() => {
+    if (mainImg !== "최초렌더링실행방지") {
+      if (title === "" || text === "" || category === "") {
+        setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
+      } else {
+        if (user != undefined) {
+          console.log("img:", mainImg);
+          console.log("제목:", title);
+          console.log("내용:", text);
+          axios
+            .post(
+              `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/${textType}`,
+              {
+                writer: user.nickname,
+                imgSrc: mainImg,
+                imgAlt: "recipe Image",
+                content: text,
+                category: category,
+                title: title,
+                isHot: false,
+              }
+            )
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+        } else {
+          setModal(true);
+        }
+      }
+    }
+  }, [mainImg]);
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();

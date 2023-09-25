@@ -7,12 +7,23 @@ import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
-import { RECIPECOMMENTS, RECIPELIST } from "@/data";
-import useGetPost from "@/hooks/useGetPost";
+import { RECIPECOMMENTS } from "@/data";
+import { useGetPost } from "@/hooks/useGetPost";
+import { getReipce } from "@/fetch/getRecipe";
 const RecipeDetail = () => {
+  const [post, setPost] = useState<Recipe>();
   const comments = useGetComments(RECIPECOMMENTS);
-  const post = useGetPost(RECIPELIST);
-
+  const router = useRouter();
+  useEffect(() => {
+    const id = router.query.id;
+    const result = id as string;
+    const getP = async () => {
+      const getPost = await useGetPost(result);
+      console.log(getPost);
+      setPost(getPost);
+    };
+    getP();
+  }, [router.query.id]);
   return (
     <div>
       {post ? (
@@ -32,14 +43,7 @@ const RecipeDetail = () => {
               />
               {post.likes}
             </div>
-            <div className={Styles.like_span}>
-              <InsertCommentOutlinedIcon
-                className={Styles.like_icon}
-                fontSize={"large"}
-              />
-              {post.comments}
-            </div>
-            |<div style={{ color: "gray" }}>{post.date}</div>
+            |<div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider />
           <img src={post.imgSrc} alt={post.imgAlt} className={Styles.img} />

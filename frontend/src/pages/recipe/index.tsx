@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
 import { Recipe, User } from "@/types";
-import { RECIPELIST } from "@/data";
 import { searchUser } from "@/fetch/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
+import { getReipce } from "@/fetch/getRecipe";
 export default function RecipePage() {
   const [modal, setModal] = useState<boolean>(false);
   const [onRecipe, setOnRecipe] = useState(false);
@@ -41,7 +41,13 @@ export default function RecipePage() {
   };
 
   useEffect(() => {
-    setList(RECIPELIST); // TODO => 서버에서 들어오는 데이터로 바꾸기
+    const getRecipeList = async () => {
+      const getList = await getReipce();
+      console.log("getRecipe Result:", getList);
+      setList(getList);
+    };
+    getRecipeList();
+    // setList(result); // TODO => 서버에서 들어오는 데이터로 바꾸기
     const fetch = async () => {
       const getU = await searchUser();
       setUser(getU);

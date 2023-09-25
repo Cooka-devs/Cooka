@@ -22,7 +22,7 @@ export const setImageRoutes = (app: Express) => {
     if (!req.file || isIncludeUndefined(req.file)) {
       return BAD_REQUEST;
     }
-    const imgUrl = `/uploads/${req.file.filename}`;
+    const imgUrl = `http://${process.env.DB_HOST}:${process.env.DB_PORT}/uploads/${req.file.filename}`;
     console.log(imgUrl);
     res.json({ imgSrc: imgUrl });
   });

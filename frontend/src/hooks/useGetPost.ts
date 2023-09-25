@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Table } from "@/types";
+import { Recipe, Table } from "@/types";
+import { getReipce } from "@/fetch/getRecipe";
 
-const useGetPost = <T extends Table>(data: T): T[number] | undefined => {
-  const [post, setPost] = useState<T[number]>();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!router.query.id) return;
-    const postId = +router.query.id;
-    const post = data.find((post) => post.id === +postId);
-    if (!post) return;
-    setPost(post);
-  }, [router.query.id, data]);
-
-  return post;
+export const useGetPost = async (id: string) => {
+  const number = Number(id);
+  const data: Recipe[] = await getReipce();
+  try {
+    const post = data.find((post) => post.id === +number);
+    console.log("post in useGetPost:", post);
+    return post;
+  } catch (err) {
+    console.log("getR error:", err);
+    throw err;
+  }
 };
-export default useGetPost;
