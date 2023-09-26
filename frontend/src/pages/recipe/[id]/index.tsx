@@ -3,13 +3,11 @@ import { useEffect, useState } from "react";
 import { Recipe } from "@/types";
 import { useRouter } from "next/router";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
 import { RECIPECOMMENTS } from "@/data";
 import { useGetPost } from "@/hooks/useGetPost";
-import { getReipce } from "@/fetch/getRecipe";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const comments = useGetComments(RECIPECOMMENTS);
@@ -36,14 +34,14 @@ const RecipeDetail = () => {
             작성자 : {post.writer}
           </div>
           <div className={Styles.list_likes}>
-            <div className={Styles.like_span}>
+            {/* <div className={Styles.like_span}>
               <ThumbUpOffAltIcon
                 className={Styles.like_icon}
                 fontSize={"large"}
               />
               {post.likes}
-            </div>
-            |<div style={{ color: "gray" }}>{post.created_at}</div>
+            </div>| */}
+            <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider />
           <img src={post.imgSrc} alt={post.imgAlt} className={Styles.img} />

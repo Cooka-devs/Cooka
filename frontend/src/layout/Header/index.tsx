@@ -1,17 +1,13 @@
-import Styles from "./index.module.scss";
-import Link from "next/link";
-import Gnb from "@/layout/Header/Gnb";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { useState, useEffect } from "react";
-import Search from "@/utilities/search";
-import { useRouter } from "next/router";
-import axios from "axios";
-import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { CurrentUserProps } from "@/types";
-import { getCurrentUser } from "@/fetch/getCurrentUser";
 import { Logout } from "@/components/Logout";
-import { encodePw } from "@/utilities/encodePw";
-import { createSalt } from "@/utilities/createSalt";
+import { getCurrentUser } from "@/api/getCurrentUser";
+import Gnb from "@/layout/Header/Gnb";
+import { CurrentUserProps } from "@/types";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Styles from "./index.module.scss";
+
 const Header = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [currentUser, setCurrentUser] = useState<
@@ -73,12 +69,19 @@ const Header = () => {
                 <Link href="/login">
                   <PersonOutlineIcon className={Styles.login_icon} />
                 </Link>
-                <div>
+                <div style={{ display: "flex", gap: "1rem" }}>
                   <button
                     style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
                     onClick={() => router.push("/login")}
                   >
                     로그인
+                  </button>
+                  |
+                  <button
+                    style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
+                    onClick={() => router.push("/join")}
+                  >
+                    회원가입
                   </button>
                 </div>
               </>

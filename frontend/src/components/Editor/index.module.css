@@ -1,0 +1,52 @@
+.makeboard {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+.makeboard_text {
+  /* border: 1px solid black; */
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  font-family: "SUITE-Regular";
+  display: flex;
+  flex-direction: column;
+}
+.text_title {
+  width: 100%;
+  border: none;
+  font-size: 2rem;
+  padding: 1rem;
+  outline: none;
+  font-family: "SUITE-Regular";
+  border: 1px solid #ccc;
+  border-bottom: none;
+}
+.submit_btn {
+  font-size: 2.5rem;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  width: 30rem;
+  height: 5rem;
+}
+.submit_btn:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
+}
+.select_option {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 15rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+}
+.err_text {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  text-align: center;
+  padding-top: 2rem;
+  color: red;
+}

@@ -1,10 +1,9 @@
-import Styles from "./index.module.css";
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/router";
-import { User } from "@/types";
-import axios from "axios";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { encodePw } from "@/utilities/encodePw";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useCallback, useState } from "react";
+import Styles from "./index.module.css";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -15,9 +14,11 @@ export const naver_client_Id = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
 export const naver_redirect_Uri = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URL;
 export const naver_state = process.env.NEXT_PUBLIC_NAVER_STATE;
 const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_client_Id}&redirect_uri=${naver_redirect_Uri}&state=${naver_state}`;
+
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [text, setText] = useState<string>("");
   const router = useRouter();
 
   const kakaoLoginHandler = useCallback(() => {
@@ -34,8 +35,8 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickJoin = () => {
-    axios
-      .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/pw`, {
+    DefaultAxiosService.instance
+      .post("/pw", {
         login_id: id,
       })
       .then((res) => res.data[0])
@@ -43,19 +44,25 @@ const LoginPage = () => {
         if (userData) {
           const getPw = encodePw(userData.salt, password);
           DefaultAxiosService.instance
-            .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/login`, {
+            .post("/login", {
               userId: id,
               userPw: getPw,
             })
             .then((res) => {
               const status = res.status;
+              console.log(status);
               if (status === 200) {
                 router.push("/");
+              } else if (status === 202) {
+                setText("입력하신 비밀번호가 틀렸습니다.");
               }
             })
             .catch((err) => console.log(err));
+        } else {
+          setText("아이디가 존재하지않습니다.");
         }
-      });
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -78,6 +85,13 @@ const LoginPage = () => {
             onChange={onChangePassword}
           />
         </div>
+        {text != "" ? (
+          <div style={{ paddingTop: "1rem", fontSize: "1.5rem", color: "red" }}>
+            {text}
+          </div>
+        ) : (
+          ""
+        )}
         <div className={Styles.login_btn}>
           <button
             className={Styles.login_btnitem}

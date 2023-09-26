@@ -42,6 +42,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
           console.log("OK");
           req.session.save((err) => {
             if (err) {
+              console.log("3");
               res.status(400).json({ message: err });
             }
             console.log("세션이 저장되었습니다.");
@@ -49,10 +50,11 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
             res.status(200).json({ message: req.sessionID });
           });
         } else {
-          console.log("no session");
+          console.log("1");
         }
       } else {
-        console.log("result no id");
+        console.log("2");
+        res.status(202).json({ message: "no id" });
       }
     } catch (err) {
       res.status(500).json({ error: "post login error", message: err });

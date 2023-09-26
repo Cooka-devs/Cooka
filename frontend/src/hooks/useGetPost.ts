@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Recipe, Table } from "@/types";
-import { getReipce } from "@/fetch/getRecipe";
+import { getReipce } from "@/api/getRecipe";
 
 export const useGetPost = async (id: string) => {
   const number = Number(id);

@@ -8,7 +8,7 @@
 }
 .list_item:hover {
   border-color: lightgray;
-  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em #d3d3d3;
   transform: translateY(-0.5rem);
 }
 .list_date {

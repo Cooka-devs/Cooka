@@ -8,7 +8,7 @@ import { PlaceProps } from "@/types";
 import { PLACELIST } from "@/data";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
-import { searchUser } from "@/fetch/getCurrentUser";
+import { searchUser } from "@/api/getCurrentUser";
 import { User } from "@/types";
 const Place = () => {
   const [modal, setModal] = useState<boolean>(false);

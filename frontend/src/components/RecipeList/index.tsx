@@ -2,14 +2,14 @@ import { Recipe } from "@/types";
 import RecipeItem from "./RecipeItem";
 import Styles from "./index.module.css";
 
-interface RecipeListProps {
-  items: Recipe[];
+export interface RecipeListProps {
+  item: Recipe[];
 }
 
-const RecipeList = ({ items }: RecipeListProps) => {
+const RecipeList = ({ item }: RecipeListProps) => {
   return (
     <div className={Styles.list_container}>
-      {items.map((item, index) => {
+      {item.map((item, index) => {
         return <RecipeItem key={`${index}-${item.title}`} item={item} />;
       })}
     </div>

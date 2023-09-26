@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
 import { Recipe, User } from "@/types";
-import { searchUser } from "@/fetch/getCurrentUser";
+import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
-import { getReipce } from "@/fetch/getRecipe";
+import { getReipce } from "@/api/getRecipe";
 export default function RecipePage() {
   const [modal, setModal] = useState<boolean>(false);
   const [onRecipe, setOnRecipe] = useState(false);
@@ -71,7 +71,7 @@ export default function RecipePage() {
             <CreateList textType="recipe" />
           ) : (
             <>
-              <RecipeList items={CurrentPost(list)} />
+              <RecipeList item={CurrentPost(list)} />
               <RecipePageMove
                 totalPosts={list.length}
                 postsPerPage={itemnum}

@@ -1,9 +1,16 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
-import { AddRecipeListParams, addRecipe, getRecipe } from "../queries/recipe";
+import { BAD_REQUEST } from "../constants/response";
+import {
+  AddRecipeListParams,
+  addRecipe,
+  deleteRecipe,
+  getRecipe,
+  updateRecipe,
+} from "../queries/recipe";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
-import { BAD_REQUEST } from "../constants/response";
+
 export const setRecipeRoutes = (app: Express, conn: Pool) => {
   app.post("/recipe", async (req: RequestGeneric<AddRecipeListParams>, res) => {
     console.log(req.body);
@@ -16,6 +23,21 @@ export const setRecipeRoutes = (app: Express, conn: Pool) => {
   });
   app.get("/recipe", async (req, res) => {
     const response = await getRecipe(conn);
-    res.status(response.code).json(response); //성공시 code=200 실패시code=500
+    res.status(response.code).json(response);
+  });
+
+  app.delete("/recipe/:id", async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const response = await deleteRecipe(conn, { id: +id });
+    res.status(response.code).json(response);
+  });
+
+  app.put("/recipe/:id", async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
+    const { id } = req.params;
+    const response = await updateRecipe(conn, { id: +id, ...req.body });
+    res.status(response.code).json(response);
   });
 };

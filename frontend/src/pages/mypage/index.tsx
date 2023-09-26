@@ -12,7 +12,7 @@ import Styles from "./index.module.scss";
 import { useRef } from "react";
 import ContentsByUser from "@/components/ContentsByUser";
 import axios from "axios";
-import { getCurrentUser, searchUser } from "@/fetch/getCurrentUser";
+import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
 import { useRouter } from "next/router";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
