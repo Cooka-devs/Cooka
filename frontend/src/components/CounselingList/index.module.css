@@ -18,10 +18,12 @@
   transform: translateY(-0.5rem);
 }
 .item_date {
+  color: gray;
   font-size: 1.4rem;
+  padding-bottom: 1rem;
 }
 .item_title {
-  height: 13rem;
+  height: 12rem;
   font-family: "SUITE-Regular";
 }
 .item_likes {

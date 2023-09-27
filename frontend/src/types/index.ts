@@ -27,9 +27,7 @@ export interface CsItem extends Rowable {
   title: string;
   writer: string;
   content: string;
-  likes: number;
-  comments: number;
-  date: string;
+  created_at: string;
 }
 
 export interface PlaceProps extends Rowable {

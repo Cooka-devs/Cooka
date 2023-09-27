@@ -57,3 +57,6 @@
   margin: auto;
   margin-bottom: 3rem;
 }
+.content img {
+  max-width: 70rem;
+}

@@ -9,6 +9,7 @@ interface CsItemProps {
 
 const CounselingList = ({ items }: CsItemProps) => {
   const router = useRouter();
+  console.log(items);
   return (
     <div className={Styles.cslist}>
       {items.map((item, index) => {
@@ -20,7 +21,7 @@ const CounselingList = ({ items }: CsItemProps) => {
               router.push({ pathname: `/counseling/${item.id}` });
             }}
           >
-            <div className={Styles.item_date}>{item.date}</div>
+            <div className={Styles.item_date}>{item.created_at}</div>
             <div className={Styles.item_title}>{item.title}</div>
             <div className={Styles.item_likes}>
               <div className={Styles.like_span}>
@@ -28,14 +29,14 @@ const CounselingList = ({ items }: CsItemProps) => {
                   className={Styles.like_icon}
                   fontSize={"large"}
                 />
-                {item.likes}
+                {/* {item.likes} */}
               </div>
               <div className={Styles.like_span}>
                 <InsertCommentOutlinedIcon
                   className={Styles.like_icon}
                   fontSize={"large"}
                 />
-                {item.comments}
+                {/* {item.comments} */}
               </div>
             </div>
           </div>

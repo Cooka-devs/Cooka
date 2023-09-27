@@ -50,6 +50,7 @@ const PlaceDetail = () => {
           <div
             dangerouslySetInnerHTML={{ __html: post.content }}
             style={{ marginBottom: "10rem" }}
+            className={Styles.content}
           />
           <Divider />
           <textarea

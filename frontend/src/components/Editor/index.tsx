@@ -11,6 +11,7 @@ import Styles from "./index.module.css";
 
 import FormAxiosService from "@/service/FormAxiosService";
 import ReactQuill from "react-quill";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
 
 const formats = [
   "header",
@@ -105,19 +106,17 @@ const Editor = ({ textType }: TextType) => {
           console.log("img:", mainImg);
           console.log("제목:", title);
           console.log("내용:", text);
-          axios
-            .post(
-              `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/${textType}`,
-              {
-                writer: user.nickname,
-                imgSrc: mainImg,
-                imgAlt: "recipe Image",
-                content: text,
-                category: category,
-                title: title,
-                isHot: false,
-              }
-            )
+          console.log("textType:", textType);
+          DefaultAxiosService.instance
+            .post(`/${textType}`, {
+              writer: user.nickname,
+              imgSrc: mainImg,
+              imgAlt: `${textType}Img`,
+              content: text,
+              category: category,
+              title: title,
+              isHot: false,
+            })
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
         } else {
@@ -170,7 +169,7 @@ const Editor = ({ textType }: TextType) => {
                 formData
               );
               const imgUrl = `${result.data.imgSrc}`;
-              setText((prev) => prev + `<img src="${imgUrl}"/>`);
+              await setText((prev) => prev + `<img src="${imgUrl}"/>`);
               setShouldSetSelection(true);
             } catch (err) {
               console.log(err);
@@ -231,6 +230,8 @@ const Editor = ({ textType }: TextType) => {
           ) : textType === "place" ? (
             <ReactQuill
               ref={quillRef}
+              id={"quill"}
+              value={text}
               onChange={onChangeText}
               modules={modules}
               formats={formats}

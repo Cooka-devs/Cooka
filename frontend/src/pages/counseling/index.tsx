@@ -2,11 +2,14 @@ import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 import CounselingPageMove from "@/components/CounselingPageMove";
 import CounselingList from "@/components/CounselingList";
-import { CsItem } from "@/types";
+import { CsItem, User } from "@/types";
 import { COUNSELINGDATA } from "@/data";
+import { getCounseling } from "@/api/getCounseling";
+import { searchUser } from "@/api/getCurrentUser";
 
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
+  const [user, setUser] = useState<undefined | User>();
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const itemnum = 12; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
@@ -19,7 +22,18 @@ const Counseling = () => {
   };
 
   useEffect(() => {
-    setList(COUNSELINGDATA); // TODO => 서버에서 들어오는 데이터로 바꾸기
+    const getPlaceList = async () => {
+      const getList = await getCounseling();
+      console.log("getPlace Result:", getList);
+      await setList(getList);
+    };
+    getPlaceList();
+
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
+    fetch();
   }, []);
 
   return (
