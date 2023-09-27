@@ -36,12 +36,13 @@ export interface PlaceProps extends Rowable {
   imgSrc: string;
   imgAlt: string;
   title: string;
-  content: string;
   likes: number;
-  comments: number;
-  isHot: boolean;
-  date: string;
+  category: string;
+  content: string;
+  created_at: string;
+  updated_at?: string;
   writer: string;
+  isHot?: boolean;
 }
 
 export interface NewItem {

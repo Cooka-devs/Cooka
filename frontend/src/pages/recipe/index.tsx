@@ -44,10 +44,10 @@ export default function RecipePage() {
     const getRecipeList = async () => {
       const getList = await getReipce();
       console.log("getRecipe Result:", getList);
-      setList(getList);
+      await setList(getList);
     };
     getRecipeList();
-    // setList(result); // TODO => 서버에서 들어오는 데이터로 바꾸기
+
     const fetch = async () => {
       const getU = await searchUser();
       setUser(getU);

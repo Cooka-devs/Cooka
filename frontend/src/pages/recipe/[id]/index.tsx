@@ -16,7 +16,7 @@ const RecipeDetail = () => {
     const id = router.query.id;
     const result = id as string;
     const getP = async () => {
-      const getPost = await useGetPost(result);
+      const getPost = await useGetPost(result, "recipe");
       console.log(getPost);
       setPost(getPost);
     };
@@ -44,7 +44,6 @@ const RecipeDetail = () => {
             <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider />
-          <img src={post.imgSrc} alt={post.imgAlt} className={Styles.img} />
           <div
             dangerouslySetInnerHTML={{ __html: post.content }}
             style={{ marginBottom: "10rem" }}

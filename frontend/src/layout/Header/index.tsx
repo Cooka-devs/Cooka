@@ -22,7 +22,6 @@ const Header = () => {
       try {
         const result = await getCurrentUser();
         setCurrentUser(result);
-        console.log(result.user_Uid);
       } catch (error) {
         console.log("error");
       }

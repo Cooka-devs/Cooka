@@ -37,7 +37,7 @@ const Search = () => {
         title: "레시피",
         component: (
           <RecipeList
-            items={searchRecipeListData.slice(recipeNum, recipeNum + itemNum)}
+            item={searchRecipeListData.slice(recipeNum, recipeNum + itemNum)}
           />
         ),
         data: searchRecipeListData,

@@ -5,11 +5,11 @@ import PlacePageMove from "@/components/PlacePageMove";
 import MakePlaceButton from "@/components/MakePlaceButton";
 import CreateList from "@/components/CreateList";
 import { PlaceProps } from "@/types";
-import { PLACELIST } from "@/data";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { searchUser } from "@/api/getCurrentUser";
 import { User } from "@/types";
+import { getPlace } from "@/api/getPlace";
 const Place = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [user, setUser] = useState<undefined | User>();
@@ -40,7 +40,12 @@ const Place = () => {
     setOnPlace(false);
   };
   useEffect(() => {
-    setList(PLACELIST);
+    const getPlaceList = async () => {
+      const getList = await getPlace();
+      console.log("getPlace Result:", getList);
+      await setList(getList);
+    };
+    getPlaceList();
     const fetch = async () => {
       const getU = await searchUser();
       setUser(getU);

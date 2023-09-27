@@ -49,8 +49,6 @@ const Editor = ({ textType }: TextType) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [shouldSetSelection, setShouldSetSelection] = useState(false);
 
-  console.log("quill", quillRef);
-
   const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
   };

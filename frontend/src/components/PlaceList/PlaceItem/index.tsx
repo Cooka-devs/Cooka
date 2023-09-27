@@ -14,10 +14,12 @@ const PlaceItem = ({ item }: Place) => {
       onClick={() => router.push({ pathname: `/place/${item.id}` })}
     >
       <img src={item.imgSrc} alt={item.imgAlt} />
-      <div className={Styles.list_date}>{item.date}</div>
+      <div className={Styles.list_date}>{item.created_at}</div>
       <div className={Styles.list_title_row}>
-        <div className={Styles.list_title}>{item.title}</div>
-        {item.isHot && <div className={Styles.list_title_hot}>HOT!</div>}
+        <div
+          className={Styles.list_title}
+        >{`[${item.category}] ${item.title}`}</div>
+        {item.isHot ? <div className={Styles.list_title_hot}>HOT!</div> : ""}
       </div>
       <div className={Styles.list_likes}>
         <div className={Styles.like_span}>
@@ -29,7 +31,6 @@ const PlaceItem = ({ item }: Place) => {
             className={Styles.like_icon}
             fontSize={"large"}
           />
-          {item.comments}
         </div>
       </div>
     </div>
