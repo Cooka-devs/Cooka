@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import CounselingPageMove from "@/components/CounselingPageMove";
 import CounselingList from "@/components/CounselingList";
 import { CsItem, User } from "@/types";
-import { COUNSELINGDATA } from "@/data";
 import { getCounseling } from "@/api/getCounseling";
 import { searchUser } from "@/api/getCurrentUser";
 import CreateList from "@/components/CreateList";
+import Modal from "@/components/Modal";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
 
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
@@ -74,6 +75,14 @@ const Counseling = () => {
   } else {
     return (
       <div className={Styles.counselingpage}>
+        {modal ? (
+          <Modal
+            closeModal={closeModal}
+            content={<WantLoginModalText closeModal={setModal} />}
+          />
+        ) : (
+          ""
+        )}
         <CounselingList items={CurrentPost(list)} />
         <div className={Styles.pagemove}>
           <CounselingPageMove

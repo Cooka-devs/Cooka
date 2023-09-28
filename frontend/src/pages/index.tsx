@@ -88,11 +88,11 @@ const CONTAINERS = [
       title: "화제의 고민",
       items: [
         {
-          id: 0,
+          id: 1,
           content: "개봉한 파스타소스 유통기한?",
         },
         {
-          id: 1,
+          id: 2,
           content: "개봉한 파스타소스 유통기한?",
         },
       ],
@@ -120,17 +120,6 @@ const CONTAINERS = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    // axios
-    //   .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`, {
-    //     name: "승휘",
-    //     nickname: "승휘",
-    //     phone_number: "010-5045-9248",
-    //     login_type: "user",
-    //     social_id: 2,
-    //   })
-  }, []);
-
   return (
     <div className={Styles.main}>
       <div className={Styles.main_container}>

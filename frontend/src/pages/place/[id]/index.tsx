@@ -1,32 +1,60 @@
 import Styles from "./index.module.css";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
-import { PLACECOMMENTS } from "@/data";
 import { useGetPost } from "@/hooks/useGetPost";
 import { useEffect, useState } from "react";
-import { PlaceProps } from "@/types";
+import { Comment, PlaceProps, User } from "@/types";
 import { useRouter } from "next/router";
+import { searchUser } from "@/api/getCurrentUser";
+import { MakeComment } from "@/components/MakeComment";
+import Modal from "@/components/Modal";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
 
 const PlaceDetail = () => {
-  const [post, setPost] = useState<PlaceProps>();
-  const comments = useGetComments(PLACECOMMENTS);
+  const [post, setPost] = useState<PlaceProps | undefined>();
+  const [comments, setComments] = useState<Comment[]>();
+  const [user, setUser] = useState<undefined | User>();
+  const [inputComment, setInputComment] = useState<string>("");
+  const [modal, setModal] = useState<boolean>(false);
   const router = useRouter();
+  const closeModal = () => {
+    setModal(false);
+  };
   useEffect(() => {
     const id = router.query.id;
     const result = id as string;
+
     const getP = async () => {
       const getPost = await useGetPost(result, "place");
       console.log(getPost);
-      setPost(getPost);
+      setPost(getPost as PlaceProps | undefined);
     };
     getP();
+
+    const getC = async () => {
+      const getComments = await useGetComments(result, "place");
+      setComments(getComments);
+    };
+    getC();
+
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
+    fetch();
   }, [router.query.id]);
   <div className=""></div>;
   return (
     <div>
+      {modal ? (
+        <Modal
+          closeModal={closeModal}
+          content={<WantLoginModalText closeModal={setModal} />}
+        />
+      ) : (
+        ""
+      )}
       {post ? (
         <div className={Styles.place_itemdetail}>
           <div className={Styles.title}>
@@ -56,9 +84,29 @@ const PlaceDetail = () => {
           <textarea
             placeholder="댓글을 입력하세요!"
             className={Styles.comment_input_text}
+            onChange={(e) => {
+              setInputComment(e.target.value);
+            }}
           />
           <div className={Styles.input_comment}>
-            <button className={Styles.input_commentbtn}>입력완료</button>
+            <button
+              className={Styles.input_commentbtn}
+              onClick={async () => {
+                if (user) {
+                  await MakeComment({
+                    type: "place",
+                    text: inputComment,
+                    postId: post.id,
+                    nickName: user.nickname,
+                  });
+                  router.reload();
+                } else {
+                  setModal(true);
+                }
+              }}
+            >
+              입력완료
+            </button>
           </div>
           {comments ? <ShowComment comments={comments} /> : ""}
         </div>

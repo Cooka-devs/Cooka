@@ -79,7 +79,7 @@ const Mypage = () => {
       if (myRecipe?.length) {
         return (
           <>
-            <RecipeList items={CurrentPost(myRecipe)} />
+            <RecipeList item={CurrentPost(myRecipe)} />
             <NewsPageMove
               totalPosts={myRecipe.length}
               postsPerPage={ITEMNUM}
@@ -246,7 +246,7 @@ const Mypage = () => {
       if (uniqueRecipeList && uniqueRecipeList.length) {
         return (
           <>
-            <RecipeList items={CurrentPost(uniqueRecipeList)} />
+            <RecipeList item={CurrentPost(uniqueRecipeList)} />
             <NewsPageMove
               totalPosts={uniqueRecipeList.length}
               postsPerPage={ITEMNUM}

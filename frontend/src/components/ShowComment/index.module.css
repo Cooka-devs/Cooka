@@ -13,4 +13,5 @@
 .comment_comment {
   padding-top: 2rem;
   padding-bottom: 2rem;
+  min-height: 6.5rem;
 }

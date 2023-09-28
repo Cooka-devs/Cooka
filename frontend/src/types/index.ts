@@ -5,9 +5,9 @@ export interface CurrentUserProps {
 }
 export interface Comment extends Rowable {
   postId: number;
-  nickname: string;
-  comment: string;
-  date: string;
+  writer: string;
+  content: string;
+  created_at: string;
 }
 
 export interface Recipe extends Rowable {

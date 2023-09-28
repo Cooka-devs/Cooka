@@ -7,3 +7,8 @@ export type QueriesFunctionWithBody<T> = (
   conn: Pool,
   params: T
 ) => Promise<DataResponse>;
+
+export type QueriesFunctionWithType = (
+  conn: Pool,
+  type: string
+) => Promise<DataResponse>;

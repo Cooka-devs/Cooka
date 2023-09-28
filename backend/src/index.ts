@@ -19,6 +19,7 @@ import multer from "multer";
 import path from "path";
 import { setPlaceRoutes } from "./routes/place";
 import { setCounselingRoutes } from "./routes/community";
+import { setCommentRoutes } from "./routes/comment";
 
 dotenv.config();
 const PORT = 8000;
@@ -73,6 +74,8 @@ connectDB((pool) => {
   setImageRoutes(app);
   setPlaceRoutes(app, pool);
   setCounselingRoutes(app, pool);
+  setCommentRoutes(app, pool);
+
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });

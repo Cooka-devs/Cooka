@@ -1,16 +1,24 @@
 import Styles from "./index.module.css";
 import { useEffect, useState } from "react";
-import { Recipe } from "@/types";
+import { Comment, Recipe, User } from "@/types";
 import { useRouter } from "next/router";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import { Divider } from "@/components";
 import useGetComments from "@/hooks/useGetComments";
 import ShowComment from "@/components/ShowComment";
-import { RECIPECOMMENTS } from "@/data";
 import { useGetPost } from "@/hooks/useGetPost";
+import { searchUser } from "@/api/getCurrentUser";
+import Modal from "@/components/Modal";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
+import { MakeComment } from "@/components/MakeComment";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
-  const comments = useGetComments(RECIPECOMMENTS);
+  const [comments, setComments] = useState<Comment[]>();
+  const [user, setUser] = useState<undefined | User>();
+  const [modal, setModal] = useState<boolean>(false);
+  const [inputComment, setInputComment] = useState<string>("");
+  const closeModal = () => {
+    setModal(false);
+  };
   const router = useRouter();
   useEffect(() => {
     const id = router.query.id;
@@ -18,12 +26,31 @@ const RecipeDetail = () => {
     const getP = async () => {
       const getPost = await useGetPost(result, "recipe");
       console.log(getPost);
-      setPost(getPost);
+      setPost(getPost as Recipe | undefined);
     };
     getP();
+    const getC = async () => {
+      const getComments = await useGetComments(result, "recipe");
+      setComments(getComments);
+    };
+    getC();
+
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
+    fetch();
   }, [router.query.id]);
   return (
     <div>
+      {modal ? (
+        <Modal
+          closeModal={closeModal}
+          content={<WantLoginModalText closeModal={setModal} />}
+        />
+      ) : (
+        ""
+      )}
       {post ? (
         <div className={Styles.recipe_itemdetail}>
           <div className={Styles.title}>
@@ -53,9 +80,29 @@ const RecipeDetail = () => {
           <textarea
             placeholder="댓글을 입력하세요!"
             className={Styles.comment_input_text}
+            onChange={(e) => {
+              setInputComment(e.target.value);
+            }}
           />
           <div className={Styles.input_comment}>
-            <button className={Styles.input_commentbtn}>입력완료</button>
+            <button
+              className={Styles.input_commentbtn}
+              onClick={async () => {
+                if (user) {
+                  await MakeComment({
+                    type: "recipe",
+                    text: inputComment,
+                    postId: post.id,
+                    nickName: user.nickname,
+                  });
+                  router.reload();
+                } else {
+                  setModal(true);
+                }
+              }}
+            >
+              입력완료
+            </button>
           </div>
           {comments ? <ShowComment comments={comments} /> : ""}
         </div>

@@ -21,11 +21,14 @@ const ShowComment = ({ comments }: ShowCommentProp) => {
       {CurrentPost(comments).map((comment) => (
         <div className={Styles.detail_comments} key={comment.id}>
           <div className={Styles.comment_name}>
-            <div>{comment.nickname}</div>
+            <div>{comment.writer}</div>
             <div>|</div>
-            <div>{comment.date}</div>
+            <div>{comment.created_at}</div>
           </div>
-          <div className={Styles.comment_comment}>{comment.comment}</div>
+          <div
+            className={Styles.comment_comment}
+            dangerouslySetInnerHTML={{ __html: comment.content }}
+          />
         </div>
       ))}
       <CommentsPageMove
