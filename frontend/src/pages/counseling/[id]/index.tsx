@@ -2,21 +2,27 @@ import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Comment, CsItem, User } from "@/types";
-import useGetComments from "@/hooks/useGetComments";
+import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/hooks/useGetPost";
+import { useGetPost } from "@/utilities/getPost";
 import { MakeComment } from "@/components/MakeComment";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { searchUser } from "@/api/getCurrentUser";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { WantDeleteList } from "@/components/WantDeleteList";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState<boolean>(false);
   const [comments, setComments] = useState<Comment[]>();
   const [inputComment, setInputComment] = useState<string>("");
   const [user, setUser] = useState<undefined | User>();
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+
   const router = useRouter();
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
+  };
   const closeModal = () => {
     setModal(false);
   };
@@ -44,12 +50,26 @@ const CounselingDetail = () => {
   }, [router.query.id]);
   return (
     <div>
+      {modal ? (
+        <Modal
+          closeModal={closeModal}
+          content={<WantLoginModalText closeModal={setModal} />}
+        />
+      ) : (
+        ""
+      )}
       {post ? (
         <div className={Styles.cs_itemdetail}>
-          {modal ? (
+          {deleteModal ? (
             <Modal
-              closeModal={closeModal}
-              content={<WantLoginModalText closeModal={setModal} />}
+              closeModal={closeDeleteModal}
+              content={
+                <WantDeleteList
+                  closeModal={setDeleteModal}
+                  id={post.id}
+                  type="counseling"
+                />
+              }
             />
           ) : (
             ""
@@ -58,7 +78,21 @@ const CounselingDetail = () => {
           <div className={Styles.detail_name}>
             <div>{post.writer}</div>
             <div>|</div>
-            <div>{post.created_at}</div>
+            <div>
+              <span>{post.created_at}</span>
+              {user && user.nickname === post.writer ? (
+                <span style={{ position: "absolute", right: "0" }}>
+                  <button
+                    style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                    onClick={() => setDeleteModal(true)}
+                  >
+                    ❌글삭제
+                  </button>
+                </span>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
           <div
             dangerouslySetInnerHTML={{ __html: post.content }}

@@ -3,19 +3,24 @@ import { useEffect, useState } from "react";
 import { Comment, Recipe, User } from "@/types";
 import { useRouter } from "next/router";
 import { Divider } from "@/components";
-import useGetComments from "@/hooks/useGetComments";
+import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/hooks/useGetPost";
+import { useGetPost } from "@/utilities/getPost";
 import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { MakeComment } from "@/components/MakeComment";
+import { WantDeleteList } from "@/components/WantDeleteList";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const [comments, setComments] = useState<Comment[]>();
   const [user, setUser] = useState<undefined | User>();
   const [modal, setModal] = useState<boolean>(false);
   const [inputComment, setInputComment] = useState<string>("");
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
+  };
   const closeModal = () => {
     setModal(false);
   };
@@ -53,9 +58,35 @@ const RecipeDetail = () => {
       )}
       {post ? (
         <div className={Styles.recipe_itemdetail}>
+          {deleteModal ? (
+            <Modal
+              closeModal={closeDeleteModal}
+              content={
+                <WantDeleteList
+                  closeModal={setDeleteModal}
+                  id={post.id}
+                  type="recipe"
+                />
+              }
+            />
+          ) : (
+            ""
+          )}
           <div className={Styles.title}>
             <span>{`[${post?.category}]`}</span>
             <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
+            {user && user.nickname === post.writer ? (
+              <span style={{ position: "absolute", right: "0" }}>
+                <button
+                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                  onClick={() => setDeleteModal(true)}
+                >
+                  ❌글삭제
+                </button>
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           <div style={{ paddingTop: "1rem", color: "gray" }}>
             작성자 : {post.writer}

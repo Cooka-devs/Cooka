@@ -1,8 +1,8 @@
 import Styles from "./index.module.css";
 import { Divider } from "@/components";
-import useGetComments from "@/hooks/useGetComments";
+import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/hooks/useGetPost";
+import { useGetPost } from "@/utilities/getPost";
 import { useEffect, useState } from "react";
 import { Comment, PlaceProps, User } from "@/types";
 import { useRouter } from "next/router";
@@ -10,6 +10,7 @@ import { searchUser } from "@/api/getCurrentUser";
 import { MakeComment } from "@/components/MakeComment";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
+import { WantDeleteList } from "@/components/WantDeleteList";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
@@ -17,7 +18,11 @@ const PlaceDetail = () => {
   const [user, setUser] = useState<undefined | User>();
   const [inputComment, setInputComment] = useState<string>("");
   const [modal, setModal] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const router = useRouter();
+  const closeDeleteModal = () => {
+    setDeleteModal(false);
+  };
   const closeModal = () => {
     setModal(false);
   };
@@ -27,7 +32,6 @@ const PlaceDetail = () => {
 
     const getP = async () => {
       const getPost = await useGetPost(result, "place");
-      console.log(getPost);
       setPost(getPost as PlaceProps | undefined);
     };
     getP();
@@ -57,9 +61,35 @@ const PlaceDetail = () => {
       )}
       {post ? (
         <div className={Styles.place_itemdetail}>
+          {deleteModal ? (
+            <Modal
+              closeModal={closeDeleteModal}
+              content={
+                <WantDeleteList
+                  closeModal={setDeleteModal}
+                  id={post.id}
+                  type="place"
+                />
+              }
+            />
+          ) : (
+            ""
+          )}
           <div className={Styles.title}>
             <span>{`[${post?.category}]`}</span>
             <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
+            {user && user.nickname === post.writer ? (
+              <span style={{ position: "absolute", right: "0" }}>
+                <button
+                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                  onClick={() => setDeleteModal(true)}
+                >
+                  ❌글삭제
+                </button>
+              </span>
+            ) : (
+              ""
+            )}
           </div>
           <div style={{ paddingTop: "1rem", color: "gray" }}>
             작성자 : {post.writer}

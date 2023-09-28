@@ -9,6 +9,15 @@ export interface AddCounselingListParams {
   content: string;
   title: string;
 }
+export interface UpdateCounselingListParams {
+  id: number;
+  writer: string;
+  content: string;
+  title: string;
+}
+export interface DeleteCounselingListParams {
+  id: number;
+}
 export const getCounseling: QueriesFunction = async (conn: Pool) => {
   try {
     const result = await conn.execute("SELECT * FROM counseling");
@@ -26,6 +35,35 @@ export const addCounseling: QueriesFunctionWithBody<
     const result = await conn.execute(
       "INSERT INTO counseling(writer, content, title,created_at) VALUES (?, ?, ?, ?)",
       [writer, content, title, time]
+    );
+    return makeSuccessResponse(result);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};
+export const deleteCounseling: QueriesFunctionWithBody<
+  DeleteCounselingListParams
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute("DELETE FROM counseling WHERE id = ?", [
+      id,
+    ]);
+    return makeSuccessResponse(result);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};
+export const updateCounseling: QueriesFunctionWithBody<
+  UpdateCounselingListParams
+> = async (conn, params) => {
+  const { id, writer, content, title } = params;
+  try {
+    const result = await conn.execute(
+      "UPDATE counseling SET writer = ?, content = ?, title = ? WHERE id = ?",
+      [writer, content, title, id]
     );
     return makeSuccessResponse(result);
   } catch (err) {

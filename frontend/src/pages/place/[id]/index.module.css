@@ -10,6 +10,7 @@
 }
 .title {
   font-size: 3rem;
+  position: relative;
 }
 .list_likes {
   padding-top: 1rem;

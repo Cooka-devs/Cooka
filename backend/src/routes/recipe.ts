@@ -10,10 +10,10 @@ import {
 } from "../queries/recipe";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
+import { deleteCommentsByPostId } from "../queries/comment";
 
 export const setRecipeRoutes = (app: Express, conn: Pool) => {
   app.post("/recipe", async (req: RequestGeneric<AddRecipeListParams>, res) => {
-    console.log(req.body);
     if (!req.body || isIncludeUndefined(req.body)) {
       console.log("1");
       return BAD_REQUEST;
@@ -30,7 +30,8 @@ export const setRecipeRoutes = (app: Express, conn: Pool) => {
     if (!("id" in req.params)) return BAD_REQUEST;
     const { id } = req.params;
     const response = await deleteRecipe(conn, { id: +id });
-    res.status(response.code).json(response);
+    await deleteCommentsByPostId(conn, { id: +id, type: "recipe_comment" });
+    res.status(response.code).json({ message: "삭제되었습니다" });
   });
 
   app.put("/recipe/:id", async (req, res) => {

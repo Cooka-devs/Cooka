@@ -18,6 +18,7 @@ const Counseling = () => {
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
   const [onCounsel, setOnCounsel] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
+
   const CurrentPost = (post: CsItem[]) => {
     let currentPosts: CsItem[] = [];
     currentPosts = post.slice(indexOfFirst, indexOfLast);
