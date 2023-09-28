@@ -63,3 +63,34 @@
 .pagemove {
   position: relative;
 }
+.left {
+  width: 90rem;
+  display: inline-block;
+  font-size: 2rem;
+}
+
+.counseling_makepage {
+  width: 120rem;
+  min-height: 75rem;
+  margin: auto;
+  font-size: 2rem;
+  display: flex;
+}
+.counseling_makeleft {
+  width: 90rem;
+}
+.counseling_right {
+  width: 30rem;
+}
+.counseling_right_make {
+  margin-top: 1rem;
+}
+.goback_btn {
+  text-align: left;
+  font-size: 2rem;
+  border-radius: 0.6rem;
+  border: 1px solid black;
+  width: 25rem;
+  height: 12rem;
+  padding: 2rem;
+}

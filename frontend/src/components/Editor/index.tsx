@@ -1,17 +1,16 @@
 import { searchUser } from "@/api/getCurrentUser";
-import { PLACECATEGORY, RECIPECATEGORY } from "@/constants";
 import { User } from "@/types";
 import { getImgInText } from "@/utilities/getImgSrcInText";
-import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import Modal from "../Modal";
 import { WantLoginModalText } from "../WantLoginModalText";
 import Styles from "./index.module.css";
-
+import { useRouter } from "next/router";
 import FormAxiosService from "@/service/FormAxiosService";
 import ReactQuill from "react-quill";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { CategorySelect } from "./CategorySelect";
 
 const formats = [
   "header",
@@ -49,7 +48,7 @@ const Editor = ({ textType }: TextType) => {
   const quillRef = useRef<ReactQuill>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [shouldSetSelection, setShouldSetSelection] = useState(false);
-
+  const router = useRouter();
   const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
   };
@@ -67,14 +66,14 @@ const Editor = ({ textType }: TextType) => {
     setTitle(e.target.value);
   };
 
-  const onClickCreateList = () => {
+  const onClickCreateList = async () => {
     const imgSrcInText = getImgInText(text);
     if (!imgSrcInText.length) {
-      setMainImg(
+      await setMainImg(
         `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:3000/noneImg.jpg`
       );
     } else {
-      setMainImg(imgSrcInText[0].src);
+      await setMainImg(imgSrcInText[0].src);
     }
   };
 
@@ -99,28 +98,52 @@ const Editor = ({ textType }: TextType) => {
 
   useEffect(() => {
     if (mainImg !== "최초렌더링실행방지") {
-      if (title === "" || text === "" || category === "") {
-        setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
-      } else {
-        if (user != undefined) {
-          console.log("img:", mainImg);
-          console.log("제목:", title);
-          console.log("내용:", text);
-          console.log("textType:", textType);
-          DefaultAxiosService.instance
-            .post(`/${textType}`, {
-              writer: user.nickname,
-              imgSrc: mainImg,
-              imgAlt: `${textType}Img`,
-              content: text,
-              category: category,
-              title: title,
-              isHot: false,
-            })
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+      if (textType === "recipe" || textType === "place") {
+        if (title === "" || text === "" || category === "") {
+          setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
+          setMainImg("최초렌더링실행방지");
         } else {
-          setModal(true);
+          if (user != undefined) {
+            console.log("11");
+            DefaultAxiosService.instance
+              .post(`/${textType}`, {
+                writer: user.nickname,
+                imgSrc: mainImg,
+                imgAlt: `${textType}Img`,
+                content: text,
+                category: category,
+                title: title,
+                isHot: false,
+              })
+              .then((res) => {
+                console.log(res);
+                router.reload();
+              })
+              .catch((err) => console.log(err));
+          } else {
+            setModal(true);
+          }
+        }
+      } else if (textType === "counseling") {
+        if (title === "" || text === "") {
+          setErrorText("제목,글내용을 확인해주세요!");
+          setMainImg("최초렌더링실행방지");
+        } else {
+          if (user != undefined) {
+            DefaultAxiosService.instance
+              .post(`/${textType}`, {
+                writer: user.nickname,
+                content: text,
+                title: title,
+              })
+              .then((res) => {
+                console.log(res);
+                router.reload();
+              })
+              .catch((err) => console.log(err));
+          } else {
+            setModal(true);
+          }
         }
       }
     }
@@ -195,25 +218,21 @@ const Editor = ({ textType }: TextType) => {
                 ? `요리명을 입력하세요!`
                 : textType === "place"
                 ? "맛집명을 입력하세요"
+                : textType === "counseling"
+                ? "고민명을 입력하세요"
                 : ""
             }
             className={Styles.text_title}
             onChange={onChangeTitle}
           />
-          <select className={Styles.select_option} onChange={selectCategory}>
-            <option hidden>카테고리</option>
-            {textType === "recipe"
-              ? RECIPECATEGORY.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
-                  </option>
-                ))
-              : PLACECATEGORY.map((item, index) => (
-                  <option value={item} key={index}>
-                    {item}
-                  </option>
-                ))}
-          </select>
+          {textType === "recipe" || textType === "place" ? (
+            <select className={Styles.select_option} onChange={selectCategory}>
+              <option hidden>카테고리</option>
+              <CategorySelect textType={textType} />
+            </select>
+          ) : (
+            ""
+          )}
         </div>
         <div>
           {textType === "recipe" ? (
@@ -237,6 +256,17 @@ const Editor = ({ textType }: TextType) => {
               formats={formats}
               style={{ height: "64.219rem" }}
               placeholder="맛집정보를 입력하세요!"
+            />
+          ) : textType === "counseling" ? (
+            <ReactQuill
+              ref={quillRef}
+              id={"quill"}
+              value={text}
+              onChange={onChangeText}
+              modules={modules}
+              formats={formats}
+              style={{ height: "64.219rem" }}
+              placeholder="고민을 입력하세요!"
             />
           ) : (
             ""

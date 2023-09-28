@@ -8,6 +8,9 @@
   font-family: "SUITE-Regular";
   padding-top: 2rem;
 }
+.cs_itemdetail img {
+  width: 65rem;
+}
 .cs_itemdetail h1 {
   font-size: 3.5rem;
   margin-bottom: 2rem;
@@ -23,6 +26,7 @@
   padding-top: 1rem;
   min-height: 30rem;
   border-bottom: 1px solid black;
+  padding-bottom: 10rem;
 }
 
 .comment_input_text {

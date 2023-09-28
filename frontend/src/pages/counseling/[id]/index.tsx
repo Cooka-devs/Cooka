@@ -31,7 +31,10 @@ const CounselingDetail = () => {
             <div>|</div>
             <div>{post.created_at}</div>
           </div>
-          <div className={Styles.detail_content}>{post.content}</div>
+          <div
+            dangerouslySetInnerHTML={{ __html: post.content }}
+            className={Styles.detail_content}
+          />
           <textarea
             placeholder="댓글을 입력하세요!"
             className={Styles.comment_input_text}
