@@ -25,7 +25,6 @@ export const setPlaceRoutes = (app: Express, conn: Pool) => {
     res.status(response.code).json(response);
   });
   app.delete("/place/:id", async (req, res) => {
-    console.log(req.params);
     if (!("id" in req.params)) return BAD_REQUEST;
     const { id } = req.params;
     const response = await deletePlace(conn, { id: +id });

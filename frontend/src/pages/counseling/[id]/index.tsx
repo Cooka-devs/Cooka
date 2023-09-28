@@ -11,6 +11,7 @@ import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { searchUser } from "@/api/getCurrentUser";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { WantDeleteList } from "@/components/WantDeleteList";
+import { ListModify } from "@/components/ListModify";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState<boolean>(false);
@@ -18,7 +19,7 @@ const CounselingDetail = () => {
   const [inputComment, setInputComment] = useState<string>("");
   const [user, setUser] = useState<undefined | User>();
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
-
+  const [modify, setModify] = useState<boolean>(false);
   const router = useRouter();
   const closeDeleteModal = () => {
     setDeleteModal(false);
@@ -58,7 +59,7 @@ const CounselingDetail = () => {
       ) : (
         ""
       )}
-      {post ? (
+      {post && !modify ? (
         <div className={Styles.cs_itemdetail}>
           {deleteModal ? (
             <Modal
@@ -81,12 +82,26 @@ const CounselingDetail = () => {
             <div>
               <span>{post.created_at}</span>
               {user && user.nickname === post.writer ? (
-                <span style={{ position: "absolute", right: "0" }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    right: "0",
+                    top: "1rem",
+                    display: "flex",
+                    gap: "1rem",
+                  }}
+                >
                   <button
                     style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                     onClick={() => setDeleteModal(true)}
                   >
                     ❌글삭제
+                  </button>
+                  <button
+                    style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                    onClick={() => setModify(true)}
+                  >
+                    ❗글수정
                   </button>
                 </span>
               ) : (
@@ -126,6 +141,10 @@ const CounselingDetail = () => {
             </button>
           </div>
           {comments ? <ShowComment comments={comments} /> : ""}
+        </div>
+      ) : post && modify ? (
+        <div>
+          <ListModify modifyType="counseling" post={post} />
         </div>
       ) : (
         <div className={Styles.cs_itemdetail}>

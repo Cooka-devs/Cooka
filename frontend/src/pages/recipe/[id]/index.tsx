@@ -11,6 +11,7 @@ import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { MakeComment } from "@/components/MakeComment";
 import { WantDeleteList } from "@/components/WantDeleteList";
+import { ListModify } from "@/components/ListModify";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const [comments, setComments] = useState<Comment[]>();
@@ -18,6 +19,7 @@ const RecipeDetail = () => {
   const [modal, setModal] = useState<boolean>(false);
   const [inputComment, setInputComment] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [modify, setModify] = useState<boolean>(false);
   const closeDeleteModal = () => {
     setDeleteModal(false);
   };
@@ -56,7 +58,7 @@ const RecipeDetail = () => {
       ) : (
         ""
       )}
-      {post ? (
+      {post && !modify ? (
         <div className={Styles.recipe_itemdetail}>
           {deleteModal ? (
             <Modal
@@ -76,12 +78,26 @@ const RecipeDetail = () => {
             <span>{`[${post?.category}]`}</span>
             <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
             {user && user.nickname === post.writer ? (
-              <span style={{ position: "absolute", right: "0" }}>
+              <span
+                style={{
+                  position: "absolute",
+                  right: "0",
+                  top: "1rem",
+                  display: "flex",
+                  gap: "1rem",
+                }}
+              >
                 <button
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setDeleteModal(true)}
                 >
                   ❌글삭제
+                </button>
+                <button
+                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                  onClick={() => setModify(true)}
+                >
+                  ❗글수정
                 </button>
               </span>
             ) : (
@@ -92,13 +108,6 @@ const RecipeDetail = () => {
             작성자 : {post.writer}
           </div>
           <div className={Styles.list_likes}>
-            {/* <div className={Styles.like_span}>
-              <ThumbUpOffAltIcon
-                className={Styles.like_icon}
-                fontSize={"large"}
-              />
-              {post.likes}
-            </div>| */}
             <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider />
@@ -136,6 +145,10 @@ const RecipeDetail = () => {
             </button>
           </div>
           {comments ? <ShowComment comments={comments} /> : ""}
+        </div>
+      ) : post && modify ? (
+        <div>
+          <ListModify modifyType="recipe" post={post} />
         </div>
       ) : (
         <div className={Styles.recipe_itemdetail}>

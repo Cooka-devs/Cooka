@@ -11,6 +11,8 @@ import { MakeComment } from "@/components/MakeComment";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { WantDeleteList } from "@/components/WantDeleteList";
+import CreateList from "@/components/CreateList";
+import { ListModify } from "@/components/ListModify";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
@@ -19,6 +21,7 @@ const PlaceDetail = () => {
   const [inputComment, setInputComment] = useState<string>("");
   const [modal, setModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [modify, setModify] = useState<boolean>(false);
   const router = useRouter();
   const closeDeleteModal = () => {
     setDeleteModal(false);
@@ -59,7 +62,7 @@ const PlaceDetail = () => {
       ) : (
         ""
       )}
-      {post ? (
+      {post && !modify ? (
         <div className={Styles.place_itemdetail}>
           {deleteModal ? (
             <Modal
@@ -79,12 +82,26 @@ const PlaceDetail = () => {
             <span>{`[${post?.category}]`}</span>
             <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
             {user && user.nickname === post.writer ? (
-              <span style={{ position: "absolute", right: "0" }}>
+              <span
+                style={{
+                  position: "absolute",
+                  right: "0",
+                  top: "1rem",
+                  display: "flex",
+                  gap: "1rem",
+                }}
+              >
                 <button
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setDeleteModal(true)}
                 >
                   ❌글삭제
+                </button>
+                <button
+                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
+                  onClick={() => setModify(true)}
+                >
+                  ❗글수정
                 </button>
               </span>
             ) : (
@@ -95,13 +112,6 @@ const PlaceDetail = () => {
             작성자 : {post.writer}
           </div>
           <div className={Styles.list_likes}>
-            {/* <div className={Styles.like_span}>
-              <ThumbUpOffAltIcon
-                className={Styles.like_icon}
-                fontSize={"large"}
-              />
-              {post.likes}
-            </div> */}
             <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider />
@@ -140,6 +150,8 @@ const PlaceDetail = () => {
           </div>
           {comments ? <ShowComment comments={comments} /> : ""}
         </div>
+      ) : post && modify ? (
+        <ListModify modifyType="place" post={post} />
       ) : (
         <div className={Styles.recipe_itemdetail}>
           이미 삭제된 글이거나, 글을 찾을 수 없습니다.
