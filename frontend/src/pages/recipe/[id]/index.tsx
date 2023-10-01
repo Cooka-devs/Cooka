@@ -134,6 +134,7 @@ const RecipeDetail = () => {
                     text: inputComment,
                     postId: post.id,
                     nickName: user.nickname,
+                    apiRequestType: "post",
                   });
                   router.reload();
                 } else {
@@ -144,7 +145,7 @@ const RecipeDetail = () => {
               입력완료
             </button>
           </div>
-          {comments ? <ShowComment comments={comments} /> : ""}
+          {comments ? <ShowComment comments={comments} type="recipe" /> : ""}
         </div>
       ) : post && modify ? (
         <div>

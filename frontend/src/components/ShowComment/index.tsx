@@ -3,17 +3,34 @@ import { Comment, User } from "@/types";
 import Styles from "./index.module.css";
 import CommentsPageMove from "../CommentsPageMove";
 import { searchUser } from "@/api/getCurrentUser";
+import { MakeComment } from "../MakeComment";
+import { useRouter } from "next/router";
+import { deleteCommentList } from "@/api/deleteCommentList";
+import { WantDeleteList } from "../WantDeleteList";
+import Modal from "../Modal";
 interface ShowCommentProp {
   comments: Comment[];
+  type: string;
 }
-const ShowComment = ({ comments }: ShowCommentProp) => {
-  const [currentPage, setCurrentPage] = useState(1); //현재페이지
+const ShowComment = ({ comments, type }: ShowCommentProp) => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [user, setUser] = useState<undefined | User>();
   const [deleteComment, setDeleteComment] = useState<boolean>(false);
+  const [modify, setModify] = useState<boolean>(false);
+  const [findModifyComment, setFindModifyComment] = useState<number>(-1); //수정된 댓글들을 담을 배열
+  const [modifyText, setModifyText] = useState<string>("");
+  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const router = useRouter();
   const itemnum = 3; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
+  const onClickDeleteModal = () => {
+    setDeleteModal(false);
+  };
 
+  const onChangeModifyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setModifyText(e.target.value);
+  };
   const CurrentPost = (post: Comment[]) => {
     let currentPosts: Comment[] = [];
     currentPosts = post.slice(indexOfFirst, indexOfLast);
@@ -30,6 +47,20 @@ const ShowComment = ({ comments }: ShowCommentProp) => {
     <>
       {CurrentPost(comments).map((comment) => (
         <div className={Styles.detail_comments} key={comment.id}>
+          {deleteModal ? (
+            <Modal
+              closeModal={onClickDeleteModal}
+              content={
+                <WantDeleteList
+                  closeModal={setDeleteModal}
+                  id={findModifyComment}
+                  type={`${type}_comment`}
+                />
+              }
+            />
+          ) : (
+            ""
+          )}
           <div className={Styles.comment_name}>
             <div>{comment.writer}</div>
             <div>|</div>
@@ -37,20 +68,78 @@ const ShowComment = ({ comments }: ShowCommentProp) => {
             {user && user?.nickname === comment.writer ? (
               <>
                 <div>
-                  <button className={Styles.modify_btn}>삭제</button>
+                  <button
+                    className={Styles.modify_btn}
+                    onClick={() => {
+                      setDeleteModal(true);
+                      setFindModifyComment(comment.id);
+                    }}
+                  >
+                    삭제
+                  </button>
                 </div>
                 <div>
-                  <button className={Styles.modify_btn}>수정</button>
+                  <button
+                    className={Styles.modify_btn}
+                    onClick={() => {
+                      setModify(true);
+                      setFindModifyComment(comment.id);
+                    }}
+                  >
+                    수정
+                  </button>
                 </div>
               </>
             ) : (
               ""
             )}
           </div>
-          <div
-            className={Styles.comment_comment}
-            dangerouslySetInnerHTML={{ __html: comment.content }}
-          />
+          {modify &&
+          user?.nickname === comment.writer &&
+          comment.id === findModifyComment ? (
+            <div className={Styles.modify_row}>
+              <textarea
+                className={Styles.comment_modify}
+                defaultValue={comment.content}
+                onChange={onChangeModifyText}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: "1rem",
+                  display: "flex",
+                  gap: "1rem",
+                }}
+              >
+                <button
+                  className={Styles.modify_row_btn}
+                  onClick={async () => {
+                    await MakeComment({
+                      type: type,
+                      text: modifyText,
+                      apiRequestType: "put",
+                      id: comment.id,
+                    });
+                    router.reload();
+                  }}
+                >
+                  수정완료
+                </button>
+                <button
+                  className={Styles.modify_row_btn}
+                  onClick={() => setModify(false)}
+                >
+                  나가기
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={Styles.comment_comment}
+              dangerouslySetInnerHTML={{ __html: comment.content }}
+            />
+          )}
         </div>
       ))}
       <CommentsPageMove

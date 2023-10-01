@@ -14,8 +14,13 @@ export interface AddCommentListParams {
   postId: number;
   type: string;
 }
-interface DeleteCommentListParams {
+export interface DeleteCommentListParams {
   id: number;
+  type: string;
+}
+export interface UpdateCommentListParams {
+  id: number;
+  content: string;
   type: string;
 }
 export const addComment: QueriesFunctionWithBody<AddCommentListParams> = async (
@@ -51,6 +56,21 @@ export const deleteCommentsByPostId: QueriesFunctionWithBody<
     const result = await conn.execute(`DELETE FROM ${type} WHERE postId = ?`, [
       id,
     ]);
+    return makeSuccessResponse(result);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};
+export const updateComment: QueriesFunctionWithBody<
+  UpdateCommentListParams
+> = async (conn, params) => {
+  const { id, content, type } = params;
+  try {
+    const result = await conn.execute(
+      `UPDATE ${type} SET content = ? WHERE id = ?`,
+      [content, id]
+    );
     return makeSuccessResponse(result);
   } catch (err) {
     console.log(err);

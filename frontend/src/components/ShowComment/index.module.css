@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid lightgray;
+  position: relative;
 }
 .comment_name {
   display: flex;
@@ -16,6 +17,28 @@
   min-height: 6.5rem;
 }
 .modify_btn {
+  font-size: 1.5rem;
+  font-family: "SUITE-Regular";
+}
+.comment_modify {
+  font-size: 2rem;
+  font-family: "SUITE-Regular";
+  padding: 0.5rem;
+  min-width: 70rem;
+  max-width: 70rem;
+  min-height: 20rem;
+}
+.modify_row {
+  display: flex;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  align-items: center;
+  gap: 1rem;
+  width: 80rem;
+}
+.modify_row_btn {
+  height: 2.3rem;
+  width: 7rem;
   font-size: 1.5rem;
   font-family: "SUITE-Regular";
 }

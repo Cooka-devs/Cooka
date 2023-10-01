@@ -1,6 +1,6 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
-import { addComment, getComment } from "../queries/comment";
+import { addComment, getComment, updateComment } from "../queries/comment";
 import { isIncludeUndefined } from "../utils/request";
 import { BAD_REQUEST } from "../constants/response";
 import { RequestGeneric } from "../types/request";
@@ -27,6 +27,17 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
     );
     app.get(`/${type}`, async (req, res) => {
       const response = await getComment(conn, type);
+      res.status(response.code).json(response);
+    });
+    app.put(`/${type}/:id`, async (req, res) => {
+      if (!("id" in req.params)) return BAD_REQUEST;
+      if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
+      const { id } = req.params;
+      const response = await updateComment(conn, {
+        id: +id,
+        type: type,
+        ...req.body,
+      });
       res.status(response.code).json(response);
     });
   });

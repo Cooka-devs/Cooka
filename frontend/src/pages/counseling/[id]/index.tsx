@@ -130,6 +130,7 @@ const CounselingDetail = () => {
                     text: inputComment,
                     postId: post.id,
                     nickName: user.nickname,
+                    apiRequestType: "post",
                   });
                   router.reload();
                 } else {
@@ -140,7 +141,11 @@ const CounselingDetail = () => {
               입력완료
             </button>
           </div>
-          {comments ? <ShowComment comments={comments} /> : ""}
+          {comments ? (
+            <ShowComment comments={comments} type="counseling" />
+          ) : (
+            ""
+          )}
         </div>
       ) : post && modify ? (
         <div>
