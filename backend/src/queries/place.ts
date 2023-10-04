@@ -80,3 +80,18 @@ export const deletePlace: QueriesFunctionWithBody<
     return DB_QUERY_ERROR;
   }
 };
+export const getLikedPlace: QueriesFunctionWithBody<
+  DeletePlaceListParams
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(
+      "SELECT place.*FROM place INNER JOIN place_likes ON place.id = place_likes.place_id and user_id= ?",
+      [id]
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};

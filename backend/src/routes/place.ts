@@ -4,6 +4,7 @@ import {
   AddPlaceListParams,
   addPlace,
   deletePlace,
+  getLikedPlace,
   getPlace,
   updatePlace,
 } from "../queries/place";
@@ -36,6 +37,12 @@ export const setPlaceRoutes = (app: Express, conn: Pool) => {
     if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
     const { id } = req.params;
     const response = await updatePlace(conn, { id: +id, ...req.body });
+    res.status(response.code).json(response);
+  });
+  app.get("/place/:id", async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const response = await getLikedPlace(conn, { id: +id });
     res.status(response.code).json(response);
   });
 };

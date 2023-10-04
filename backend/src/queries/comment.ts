@@ -23,6 +23,7 @@ export interface UpdateCommentListParams {
   content: string;
   type: string;
 }
+
 export const addComment: QueriesFunctionWithBody<AddCommentListParams> = async (
   conn,
   params
@@ -74,6 +75,32 @@ export const updateComment: QueriesFunctionWithBody<
     return makeSuccessResponse(result);
   } catch (err) {
     console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};
+export const deleteComment: QueriesFunctionWithBody<
+  DeleteCommentListParams
+> = async (conn, params) => {
+  const { id, type } = params;
+  try {
+    const result = await conn.execute(`DELETE FROM ${type} WHERE id = ?`, [id]);
+    return makeSuccessResponse(result);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};
+export const getCommentsNum: QueriesFunctionWithBody<
+  DeleteCommentListParams
+> = async (conn, params) => {
+  const { type, id } = params;
+  try {
+    const result = await conn.execute(
+      `SELECT COUNT(*) as count FROM ${type} WHERE postId = ?`,
+      [id]
+    );
+    return makeSuccessResponse(result[0][0]);
+  } catch (err) {
     return DB_QUERY_ERROR;
   }
 };

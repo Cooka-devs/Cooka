@@ -16,6 +16,10 @@ import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
 import { useRouter } from "next/router";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
+import LikesContentsByUser from "@/components/LikesContentsByUser";
+import { getMyLikes } from "@/utilities/getMyLikes";
+import FormAxiosService from "@/service/FormAxiosService";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
 const Mypage = () => {
   const [user, setUser] = useState<User | string | undefined>("최초실행방지");
   const [modal, setModal] = useState<boolean>(false);
@@ -26,7 +30,7 @@ const Mypage = () => {
   const [myCs, setMyCs] = useState<CsItem[]>();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [imgFile, setImgFile] = useState<any>(""); //any수정하기
+  const [imgFile, setImgFile] = useState<any>();
   const [profileEdit, setProfileEdit] = useState<boolean>(false);
   const [profileText, setProfileText] = useState<string>();
 
@@ -34,16 +38,56 @@ const Mypage = () => {
   const [uniqueRecipeList, setUniqueRecipeList] = useState<Recipe[]>();
   const [uniquePlaceList, setUniquePlaceList] = useState<PlaceProps[]>();
 
+  const [likedRecipe, setLikedRecipe] = useState<Recipe[]>();
+  const [likedPlace, setLikedPlace] = useState<PlaceProps[]>();
+  const [likedCs, setLikedCs] = useState<CsItem[]>();
   const imgRef = useRef<HTMLInputElement>(null);
   const ITEMNUM = 9;
   const indexOfLast = currentPage * ITEMNUM;
   const indexOfFirst = indexOfLast - ITEMNUM;
   const router = useRouter();
-  const onChangeProfileText = (
+  const onChangeProfileText = async (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setProfileText(event.target.value);
-    console.log(profileText);
+    await setProfileText(event.target.value);
+  };
+  const onClickMyIntroduceChange = async () => {
+    if (typeof user != "string" && user != undefined && profileText != "") {
+      try {
+        await DefaultAxiosService.instance.put(`/user/text/${user.id}`, {
+          profile_text: profileText,
+        });
+        router.reload();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  const onClickProfileImgChange = async () => {
+    if (
+      imgRef.current != null &&
+      imgRef.current.files != null &&
+      imgRef.current.files[0] != undefined &&
+      user != undefined &&
+      typeof user != "string"
+    ) {
+      const file = imgRef.current.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+      try {
+        const result = await FormAxiosService.instance.post("/image", formData);
+        const imgUrl = `${result.data.imgSrc}`;
+
+        await DefaultAxiosService.instance.put(`/user/image/${user.id}`, {
+          profile_img: imgUrl,
+        });
+        router.reload();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      alert("이미지를 선택해주세요!");
+    }
   };
   const saveImgFile = () => {
     if (imgRef.current != null && imgRef.current.files != null) {
@@ -139,6 +183,18 @@ const Mypage = () => {
           />
         );
       } else return;
+    } else if (type === "내가추천한 게시물") {
+      if (typeof user != "string" && user != undefined) {
+        return (
+          <LikesContentsByUser
+            RecipeLikesList={likedRecipe}
+            PlaceLikesList={likedPlace}
+            CounselingLikesList={likedCs}
+            onClick={setCheckType}
+            user={user}
+          />
+        );
+      }
     } else if (type === "마이페이지") {
       if (typeof user != "string" && user != undefined) {
         return (
@@ -153,7 +209,7 @@ const Mypage = () => {
                 }}
               >
                 <img
-                  src={user?.profile_img}
+                  src={imgFile}
                   alt="프로필 이미지"
                   className={Styles.img_preview}
                 />
@@ -173,9 +229,9 @@ const Mypage = () => {
                 <button
                   className={Styles.upload_btn}
                   style={{ marginLeft: "1rem" }}
+                  onClick={() => onClickProfileImgChange()}
                 >
                   등록완료
-                  {/**등록완료 버튼 클릭시 fetch POST imgFile(암호화되있는듯 ? 엄청김 변환하는법알아내기)) */}
                 </button>
                 <div style={{ paddingTop: "2rem" }}>
                   <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
@@ -186,16 +242,16 @@ const Mypage = () => {
             <div>프로필 소개</div>
             <div className={Styles.introduction}>
               {user?.profile_text && !profileEdit ? (
-                <div className={Styles.introduction_text}>
-                  {user.profile_text}
-                </div>
+                <div
+                  className={Styles.introduction_text}
+                  dangerouslySetInnerHTML={{ __html: user.profile_text }}
+                />
               ) : profileEdit ? (
                 <textarea
                   onChange={onChangeProfileText}
                   className={Styles.introduction_text_edit}
-                >
-                  {user?.profile_text}
-                </textarea>
+                  defaultValue={user?.profile_text}
+                />
               ) : (
                 "자기소개를 입력해보세요!"
               )}
@@ -216,10 +272,12 @@ const Mypage = () => {
                   >
                     수정취소
                   </button>
-                  <button className={Styles.upload_btn}>수정완료</button>
-                  {/**수정완료 클릭시 user.introduction를
-                   * profileText 로 fetch update
-                   */}
+                  <button
+                    className={Styles.upload_btn}
+                    onClick={() => onClickMyIntroduceChange()}
+                  >
+                    수정완료
+                  </button>
                 </>
               ) : (
                 <button
@@ -235,7 +293,7 @@ const Mypage = () => {
           </div>
         );
       } else return;
-    } else if (checkType === "댓글 맛집자세히보기") {
+    } else if (type === "댓글 맛집자세히보기") {
       if (uniquePlaceList && uniquePlaceList.length) {
         return (
           <>
@@ -249,7 +307,7 @@ const Mypage = () => {
           </>
         );
       }
-    } else if (checkType === "댓글 레시피자세히보기") {
+    } else if (type === "댓글 레시피자세히보기") {
       if (uniqueRecipeList && uniqueRecipeList.length) {
         return (
           <>
@@ -263,7 +321,7 @@ const Mypage = () => {
           </>
         );
       }
-    } else if (checkType === "댓글 상담자세히보기") {
+    } else if (type === "댓글 상담자세히보기") {
       if (uniqueCsList && uniqueCsList.length) {
         return (
           <>
@@ -281,6 +339,52 @@ const Mypage = () => {
           </>
         );
       }
+    } else if (type === "좋아요 레시피자세히보기") {
+      if (likedRecipe && likedRecipe.length) {
+        return (
+          <>
+            <RecipeList item={CurrentPost(likedRecipe)} />
+            <NewsPageMove
+              totalPosts={likedRecipe.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
+    } else if (type === "좋아요 맛집자세히보기") {
+      if (likedPlace && likedPlace.length) {
+        return (
+          <>
+            <PlaceList items={CurrentPost(likedPlace)} />
+            <PlacePageMove
+              totalPosts={likedPlace.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
+    } else if (type === "좋아요 상담자세히보기") {
+      if (likedCs && likedCs.length) {
+        return (
+          <>
+            {typeof user != "string" ? (
+              <CounselingList items={CurrentPost(likedCs)} user={user} />
+            ) : (
+              ""
+            )}
+            <CounselingPageMove
+              totalPosts={likedCs.length}
+              postsPerPage={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+            />
+          </>
+        );
+      }
     }
   };
   useEffect(() => {
@@ -288,6 +392,8 @@ const Mypage = () => {
       const getU = await searchUser();
       await setUser(getU);
       if (getU != undefined) {
+        setImgFile(getU.profile_img);
+        setProfileText(getU.profile_text);
         const { myRecipe, myCs, myPlace } = await SearchUserData(getU);
         setMyRecipe(myRecipe);
         setMyCs(myCs);
@@ -298,6 +404,12 @@ const Mypage = () => {
         setUniqueCsList(uniqueCsList);
         setUniqueRecipeList(uniqueRecipeList);
         setUniquePlaceList(uniquePlaceList);
+        getMyLikes({
+          user: getU,
+          setRecipe: setLikedRecipe,
+          setPlace: setLikedPlace,
+          setCs: setLikedCs,
+        });
       } else {
         setModal(true);
       }
@@ -306,7 +418,6 @@ const Mypage = () => {
   }, []);
 
   return (
-    //사람버튼 로그인상태시 마우스 올리면 로그아웃 마이페이지 노출 => 마이페이지화면
     <div className={Styles.mypage}>
       {modal ? (
         <Modal

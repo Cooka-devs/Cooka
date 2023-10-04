@@ -4,6 +4,7 @@ import {
   addCounseling,
   deleteCounseling,
   getCounseling,
+  getLikedCounseling,
   updateCounseling,
 } from "../queries/community";
 import { Express } from "express";
@@ -38,6 +39,12 @@ export const setCounselingRoutes = (app: Express, conn: Pool) => {
     if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
     const { id } = req.params;
     const response = await updateCounseling(conn, { id: +id, ...req.body });
+    res.status(response.code).json(response);
+  });
+  app.get("/counseling/:id", async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const response = await getLikedCounseling(conn, { id: +id });
     res.status(response.code).json(response);
   });
 };

@@ -5,6 +5,7 @@ import {
   AddRecipeListParams,
   addRecipe,
   deleteRecipe,
+  getLikedRecipes,
   getRecipe,
   updateRecipe,
 } from "../queries/recipe";
@@ -39,6 +40,12 @@ export const setRecipeRoutes = (app: Express, conn: Pool) => {
     if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
     const { id } = req.params;
     const response = await updateRecipe(conn, { id: +id, ...req.body });
+    res.status(response.code).json(response);
+  });
+  app.get("/recipe/:id", async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const response = await getLikedRecipes(conn, { id: +id });
     res.status(response.code).json(response);
   });
 };

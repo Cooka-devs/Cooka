@@ -87,3 +87,18 @@ export const getRecipe: QueriesFunction = async (conn: Pool) => {
     return DB_QUERY_ERROR;
   }
 };
+export const getLikedRecipes: QueriesFunctionWithBody<
+  DeleteRecipeListParams
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(
+      "SELECT recipe.*FROM recipe INNER JOIN recipe_likes ON recipe.id = recipe_likes.recipe_id and user_id= ?",
+      [id]
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    console.log(err);
+    return DB_QUERY_ERROR;
+  }
+};

@@ -1,6 +1,12 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
-import { addComment, getComment, updateComment } from "../queries/comment";
+import {
+  addComment,
+  deleteComment,
+  getComment,
+  getCommentsNum,
+  updateComment,
+} from "../queries/comment";
 import { isIncludeUndefined } from "../utils/request";
 import { BAD_REQUEST } from "../constants/response";
 import { RequestGeneric } from "../types/request";
@@ -38,6 +44,21 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
         type: type,
         ...req.body,
       });
+      res.status(response.code).json(response);
+    });
+    app.delete(`/${type}/:id`, async (req, res) => {
+      if (!("id" in req.params)) return BAD_REQUEST;
+      const { id } = req.params;
+      const response = await deleteComment(conn, {
+        id: +id,
+        type: type,
+      });
+      res.status(response.code).json(response);
+    });
+    app.get(`/${type}_num/:id`, async (req, res) => {
+      if (!("id" in req.params)) return BAD_REQUEST;
+      const { id } = req.params;
+      const response = await getCommentsNum(conn, { type: type, id: +id });
       res.status(response.code).json(response);
     });
   });

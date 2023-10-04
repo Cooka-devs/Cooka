@@ -71,3 +71,17 @@ export const updateCounseling: QueriesFunctionWithBody<
     return DB_QUERY_ERROR;
   }
 };
+export const getLikedCounseling: QueriesFunctionWithBody<
+  DeleteCounselingListParams
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(
+      "SELECT counseling.*FROM counseling INNER JOIN counseling_likes ON counseling.id = counseling_likes.counseling_id and user_id= ?",
+      [id]
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};

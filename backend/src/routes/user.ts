@@ -1,7 +1,13 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
 import { BAD_REQUEST } from "../constants/response";
-import { AddUserParams, addUser, getUsers } from "../queries/user";
+import {
+  AddUserParams,
+  addUser,
+  getUsers,
+  updateUserImage,
+  updateUserText,
+} from "../queries/user";
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 import { request } from "http";
@@ -75,5 +81,25 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
       console.log("logout 500");
       res.status(500).json({ error: "get logout error", message: err });
     }
+  });
+  app.put(`/user/image/:id`, async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const { profile_img } = req.body;
+    const response = await updateUserImage(conn, {
+      id: +id,
+      profile_img,
+    });
+    res.status(response.code).json(response);
+  });
+  app.put(`/user/text/:id`, async (req, res) => {
+    if (!("id" in req.params)) return BAD_REQUEST;
+    const { id } = req.params;
+    const { profile_text } = req.body;
+    const response = await updateUserText(conn, {
+      id: +id,
+      profile_text,
+    });
+    res.status(response.code).json(response);
   });
 };

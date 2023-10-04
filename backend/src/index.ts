@@ -3,11 +3,6 @@ import { connectDB } from "./core/db";
 import { setUserRoutes } from "./routes/user";
 import bodyParser from "body-parser";
 import mysql from "mysql2/promise";
-import { BAD_REQUEST } from "./constants/response";
-import { getUsers, AddUserParams, addUser } from "./queries/user";
-import { isIncludeUndefined } from "./utils/request";
-import { RequestGeneric } from "./types/request";
-import { makeSuccessResponse } from "./utils/response";
 import dotenv from "dotenv";
 import cors from "cors";
 import session from "express-session";
@@ -15,11 +10,11 @@ import * as expressSession from "express-session";
 import mysqlSession from "express-mysql-session";
 import { setRecipeRoutes } from "./routes/recipe";
 import { setImageRoutes } from "./routes/image";
-import multer from "multer";
 import path from "path";
 import { setPlaceRoutes } from "./routes/place";
 import { setCounselingRoutes } from "./routes/community";
 import { setCommentRoutes } from "./routes/comment";
+import { setLikesRoutes } from "./routes/likes";
 
 dotenv.config();
 const PORT = 8000;
@@ -75,7 +70,7 @@ connectDB((pool) => {
   setPlaceRoutes(app, pool);
   setCounselingRoutes(app, pool);
   setCommentRoutes(app, pool);
-
+  setLikesRoutes(app, pool);
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
