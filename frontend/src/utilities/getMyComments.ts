@@ -1,22 +1,26 @@
-import {
-  COUNSELINGCOMMENTS,
-  RECIPECOMMENTS,
-  COUNSELINGDATA,
-  RECIPELIST,
-  PLACECOMMENTS,
-  PLACELIST,
-} from "@/data";
-import { CsItem, PlaceProps, Recipe } from "@/types";
+import { getComment } from "@/api/getComment";
+import { getCounseling } from "@/api/getCounseling";
+import { getPlace } from "@/api/getPlace";
+import { getReipce } from "@/api/getRecipe";
+import { Comment, CsItem, PlaceProps, Recipe } from "@/types";
 
-const getMyComments = (nickname: string) => {
-  const csCommentsList = COUNSELINGCOMMENTS.filter(
-    (item) => item.nickname === nickname
+const getMyComments = async (nickname: string) => {
+  const getCounselingComments: Comment[] = await getComment({
+    type: "counseling",
+  });
+  const getRecipeComments: Comment[] = await getComment({ type: "recipe" });
+  const getPlaceComments: Comment[] = await getComment({ type: "place" });
+  const getCounselingList: CsItem[] = await getCounseling();
+  const getRecipeList: Recipe[] = await getReipce();
+  const getPlaceList: PlaceProps[] = await getPlace();
+  const csCommentsList = getCounselingComments.filter(
+    (item) => item.writer === nickname
   );
-  const recipeCommentsList = RECIPECOMMENTS.filter(
-    (item) => item.nickname === nickname
+  const recipeCommentsList = getRecipeComments.filter(
+    (item) => item.writer === nickname
   );
-  const placeCommentsList = PLACECOMMENTS.filter(
-    (item) => item.nickname === nickname
+  const placeCommentsList = getPlaceComments.filter(
+    (item) => item.writer === nickname
   );
   const myCsListByComments: CsItem[] = [];
   const myRecipeListByComments: Recipe[] = [];
@@ -26,7 +30,7 @@ const getMyComments = (nickname: string) => {
   const uniquePlaceList: PlaceProps[] = [];
 
   csCommentsList.map((myCommentsList) => {
-    COUNSELINGDATA.map((commentsList) => {
+    getCounselingList.map((commentsList) => {
       myCommentsList.postId === commentsList.id
         ? myCsListByComments.push(commentsList)
         : "";
@@ -34,7 +38,7 @@ const getMyComments = (nickname: string) => {
   });
 
   recipeCommentsList.map((myCommentsList) => {
-    RECIPELIST.map((commentsList) => {
+    getRecipeList.map((commentsList) => {
       myCommentsList.postId === commentsList.id
         ? myRecipeListByComments.push(commentsList)
         : "";
@@ -42,7 +46,7 @@ const getMyComments = (nickname: string) => {
   });
 
   placeCommentsList.map((myCommentsList) => {
-    PLACELIST.map((commentsList) => {
+    getPlaceList.map((commentsList) => {
       myCommentsList.postId === commentsList.id
         ? myPlaceListByComments.push(commentsList)
         : "";

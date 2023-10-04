@@ -1,0 +1,36 @@
+.csitem {
+  box-shadow: 0 0 3px 1px lightgray;
+  border-radius: 0.8rem;
+  width: 28rem;
+  height: 20rem;
+  padding: 1.5rem;
+}
+.csitem:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+  transform: translateY(-0.5rem);
+}
+.item_date {
+  color: gray;
+  font-size: 1.4rem;
+  padding-bottom: 1rem;
+}
+.item_title {
+  height: 12rem;
+  font-family: "SUITE-Regular";
+}
+.item_likes {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.6rem;
+}
+.like_span {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: gray;
+  font-family: "SUITE-Regular";
+}
+.like_icon {
+  margin-top: 2px;
+}

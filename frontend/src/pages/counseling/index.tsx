@@ -11,7 +11,7 @@ import { WantLoginModalText } from "@/components/WantLoginModalText";
 
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
-  const [user, setUser] = useState<undefined | User>();
+  const [user, setUser] = useState<undefined | User | string>("최초실행방지");
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const itemnum = 12; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
@@ -84,7 +84,11 @@ const Counseling = () => {
         ) : (
           ""
         )}
-        <CounselingList items={CurrentPost(list)} />
+        {typeof user != "string" ? (
+          <CounselingList items={CurrentPost(list)} user={user} />
+        ) : (
+          ""
+        )}
         <div className={Styles.pagemove}>
           <CounselingPageMove
             totalPosts={list.length}

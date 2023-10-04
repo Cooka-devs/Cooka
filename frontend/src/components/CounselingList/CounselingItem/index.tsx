@@ -1,27 +1,24 @@
+import { CsItem, User } from "@/types";
 import Styles from "./index.module.css";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { Recipe, User } from "@/types";
+import { useState, useEffect } from "react";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { searchUser } from "@/api/getCurrentUser";
 import { DisplayLikes } from "@/components/DisplayLikes";
-export interface RecipeItemProps {
-  item: Recipe;
+interface CounselingItemProp {
+  item: CsItem;
   user: User | undefined;
 }
-
-const RecipeItem = ({ item, user }: RecipeItemProps) => {
+export const CounselingItem = ({ item, user }: CounselingItemProp) => {
   const [likes, setLikes] = useState<number | string>("최초실행방지");
-  const [comments, setComments] = useState<number | string>(0);
   const [onLike, setOnLike] = useState<boolean>(false);
+  const [comments, setComments] = useState<number>(0);
   const router = useRouter();
-
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
-        .get(`/recipe_likes_num/${item.id}`)
+        .get(`/counseling_likes_num/${item.id}`)
         .then((res) => {
           console.log(res.data.data.count);
           setLikes(res.data.data.count);
@@ -32,29 +29,23 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
   useEffect(() => {
     const getCommentsNum = async () => {
       await DefaultAxiosService.instance
-        .get(`/recipe_comment_num/${item.id}`)
+        .get(`/counseling_comment_num/${item.id}`)
         .then((res) => {
           setComments(res.data.data.count);
         });
     };
     getCommentsNum();
   }, []);
-
   return (
-    <div className={Styles.list_item}>
-      <img
-        src={item.imgSrc}
-        alt={item.imgAlt}
-        onClick={() => router.push({ pathname: `/recipe/${item.id}` })}
-      />
-      <div className={Styles.list_date}>{item.created_at}</div>
-      <div className={Styles.list_title_row}>
-        <div
-          className={Styles.list_title}
-        >{`[${item.category}] ${item.title}`}</div>
-        {item.isHot ? <div className={Styles.list_title_hot}>HOT!</div> : ""}
-      </div>
-      <div className={Styles.list_likes}>
+    <div
+      className={Styles.csitem}
+      onClick={() => {
+        router.push({ pathname: `/counseling/${item.id}` });
+      }}
+    >
+      <div className={Styles.item_date}>{item.created_at}</div>
+      <div className={Styles.item_title}>{item.title}</div>
+      <div className={Styles.item_likes}>
         {typeof likes != "string" ? (
           <DisplayLikes
             onLike={onLike}
@@ -62,14 +53,14 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
             setOnLike={setOnLike}
             user={user}
             item={item}
-            type="recipe"
+            type="counseling"
           />
         ) : (
           ""
         )}
         <div className={Styles.like_span}>
           <InsertCommentOutlinedIcon
-            className={Styles.comment_icon}
+            className={Styles.like_icon}
             fontSize={"large"}
           />
           {comments}
@@ -78,4 +69,3 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
     </div>
   );
 };
-export default RecipeItem;

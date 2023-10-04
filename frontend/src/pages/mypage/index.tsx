@@ -17,7 +17,7 @@ import { useRouter } from "next/router";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 const Mypage = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | string | undefined>("최초실행방지");
   const [modal, setModal] = useState<boolean>(false);
 
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -111,7 +111,11 @@ const Mypage = () => {
       if (myCs?.length) {
         return (
           <>
-            <CounselingList items={CurrentPost(myCs)} />
+            {typeof user != "string" ? (
+              <CounselingList items={CurrentPost(myCs)} user={user} />
+            ) : (
+              ""
+            )}
             <CounselingPageMove
               totalPosts={myCs.length}
               postsPerPage={ITEMNUM}
@@ -124,110 +128,113 @@ const Mypage = () => {
         return noData();
       }
     } else if (type === "내가댓글단 게시물") {
-      if (user) {
+      if (typeof user != "string" && user != undefined) {
         return (
           <ContentsByUser
             uniqueRecipeList={uniqueRecipeList}
             uniquePlaceList={uniquePlaceList}
             uniqueCsList={uniqueCsList}
             onClick={setCheckType}
+            user={user}
           />
         );
       } else return;
     } else if (type === "마이페이지") {
-      return (
-        <div className={Styles.profile}>
-          <div>프로필 이미지 등록</div>
-          <div className={Styles.profile_img}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "center",
-              }}
-            >
-              <img
-                src={user?.profile_img}
-                alt="프로필 이미지"
-                className={Styles.img_preview}
-              />
-              <div>이미지 미리보기</div>
-            </div>
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={saveImgFile}
-                ref={imgRef}
-                id="upload"
-              />
-              <label htmlFor="upload" className={Styles.upload_btn}>
-                업로드
-              </label>
-              <button
-                className={Styles.upload_btn}
-                style={{ marginLeft: "1rem" }}
-              >
-                등록완료
-                {/**등록완료 버튼 클릭시 fetch POST imgFile(암호화되있는듯 ? 엄청김 변환하는법알아내기)) */}
-              </button>
-              <div style={{ paddingTop: "2rem" }}>
-                <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
-                <div>등록완료를 눌러야 저장됩니다!</div>
-              </div>
-            </div>
-          </div>
-          <div>프로필 소개</div>
-          <div className={Styles.introduction}>
-            {user?.profile_text && !profileEdit ? (
-              <div className={Styles.introduction_text}>
-                {user.profile_text}
-              </div>
-            ) : profileEdit ? (
-              <textarea
-                onChange={onChangeProfileText}
-                className={Styles.introduction_text_edit}
-              >
-                {user?.profile_text}
-              </textarea>
-            ) : (
-              "자기소개를 입력해보세요!"
-            )}
-          </div>
-          <div
-            style={{
-              paddingTop: "3rem",
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "right",
-            }}
-          >
-            {profileEdit ? (
-              <>
-                <button
-                  className={Styles.upload_btn}
-                  onClick={() => setProfileEdit(false)}
-                >
-                  수정취소
-                </button>
-                <button className={Styles.upload_btn}>수정완료</button>
-                {/**수정완료 클릭시 user.introduction를
-                 * profileText 로 fetch update
-                 */}
-              </>
-            ) : (
-              <button
-                className={Styles.upload_btn}
-                onClick={() => {
-                  setProfileEdit(true);
+      if (typeof user != "string" && user != undefined) {
+        return (
+          <div className={Styles.profile}>
+            <div>프로필 이미지 등록</div>
+            <div className={Styles.profile_img}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  textAlign: "center",
                 }}
               >
-                수정
-              </button>
-            )}
+                <img
+                  src={user?.profile_img}
+                  alt="프로필 이미지"
+                  className={Styles.img_preview}
+                />
+                <div>이미지 미리보기</div>
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={saveImgFile}
+                  ref={imgRef}
+                  id="upload"
+                />
+                <label htmlFor="upload" className={Styles.upload_btn}>
+                  업로드
+                </label>
+                <button
+                  className={Styles.upload_btn}
+                  style={{ marginLeft: "1rem" }}
+                >
+                  등록완료
+                  {/**등록완료 버튼 클릭시 fetch POST imgFile(암호화되있는듯 ? 엄청김 변환하는법알아내기)) */}
+                </button>
+                <div style={{ paddingTop: "2rem" }}>
+                  <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
+                  <div>등록완료를 눌러야 저장됩니다!</div>
+                </div>
+              </div>
+            </div>
+            <div>프로필 소개</div>
+            <div className={Styles.introduction}>
+              {user?.profile_text && !profileEdit ? (
+                <div className={Styles.introduction_text}>
+                  {user.profile_text}
+                </div>
+              ) : profileEdit ? (
+                <textarea
+                  onChange={onChangeProfileText}
+                  className={Styles.introduction_text_edit}
+                >
+                  {user?.profile_text}
+                </textarea>
+              ) : (
+                "자기소개를 입력해보세요!"
+              )}
+            </div>
+            <div
+              style={{
+                paddingTop: "3rem",
+                display: "flex",
+                gap: "1rem",
+                justifyContent: "right",
+              }}
+            >
+              {profileEdit ? (
+                <>
+                  <button
+                    className={Styles.upload_btn}
+                    onClick={() => setProfileEdit(false)}
+                  >
+                    수정취소
+                  </button>
+                  <button className={Styles.upload_btn}>수정완료</button>
+                  {/**수정완료 클릭시 user.introduction를
+                   * profileText 로 fetch update
+                   */}
+                </>
+              ) : (
+                <button
+                  className={Styles.upload_btn}
+                  onClick={() => {
+                    setProfileEdit(true);
+                  }}
+                >
+                  수정
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-      );
+        );
+      } else return;
     } else if (checkType === "댓글 맛집자세히보기") {
       if (uniquePlaceList && uniquePlaceList.length) {
         return (
@@ -260,7 +267,11 @@ const Mypage = () => {
       if (uniqueCsList && uniqueCsList.length) {
         return (
           <>
-            <CounselingList items={CurrentPost(uniqueCsList)} />
+            {typeof user != "string" ? (
+              <CounselingList items={CurrentPost(uniqueCsList)} user={user} />
+            ) : (
+              ""
+            )}
             <CounselingPageMove
               totalPosts={uniqueCsList.length}
               postsPerPage={ITEMNUM}
@@ -277,13 +288,13 @@ const Mypage = () => {
       const getU = await searchUser();
       await setUser(getU);
       if (getU != undefined) {
-        const { myRecipe, myCs, myPlace } = SearchUserData(getU);
+        const { myRecipe, myCs, myPlace } = await SearchUserData(getU);
         setMyRecipe(myRecipe);
         setMyCs(myCs);
         setMyPlace(myPlace);
         setCurrentPage(1);
         const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
-          getMyComments(getU.nickname);
+          await getMyComments(getU.nickname);
         setUniqueCsList(uniqueCsList);
         setUniqueRecipeList(uniqueRecipeList);
         setUniquePlaceList(uniquePlaceList);

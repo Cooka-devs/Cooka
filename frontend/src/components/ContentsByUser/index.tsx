@@ -1,4 +1,4 @@
-import { CsItem, PlaceProps, Recipe } from "@/types";
+import { CsItem, PlaceProps, Recipe, User } from "@/types";
 import Styles from "./index.module.css";
 import { RecipeList } from "..";
 import PlaceList from "../PlaceList";
@@ -8,12 +8,14 @@ interface ContentsByUserProps {
   uniquePlaceList: PlaceProps[] | undefined;
   uniqueCsList: CsItem[] | undefined;
   onClick: any;
+  user: User;
 }
 const ContentsByUser = ({
   uniqueRecipeList,
   uniquePlaceList,
   uniqueCsList,
   onClick,
+  user,
 }: ContentsByUserProps) => {
   const noData = () => {
     return (
@@ -41,7 +43,7 @@ const ContentsByUser = ({
           )}
         </div>
         {uniqueRecipeList && uniqueRecipeList.length ? (
-          <RecipeList items={uniqueRecipeList.slice(0, 3)} />
+          <RecipeList item={uniqueRecipeList.slice(0, 3)} />
         ) : (
           noData()
         )}
@@ -87,7 +89,7 @@ const ContentsByUser = ({
           )}
         </div>
         {uniqueCsList && uniqueCsList.length ? (
-          <CounselingList items={uniqueCsList.slice(0, 3)} />
+          <CounselingList items={uniqueCsList.slice(0, 3)} user={user} />
         ) : (
           noData()
         )}

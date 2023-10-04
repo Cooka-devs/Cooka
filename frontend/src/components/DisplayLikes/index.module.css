@@ -1,0 +1,16 @@
+.like_on {
+  margin-top: 2px;
+  color: red;
+}
+.like_off {
+  margin-top: 2px;
+  color: gray;
+}
+.like_span {
+  display: flex;
+  gap: 1rem;
+}
+.likes_num {
+  color: gray;
+  font-family: "SUITE-Regular";
+}

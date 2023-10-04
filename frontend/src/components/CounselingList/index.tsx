@@ -1,46 +1,16 @@
-import { CsItem } from "@/types";
+import { CsItem, User } from "@/types";
 import Styles from "./index.module.css";
-import { useRouter } from "next/router";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
+import { CounselingItem } from "./CounselingItem";
 interface CsItemProps {
   items: CsItem[];
+  user: User | undefined;
 }
 
-const CounselingList = ({ items }: CsItemProps) => {
-  const router = useRouter();
-  console.log(items);
+const CounselingList = ({ items, user }: CsItemProps) => {
   return (
     <div className={Styles.cslist}>
       {items.map((item, index) => {
-        return (
-          <div
-            className={Styles.csitem}
-            key={index}
-            onClick={() => {
-              router.push({ pathname: `/counseling/${item.id}` });
-            }}
-          >
-            <div className={Styles.item_date}>{item.created_at}</div>
-            <div className={Styles.item_title}>{item.title}</div>
-            <div className={Styles.item_likes}>
-              <div className={Styles.like_span}>
-                <ThumbUpOffAltIcon
-                  className={Styles.like_icon}
-                  fontSize={"large"}
-                />
-                {/* {item.likes} */}
-              </div>
-              <div className={Styles.like_span}>
-                <InsertCommentOutlinedIcon
-                  className={Styles.like_icon}
-                  fontSize={"large"}
-                />
-                {/* {item.comments} */}
-              </div>
-            </div>
-          </div>
-        );
+        return <CounselingItem item={item} user={user} key={index} />;
       })}
     </div>
   );
