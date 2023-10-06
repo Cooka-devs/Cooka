@@ -45,6 +45,7 @@ const KakaoLoginPage = () => {
   useEffect(() => {
     if (!code) return;
     fetch(getTokenUrl, {
+      // code로 토큰 받아오기
       method: "POST",
       headers: {
         "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
@@ -53,7 +54,7 @@ const KakaoLoginPage = () => {
     }).then((res) =>
       res.json().then((data) => {
         if (data.access_token) {
-          console.log("token:", data.access_token);
+          console.log("token:", data.access_token); //토큰을 받아왔다면
           fetch(getUserUrl, {
             method: "GET",
             headers: {
@@ -61,10 +62,14 @@ const KakaoLoginPage = () => {
               "Content-type": `application/x-www-form-urlencoded;charset=utf-8`,
             },
           })
-            .then((res) =>
-              res
-                .json()
-                .then((data: KaKaoLoginData) => console.log("회원정보:", data))
+            .then(
+              (res) =>
+                res
+                  .json()
+                  .then((data: KaKaoLoginData) =>
+                    console.log("회원정보:", data)
+                  ) //해당토큰으로 회원정보 받아오기
+              //사용할 nickname,휴대폰번호 입력받기 login_id는 해당유저의 이메일사용,
             )
             .catch((err) => console.log("err:", err));
         } else {

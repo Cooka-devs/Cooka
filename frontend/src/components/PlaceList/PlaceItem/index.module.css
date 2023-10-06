@@ -49,3 +49,11 @@
 .like_icon {
   margin-top: 2px;
 }
+.list_img {
+  width: 28rem;
+  height: 30rem;
+  border-radius: 0.8rem;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  object-fit: cover;
+}

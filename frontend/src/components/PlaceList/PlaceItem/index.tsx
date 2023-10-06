@@ -42,6 +42,7 @@ const PlaceItem = ({ item, user }: Place) => {
         src={item.imgSrc}
         alt={item.imgAlt}
         onClick={() => router.push({ pathname: `/place/${item.id}` })}
+        className={Styles.list_img}
       />
       <div className={Styles.list_date}>{item.created_at}</div>
       <div className={Styles.list_title_row}>
