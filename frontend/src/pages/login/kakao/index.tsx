@@ -12,10 +12,11 @@ import { encodePw } from "@/utilities/encodePw";
 import randomstring from "randomstring";
 import Styles from "./index.module.css";
 import { User } from "@/types";
+import { kakaoLogin } from "@/api/kakaologin";
 const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
 const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
 
-interface KaKaoLoginData {
+export interface KaKaoLoginData {
   connected_at: string;
   id: number;
   kakao_account: {
@@ -70,48 +71,22 @@ const KakaoLoginPage = () => {
       const encodePassword = encodePw(salt, password);
       if (kakaoLoginData) {
         try {
-          await DefaultAxiosService.instance
-            .post("/users", {
-              name: nickname,
-              nickname: nickname,
-              phone_number: phoneNum,
-              login_type: "user",
-              social_id: 1,
-              login_id: kakaoLoginData.id,
-              login_password: encodePassword,
-              profile_img: "/nonuser.webp",
-              profile_text: "자기소개를 입력해주세요",
-              salt: salt,
-            })
-            .then((res) => console.log(res));
-          await DefaultAxiosService.instance
-            .post("/pw", {
-              login_id: kakaoLoginData.id,
-              social_id: 1,
-            })
-            .then((res) => res.data[0])
-            .then(async (userData) => {
-              if (userData) {
-                DefaultAxiosService.instance
-                  .post("/login/social", {
-                    id: userData.id,
-                    login_id: userData.login_id,
-                    login_type: userData.login_type,
-                    social_id: userData.social_id,
-                    token: token,
-                  })
-                  .then((res) => {
-                    const status = res.status;
-                    console.log(status);
-                    if (status === 200) {
-                      router.push("/");
-                    } else {
-                      console.log("로그인실패");
-                    }
-                  })
-                  .catch((err) => console.log(err));
-              }
-            });
+          await DefaultAxiosService.instance.post("/users", {
+            name: nickname,
+            nickname: nickname,
+            phone_number: phoneNum,
+            login_type: "user",
+            social_id: 1,
+            login_id: kakaoLoginData.id,
+            login_password: encodePassword,
+            profile_img: "/nonuser.webp",
+            profile_text: "자기소개를 입력해주세요",
+            salt: salt,
+          });
+          const loginResult = await kakaoLogin(kakaoLoginData, token);
+          if (loginResult?.status === 200) {
+            router.push("/");
+          }
         } catch (err) {
           console.log(err);
         }
@@ -154,7 +129,7 @@ const KakaoLoginPage = () => {
     }
   };
   useEffect(() => {
-    const getUsers = DefaultAxiosService.instance
+    DefaultAxiosService.instance
       .get("/users")
       .then((res) => res.data.data)
       .then((data) => setUsers(data));
@@ -186,40 +161,21 @@ const KakaoLoginPage = () => {
             },
           })
             .then((res) =>
-              res.json().then((kakaoData: KaKaoLoginData) => {
+              res.json().then(async (kakaoData: KaKaoLoginData) => {
                 setKakaoLoginData(kakaoData);
                 console.log(kakaoData);
-                DefaultAxiosService.instance
-                  .post("/pw", {
-                    login_id: kakaoData.id,
-                    social_id: 1,
-                  })
-                  .then((res) => res.data[0])
-                  .then(async (userData) => {
-                    if (userData) {
-                      console.log("userData:", userData);
-                      DefaultAxiosService.instance
-                        .post("/login/social", {
-                          id: userData.id,
-                          login_id: userData.login_id,
-                          login_type: userData.login_type,
-                          social_id: userData.social_id,
-                          token: data.access_token,
-                        })
-                        .then((res) => {
-                          const status = res.status;
-                          console.log(status);
-                          if (status === 200) {
-                            router.push("/");
-                          } else {
-                            console.log("로그인실패");
-                          }
-                        })
-                        .catch((err) => console.log(err));
-                    } else {
-                      setState("join");
-                    }
-                  });
+                try {
+                  const loginResult = await kakaoLogin(
+                    kakaoData,
+                    data.access_token,
+                    setState
+                  );
+                  if (loginResult?.status === 200) {
+                    router.push("/");
+                  }
+                } catch (err) {
+                  console.log(err);
+                }
               })
             )
             .catch((err) => console.log("err:", err));
