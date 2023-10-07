@@ -52,10 +52,13 @@ connectDB((pool) => {
   app.get("/", (req, res) => {
     try {
       if (req.session.isLogined) {
+        console.log("main req.session:", req.session);
         return res.send({
           isLogin: true,
           user_Uid: req.session.uid,
           user_Id: req.session.user_id,
+          user_SocialId: req.session.social_id,
+          user_loginType: req.session.login_type,
         });
       } else {
         return res.send("nologin");

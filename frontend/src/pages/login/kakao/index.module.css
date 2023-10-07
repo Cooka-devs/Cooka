@@ -1,0 +1,43 @@
+.join {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 50rem;
+  font-family: "SUITE-Regular";
+  font-size: 1.5rem;
+  padding-left: 2rem;
+  margin: auto;
+  padding-top: 25rem;
+}
+.join_title {
+  font-size: 1.5rem;
+}
+.input_text {
+  width: 30rem;
+  height: 5rem;
+  padding: 1rem;
+  border: 1px solid lightgray;
+}
+.okmessage {
+  color: green;
+}
+.nomessage {
+  color: red;
+}
+.gojoin_btn {
+  color: white;
+  height: 5rem;
+  font-family: "SUITE-Regular";
+  background-color: rgb(143, 133, 120);
+  font-size: 2rem;
+  padding: 1rem;
+  width: 30rem;
+}
+.check_btn {
+  height: 5rem;
+  font-family: "SUITE-Regular";
+  background-color: antiquewhite;
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin-left: 2rem;
+}

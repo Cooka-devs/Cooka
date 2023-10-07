@@ -38,6 +38,7 @@ const LoginPage = () => {
     DefaultAxiosService.instance
       .post("/pw", {
         login_id: id,
+        social_id: 0,
       })
       .then((res) => res.data[0])
       .then((userData) => {

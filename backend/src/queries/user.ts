@@ -21,20 +21,24 @@ export const getUsers: QueriesFunction = async (conn) => {
 };
 export interface GetPwParams {
   login_id: string;
+  social_id: number;
 }
+
 export const getPw: QueriesFunctionWithBody<GetPwParams> = async (
   conn,
   req
 ) => {
   try {
-    const result = await conn.query("SELECT * FROM user WHERE login_id = ?", [
-      req.login_id,
-    ]);
+    const result = await conn.query(
+      "SELECT * FROM user WHERE login_id = ? AND social_id=? ",
+      [req.login_id, req.social_id]
+    );
     return makeSuccessResponse(result[0]);
   } catch (err) {
     return DB_QUERY_ERROR;
   }
 };
+
 export interface AddUserParams {
   name: string;
   nickname: string;
