@@ -68,6 +68,7 @@ const Search = () => {
               counselingNum,
               counselingNum + itemNum
             )}
+            user={undefined}
           />
         ),
         data: searchCounselingData,

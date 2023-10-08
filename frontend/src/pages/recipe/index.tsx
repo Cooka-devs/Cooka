@@ -9,7 +9,9 @@ import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { getReipce } from "@/api/getRecipe";
+import { getListLength } from "@/api/getListLength";
 export default function RecipePage() {
+  const [listLength, setListLength] = useState<number>(0); //레시피 리스트 길이
   const [modal, setModal] = useState<boolean>(false);
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
@@ -39,7 +41,7 @@ export default function RecipePage() {
   const listRecipe = () => {
     setOnRecipe(false);
   };
-
+  useEffect(() => {}, [currentPage]);
   useEffect(() => {
     const getRecipeList = async () => {
       const getList = await getReipce();
@@ -53,6 +55,11 @@ export default function RecipePage() {
       setUser(getU);
     };
     fetch();
+    const getRecipeListLength = async () => {
+      const recipeListLength = await getListLength("recipe"); //데이터의 갯수를 받아옴
+      setListLength(recipeListLength);
+    };
+    getRecipeListLength();
   }, []);
 
   return (
@@ -73,7 +80,7 @@ export default function RecipePage() {
             <>
               <RecipeList item={CurrentPost(list)} />
               <RecipePageMove
-                totalPosts={list.length}
+                totalPosts={listLength}
                 postsPerPage={itemnum}
                 pageMove={setCurrentPage}
                 currentPage={currentPage}

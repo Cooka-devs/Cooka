@@ -15,6 +15,7 @@ import { setPlaceRoutes } from "./routes/place";
 import { setCounselingRoutes } from "./routes/community";
 import { setCommentRoutes } from "./routes/comment";
 import { setLikesRoutes } from "./routes/likes";
+import { setIntergratedRoutes } from "./routes/intergrate";
 
 dotenv.config();
 const PORT = 8000;
@@ -74,6 +75,7 @@ connectDB((pool) => {
   setCounselingRoutes(app, pool);
   setCommentRoutes(app, pool);
   setLikesRoutes(app, pool);
+  setIntergratedRoutes(app, pool);
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });

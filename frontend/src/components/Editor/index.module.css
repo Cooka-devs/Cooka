@@ -50,3 +50,8 @@
   padding-top: 2rem;
   color: red;
 }
+.editor_text img {
+  width: 40rem;
+  height: 40rem;
+  border-radius: 4px;
+}

@@ -217,12 +217,22 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
 
   useEffect(() => {
     if (shouldSetSelection) {
+      console.log("1");
       if (inputRef.current && quillRef.current?.editor) {
-        inputRef.current.value = "";
-        quillRef.current.setEditorSelection(quillRef.current.editor, {
-          index: 9999,
-          length: 1,
-        });
+        console.log("2");
+        // inputRef.current.value = "";
+        // quillRef.current.setEditorSelection(quillRef.current.editor, {
+        //   index: 9999,
+        //   length: 1,
+        // });
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection();
+        if (range) {
+          editor.setSelection(range.index + 1, 1);
+        }
+        setText((prev) => prev + "<p><br/></p>");
+        console.log(text);
+        console.log(quillRef.current.editor);
       }
       setShouldSetSelection(false);
     }
@@ -308,6 +318,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
               formats={formats}
               style={{ height: "64.219rem" }}
               placeholder="레시피를 입력하세요!"
+              className={Styles.editor_text}
             />
           ) : textType === "place" ? (
             <ReactQuill

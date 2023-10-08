@@ -12,7 +12,7 @@ import { encodePw } from "@/utilities/encodePw";
 import randomstring from "randomstring";
 import Styles from "./index.module.css";
 import { User } from "@/types";
-import { kakaoLogin } from "@/api/kakaologin";
+import { kakaoLogin } from "@/api/kakaoLogin";
 const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
 const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
 
