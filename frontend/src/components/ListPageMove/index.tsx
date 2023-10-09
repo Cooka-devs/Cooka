@@ -1,14 +1,14 @@
+import Styles from "./index.module.css";
 import { useState } from "react";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
-import Styles from "./index.module.css";
 interface PageMoveProps {
   totalPosts: number;
   postsPerPage: number;
-  pageMove: any;
+  pageMove: React.Dispatch<React.SetStateAction<number>>;
   currentPage: number;
 }
-const NewsPageMove = ({
+const ListPageMove = ({
   totalPosts,
   postsPerPage,
   pageMove,
@@ -32,7 +32,7 @@ const NewsPageMove = ({
     pageMove(cutPage + cutPageNumber + 1);
   };
   return (
-    <div>
+    <div style={{ marginTop: "1rem" }}>
       <div className={Styles.movepage}>
         <button
           onClick={() => HandleClickPrev()}
@@ -79,4 +79,4 @@ const NewsPageMove = ({
     </div>
   );
 };
-export default NewsPageMove;
+export default ListPageMove;

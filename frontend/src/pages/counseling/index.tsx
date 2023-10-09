@@ -1,6 +1,5 @@
 import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
-import CounselingPageMove from "@/components/CounselingPageMove";
 import CounselingList from "@/components/CounselingList";
 import { CsItem, User } from "@/types";
 import { getCounseling } from "@/api/getCounseling";
@@ -8,22 +7,19 @@ import { searchUser } from "@/api/getCurrentUser";
 import CreateList from "@/components/CreateList";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
+import ListPageMove from "@/components/ListPageMove";
+import { getListLength } from "@/api/getListLength";
+import { getListByPage } from "@/api/getListByPage";
 
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
+  const [listLength, setListLength] = useState<number>(0); //리스트 길이
   const [user, setUser] = useState<undefined | User | string>("최초실행방지");
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const itemnum = 12; //페이지당 출력될 item 수
-  const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
-  const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
   const [onCounsel, setOnCounsel] = useState<boolean>(false);
   const [modal, setModal] = useState<boolean>(false);
 
-  const CurrentPost = (post: CsItem[]) => {
-    let currentPosts: CsItem[] = [];
-    currentPosts = post.slice(indexOfFirst, indexOfLast);
-    return currentPosts;
-  };
   const closeModal = () => {
     setModal(false);
   };
@@ -35,18 +31,24 @@ const Counseling = () => {
     }
   };
   useEffect(() => {
-    const getPlaceList = async () => {
-      const getList = await getCounseling();
-      console.log("getPlace Result:", getList);
-      await setList(getList);
-    };
-    getPlaceList();
-
+    const getList = getListByPage({
+      page: currentPage,
+      size: itemnum,
+      setList: setList,
+      type: "counseling",
+    });
+  }, [currentPage]);
+  useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
       setUser(getU);
     };
     fetch();
+    const getCounselingListLength = async () => {
+      const counselingListLength = await getListLength("counseling"); //데이터의 갯수를 받아옴
+      setListLength(counselingListLength);
+    };
+    getCounselingListLength();
   }, []);
   if (onCounsel) {
     return (
@@ -85,13 +87,13 @@ const Counseling = () => {
           ""
         )}
         {typeof user != "string" ? (
-          <CounselingList items={CurrentPost(list)} user={user} />
+          <CounselingList items={list} user={user} />
         ) : (
           ""
         )}
         <div className={Styles.pagemove}>
-          <CounselingPageMove
-            totalPosts={list.length}
+          <ListPageMove
+            totalPosts={listLength}
             postsPerPage={itemnum}
             pageMove={setCurrentPage}
             currentPage={currentPage}

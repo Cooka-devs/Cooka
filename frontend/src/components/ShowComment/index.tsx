@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { Comment, User } from "@/types";
 import Styles from "./index.module.css";
-import CommentsPageMove from "../CommentsPageMove";
 import { searchUser } from "@/api/getCurrentUser";
 import { MakeComment } from "../MakeComment";
 import { useRouter } from "next/router";
-import { deleteCommentList } from "@/api/deleteCommentList";
 import { WantDeleteList } from "../WantDeleteList";
 import Modal from "../Modal";
+import ListPageMove from "../ListPageMove";
 interface ShowCommentProp {
   comments: Comment[];
   type: string;
@@ -15,9 +14,8 @@ interface ShowCommentProp {
 const ShowComment = ({ comments, type }: ShowCommentProp) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [user, setUser] = useState<undefined | User>();
-  const [deleteComment, setDeleteComment] = useState<boolean>(false);
   const [modify, setModify] = useState<boolean>(false);
-  const [findModifyComment, setFindModifyComment] = useState<number>(-1); //수정된 댓글들을 담을 배열
+  const [findModifyComment, setFindModifyComment] = useState<number>(-1); //수정된 댓글의 id값
   const [modifyText, setModifyText] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const router = useRouter();
@@ -142,7 +140,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
           )}
         </div>
       ))}
-      <CommentsPageMove
+      <ListPageMove
         totalPosts={comments.length}
         postsPerPage={itemnum}
         pageMove={setCurrentPage}

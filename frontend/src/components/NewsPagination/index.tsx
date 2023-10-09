@@ -4,19 +4,24 @@ import { NewItem } from "@/types";
 interface NewsItemsProps {
   items: NewItem[];
 }
-export const NewsItem = (item: NewItem) => {
+interface NewsItemProps {
+  item: NewItem;
+}
+export const NewsItem = ({ item }: NewsItemProps) => {
   return (
     <a
       href={item.url}
       className={Styles.flex_column}
-      key={`${item.date} ${item.title}`}
+      key={`${item.created_at} ${item.title}`}
     >
       <div className={Styles.column_img}>
-        <img src={item.imgSrc} alt={item.imgArt} />
+        <img src={item.imgSrc} alt={item.imgAlt} />
       </div>
       <div className={Styles.column_title}>
         <div>{item.title}</div>
-        <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>{item.date}</div>
+        <div style={{ fontSize: "1.2rem", marginTop: "1rem" }}>
+          {item.created_at}
+        </div>
       </div>
     </a>
   );
@@ -33,8 +38,8 @@ const NewsPagination = ({ items }: NewsItemsProps) => {
       }}
     >
       {items &&
-        items.map((newsitem) => {
-          return NewsItem(newsitem);
+        items.map((newsitem, index) => {
+          return <NewsItem item={newsitem} key={index} />;
         })}
     </div>
   );

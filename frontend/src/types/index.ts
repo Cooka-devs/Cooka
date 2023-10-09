@@ -45,10 +45,10 @@ export interface PlaceProps extends Rowable {
 
 export interface NewItem {
   imgSrc: string;
-  imgArt: string;
+  imgAlt: string;
   title: string;
   url: string;
-  date: string;
+  created_at: string;
 }
 
 export interface User extends Rowable {

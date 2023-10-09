@@ -3,6 +3,7 @@ import { QueriesFunction, QueriesFunctionWithBody } from "../types/queries";
 import { makeSuccessResponse } from "../utils/response";
 import { DB_QUERY_ERROR } from "../constants/response";
 import { getTime } from "../utils/time";
+import { GetLikedListParams } from "./recipe";
 
 export interface AddCounselingListParams {
   writer: string;
@@ -72,13 +73,13 @@ export const updateCounseling: QueriesFunctionWithBody<
   }
 };
 export const getLikedCounseling: QueriesFunctionWithBody<
-  DeleteCounselingListParams
+  GetLikedListParams
 > = async (conn, params) => {
-  const { id } = params;
+  const { id, size, page } = params;
+  const offset = (page - 1) * size;
   try {
     const result = await conn.execute(
-      "SELECT counseling.*FROM counseling INNER JOIN counseling_likes ON counseling.id = counseling_likes.counseling_id and user_id= ?",
-      [id]
+      `SELECT counseling.* FROM counseling INNER JOIN counseling_likes ON counseling.id = counseling_likes.counseling_id where user_id= ${id} limit ${size} offset ${offset}`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {

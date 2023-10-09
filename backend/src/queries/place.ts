@@ -3,6 +3,7 @@ import { QueriesFunction, QueriesFunctionWithBody } from "../types/queries";
 import { makeSuccessResponse } from "../utils/response";
 import { DB_QUERY_ERROR } from "../constants/response";
 import { getTime } from "../utils/time";
+import { GetLikedListParams } from "./recipe";
 export interface AddPlaceListParams {
   writer: string;
   imgSrc: string;
@@ -81,13 +82,13 @@ export const deletePlace: QueriesFunctionWithBody<
   }
 };
 export const getLikedPlace: QueriesFunctionWithBody<
-  DeletePlaceListParams
+  GetLikedListParams
 > = async (conn, params) => {
-  const { id } = params;
+  const { id, size, page } = params;
+  const offset = (page - 1) * size;
   try {
     const result = await conn.execute(
-      "SELECT place.*FROM place INNER JOIN place_likes ON place.id = place_likes.place_id and user_id= ?",
-      [id]
+      `SELECT place.* FROM place INNER JOIN place_likes ON place.id = place_likes.place_id where user_id= ${id} limit ${size} offset ${offset}`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {

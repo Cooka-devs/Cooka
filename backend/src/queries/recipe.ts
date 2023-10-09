@@ -30,7 +30,11 @@ export interface UpdateRecipeListParams {
 export interface DeleteRecipeListParams {
   id: number;
 }
-
+export interface GetLikedListParams {
+  id: number;
+  size: number;
+  page: number;
+}
 export const deleteRecipe: QueriesFunctionWithBody<
   DeleteRecipeListParams
 > = async (conn, params) => {
@@ -88,13 +92,16 @@ export const getRecipe: QueriesFunction = async (conn: Pool) => {
   }
 };
 export const getLikedRecipes: QueriesFunctionWithBody<
-  DeleteRecipeListParams
+  GetLikedListParams
 > = async (conn, params) => {
-  const { id } = params;
+  const { id, size, page } = params;
+  console.log("id", id);
+  console.log("size", size);
+  console.log("page", page);
+  const offset = (page - 1) * size;
   try {
     const result = await conn.execute(
-      "SELECT recipe.*FROM recipe INNER JOIN recipe_likes ON recipe.id = recipe_likes.recipe_id and user_id= ?",
-      [id]
+      `SELECT recipe.* FROM recipe INNER JOIN recipe_likes ON recipe.id = recipe_likes.recipe_id where user_id= ${id} Limit ${size} OFFSET ${offset}`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {

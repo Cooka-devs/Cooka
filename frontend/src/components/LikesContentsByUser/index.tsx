@@ -3,21 +3,32 @@ import Styles from "./index.module.css";
 import RecipeList from "../RecipeList";
 import PlaceList from "../PlaceList";
 import CounselingList from "../CounselingList";
-
+import { useEffect, useState } from "react";
+import { getMyLikes } from "@/utilities/getMyLikes";
 interface LikesContentsByUserProps {
-  RecipeLikesList: Recipe[] | undefined;
-  PlaceLikesList: PlaceProps[] | undefined;
-  CounselingLikesList: CsItem[] | undefined;
   onClick: React.Dispatch<React.SetStateAction<string>>;
   user: User;
 }
-const LikesContentsByUser = ({
-  RecipeLikesList,
-  PlaceLikesList,
-  CounselingLikesList,
-  onClick,
-  user,
-}: LikesContentsByUserProps) => {
+const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
+  const [likedRecipeList, setLikedRecipeList] = useState<Recipe[] | undefined>(
+    undefined
+  );
+  const [likedPlaceList, setLikedPlaceList] = useState<
+    PlaceProps[] | undefined
+  >(undefined);
+  const [likedCsList, setLikedCsList] = useState<CsItem[] | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    getMyLikes({
+      user: user,
+      setRecipe: setLikedRecipeList,
+      setPlace: setLikedPlaceList,
+      setCs: setLikedCsList,
+      size: 4,
+      page: 1,
+    });
+  }, []);
   const noData = () => {
     return (
       <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
@@ -30,7 +41,7 @@ const LikesContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>레시피</div>
-          {RecipeLikesList && RecipeLikesList.length > 3 ? (
+          {likedRecipeList && likedRecipeList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -43,8 +54,8 @@ const LikesContentsByUser = ({
             ""
           )}
         </div>
-        {RecipeLikesList && RecipeLikesList.length ? (
-          <RecipeList item={RecipeLikesList.slice(0, 3)} />
+        {likedRecipeList && likedRecipeList.length > 0 ? (
+          <RecipeList item={likedRecipeList.slice(0, 3)} />
         ) : (
           noData()
         )}
@@ -52,7 +63,7 @@ const LikesContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>맛집</div>
-          {PlaceLikesList && PlaceLikesList.length > 3 ? (
+          {likedPlaceList && likedPlaceList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -67,8 +78,8 @@ const LikesContentsByUser = ({
             ""
           )}
         </div>
-        {PlaceLikesList && PlaceLikesList.length ? (
-          <PlaceList items={PlaceLikesList.slice(0, 3)} />
+        {likedPlaceList && likedPlaceList.length > 0 ? (
+          <PlaceList items={likedPlaceList.slice(0, 3)} />
         ) : (
           noData()
         )}
@@ -76,7 +87,7 @@ const LikesContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>상담소</div>
-          {CounselingLikesList && CounselingLikesList.length > 3 ? (
+          {likedCsList && likedCsList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -89,8 +100,8 @@ const LikesContentsByUser = ({
             ""
           )}
         </div>
-        {CounselingLikesList && CounselingLikesList.length ? (
-          <CounselingList items={CounselingLikesList.slice(0, 3)} user={user} />
+        {likedCsList && likedCsList.length > 0 ? (
+          <CounselingList items={likedCsList.slice(0, 3)} user={user} />
         ) : (
           noData()
         )}

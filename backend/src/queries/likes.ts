@@ -10,6 +10,20 @@ interface GetLikesParams {
   postId: any;
   userId: any;
 }
+export const getLikesNumByUser: QueriesFunctionWithBody<
+  GetLikesNumParams
+> = async (conn, params) => {
+  const { type, id } = params;
+  try {
+    const result = await conn.execute(
+      `SELECT COUNT(*) as count FROM ${type}_likes where user_id = ?`,
+      [id]
+    );
+    return makeSuccessResponse(result[0][0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getLikesNum: QueriesFunctionWithBody<GetLikesNumParams> = async (
   conn,
   params

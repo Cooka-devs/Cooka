@@ -1,5 +1,4 @@
 import RecipeList from "@/components/RecipeList";
-import RecipePageMove from "@/components/RecipePageMove";
 import CreateList from "@/components/CreateList";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
@@ -10,23 +9,17 @@ import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { getReipce } from "@/api/getRecipe";
 import { getListLength } from "@/api/getListLength";
+import { getListByPage } from "@/api/getListByPage";
+import ListPageMove from "@/components/ListPageMove";
 export default function RecipePage() {
-  const [listLength, setListLength] = useState<number>(0); //레시피 리스트 길이
+  const [listLength, setListLength] = useState<number>(0); //리스트 길이
   const [modal, setModal] = useState<boolean>(false);
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [user, setUser] = useState<undefined | User>();
   const itemnum = 9; //페이지당 출력될 item 수
-  const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
-  const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
-  const CurrentPost = (post: Recipe[]) => {
-    let currentPosts: Recipe[] = [];
-    if (post != undefined) {
-      currentPosts = post.slice(indexOfFirst, indexOfLast);
-    }
-    return currentPosts;
-  };
+
   const closeModal = () => {
     setModal(false);
   };
@@ -41,15 +34,15 @@ export default function RecipePage() {
   const listRecipe = () => {
     setOnRecipe(false);
   };
-  useEffect(() => {}, [currentPage]);
   useEffect(() => {
-    const getRecipeList = async () => {
-      const getList = await getReipce();
-      console.log("getRecipe Result:", getList);
-      await setList(getList);
-    };
-    getRecipeList();
-
+    const getList = getListByPage({
+      page: currentPage,
+      size: itemnum,
+      setList: setList,
+      type: "recipe",
+    });
+  }, [currentPage]);
+  useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
       setUser(getU);
@@ -78,8 +71,8 @@ export default function RecipePage() {
             <CreateList textType="recipe" />
           ) : (
             <>
-              <RecipeList item={CurrentPost(list)} />
-              <RecipePageMove
+              <RecipeList item={list} />
+              <ListPageMove
                 totalPosts={listLength}
                 postsPerPage={itemnum}
                 pageMove={setCurrentPage}

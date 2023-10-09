@@ -44,7 +44,13 @@ export const setCounselingRoutes = (app: Express, conn: Pool) => {
   app.get("/counseling/:id", async (req, res) => {
     if (!("id" in req.params)) return BAD_REQUEST;
     const { id } = req.params;
-    const response = await getLikedCounseling(conn, { id: +id });
+    const { size, page } = req.query;
+    if (!size || !page) return BAD_REQUEST;
+    const response = await getLikedCounseling(conn, {
+      id: +id,
+      size: +size,
+      page: +page,
+    });
     res.status(response.code).json(response);
   });
 };

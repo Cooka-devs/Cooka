@@ -1,7 +1,13 @@
 import { Pool } from "mysql2/promise";
 import { BAD_REQUEST } from "../constants/response";
 import { Express } from "express";
-import { addLikes, deleteLikes, getLikes, getLikesNum } from "../queries/likes";
+import {
+  addLikes,
+  deleteLikes,
+  getLikes,
+  getLikesNum,
+  getLikesNumByUser,
+} from "../queries/likes";
 import { RequestGeneric } from "../types/request";
 import { Request } from "express";
 import { isIncludeUndefined } from "../utils/request";
@@ -13,10 +19,18 @@ export const setLikesRoutes = (app: Express, conn: Pool) => {
   routeType.map((type) => {
     app.get(`/${type}_likes_num/:id`, async (req, res) => {
       if (!("id" in req.params)) return BAD_REQUEST;
-      const { id } = req.params;
-      const params = { type: type, id: +id };
-      const response = await getLikesNum(conn, params);
-      res.status(response.code).json(response);
+      const { user } = req.query;
+      if (!user) {
+        const { id } = req.params;
+        const params = { type: type, id: +id };
+        const response = await getLikesNum(conn, params);
+        res.status(response.code).json(response);
+      } else {
+        const { id } = req.params;
+        const params = { type: type, id: +id };
+        const response = await getLikesNumByUser(conn, params);
+        res.status(response.code).json(response);
+      }
     });
     app.get(`/${type}_likes`, async (req, res) => {
       if (!("userId" in req.query)) return BAD_REQUEST;
