@@ -3,20 +3,32 @@ import Styles from "./index.module.css";
 import { RecipeList } from "..";
 import PlaceList from "../PlaceList";
 import CounselingList from "../CounselingList";
+import { useEffect, useState } from "react";
+import { getMyComments } from "@/api/getMyComments";
 interface ContentsByUserProps {
-  uniqueRecipeList: Recipe[] | undefined;
-  uniquePlaceList: PlaceProps[] | undefined;
-  uniqueCsList: CsItem[] | undefined;
   onClick: any;
   user: User;
 }
-const ContentsByUser = ({
-  uniqueRecipeList,
-  uniquePlaceList,
-  uniqueCsList,
-  onClick,
-  user,
-}: ContentsByUserProps) => {
+const ContentsByUser = ({ onClick, user }: ContentsByUserProps) => {
+  const [likedRecipeList, setLikedRecipeList] = useState<Recipe[] | undefined>(
+    undefined
+  );
+  const [likedPlaceList, setLikedPlaceList] = useState<
+    PlaceProps[] | undefined
+  >(undefined);
+  const [likedCsList, setLikedCsList] = useState<CsItem[] | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    getMyComments({
+      user: user,
+      setRecipe: setLikedRecipeList,
+      setPlace: setLikedPlaceList,
+      setCs: setLikedCsList,
+      size: 4,
+      page: 1,
+    });
+  }, []);
   const noData = () => {
     return (
       <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
@@ -29,7 +41,7 @@ const ContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>레시피</div>
-          {uniqueRecipeList && uniqueRecipeList.length > 3 ? (
+          {likedRecipeList && likedRecipeList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -42,8 +54,8 @@ const ContentsByUser = ({
             ""
           )}
         </div>
-        {uniqueRecipeList && uniqueRecipeList.length ? (
-          <RecipeList item={uniqueRecipeList.slice(0, 3)} />
+        {likedRecipeList && likedRecipeList.length ? (
+          <RecipeList item={likedRecipeList.slice(0, 3)} />
         ) : (
           noData()
         )}
@@ -51,7 +63,7 @@ const ContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>맛집</div>
-          {uniquePlaceList && uniquePlaceList.length > 3 ? (
+          {likedPlaceList && likedPlaceList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -66,8 +78,8 @@ const ContentsByUser = ({
             ""
           )}
         </div>
-        {uniquePlaceList && uniquePlaceList.length ? (
-          <PlaceList items={uniquePlaceList.slice(0, 3)} />
+        {likedPlaceList && likedPlaceList.length ? (
+          <PlaceList items={likedPlaceList.slice(0, 3)} />
         ) : (
           noData()
         )}
@@ -75,7 +87,7 @@ const ContentsByUser = ({
       <div>
         <div style={{ position: "relative" }}>
           <div className={Styles.head_name}>상담소</div>
-          {uniqueCsList && uniqueCsList.length > 3 ? (
+          {likedCsList && likedCsList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
               <button
                 className={Styles.li_btn}
@@ -88,8 +100,8 @@ const ContentsByUser = ({
             ""
           )}
         </div>
-        {uniqueCsList && uniqueCsList.length ? (
-          <CounselingList items={uniqueCsList.slice(0, 3)} user={user} />
+        {likedCsList && likedCsList.length ? (
+          <CounselingList items={likedCsList.slice(0, 3)} user={user} />
         ) : (
           noData()
         )}

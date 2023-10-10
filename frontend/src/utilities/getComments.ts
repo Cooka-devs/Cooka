@@ -20,6 +20,7 @@ const useGetComments = async (id: string, type: string) => {
   }
   try {
     const comments = comment.filter((comment) => comment.postId === result);
+    console.log("comments", comments);
     return comments;
   } catch (err) {
     throw err;

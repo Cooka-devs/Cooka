@@ -4,12 +4,10 @@ import PlaceList from "@/components/PlaceList";
 import ListPageMove from "@/components/ListPageMove";
 import SearchUserData from "@/components/SearchUserData";
 import { CsItem, PlaceProps, Recipe, Table, User } from "@/types";
-import getMyComments from "@/utilities/getMyComments";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.scss";
 import { useRef } from "react";
 import ContentsByUser from "@/components/ContentsByUser";
-import axios from "axios";
 import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
 import { useRouter } from "next/router";
 import Modal from "@/components/Modal";
@@ -18,39 +16,33 @@ import LikesContentsByUser from "@/components/LikesContentsByUser";
 import FormAxiosService from "@/service/FormAxiosService";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { getListLength } from "@/api/getListLength";
-import { getMyLikedListLength } from "@/api/getMyLikedListLength";
+import { getMyLikedList, getMyLikes } from "@/utilities/getMyLikes";
+import { getLikedList } from "@/api/getLikedList";
+import { getListNumByComments, getMyCommentsByType } from "@/api/getMyComments";
+import { ContentsByCheckType } from "@/components/ContentsByCheckType";
+
 const Mypage = () => {
   const [user, setUser] = useState<User | string | undefined>("최초실행방지");
   const [modal, setModal] = useState<boolean>(false);
 
   const [checkType, setCheckType] = useState<string>("마이페이지");
-  const [checkType2, setCheckType2] = useState<number>(0); // 댓글/좋아요/게시글을 판단함
 
-  const [myRecipe, setMyRecipe] = useState<Recipe[]>();
+  const [myRecipe, setMyRecipe] = useState<Recipe[]>(); //체크타입별로 데이터
   const [myPlace, setMyPlace] = useState<PlaceProps[]>();
   const [myCs, setMyCs] = useState<CsItem[]>();
 
-  const [myRecipeLength, setMyRecipeLength] = useState<number>(0);
+  const [myRecipeLength, setMyRecipeLength] = useState<number>(0); //체크타입별로 데이터의 길이
   const [myPlaceLength, setMyPlaceLength] = useState<number>(0);
   const [myCsLength, setMyCsLength] = useState<number>(0);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1); // 페이지의 넘버
   const [imgFile, setImgFile] = useState<any>();
   const [profileEdit, setProfileEdit] = useState<boolean>(false);
   const [profileText, setProfileText] = useState<string>();
 
-  const [uniqueCsList, setUniqueCsList] = useState<CsItem[]>();
-  const [uniqueRecipeList, setUniqueRecipeList] = useState<Recipe[]>();
-  const [uniquePlaceList, setUniquePlaceList] = useState<PlaceProps[]>();
-
-  const [likedRecipe, setLikedRecipe] = useState<Recipe[]>();
-  const [likedPlace, setLikedPlace] = useState<PlaceProps[]>();
-  const [likedCs, setLikedCs] = useState<CsItem[]>();
-
   const imgRef = useRef<HTMLInputElement>(null);
   const ITEMNUM = 9;
-  const indexOfLast = currentPage * ITEMNUM;
-  const indexOfFirst = indexOfLast - ITEMNUM;
+
   const router = useRouter();
   const onChangeProfileText = async (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -112,9 +104,6 @@ const Mypage = () => {
   const closeModal = () => {
     setModal(false);
   };
-  const CurrentPost = <T extends Table>(posts: T): T => {
-    return posts.slice(indexOfFirst, indexOfLast) as T;
-  };
 
   const noData = () => {
     return (
@@ -125,7 +114,11 @@ const Mypage = () => {
   };
 
   const TypeByContent = (type: string) => {
-    if (type === "내가작성한 레시피") {
+    if (
+      type === "내가작성한 레시피" ||
+      type === "좋아요 레시피자세히보기" ||
+      type === "댓글 레시피자세히보기"
+    ) {
       if (myRecipe?.length) {
         return (
           <>
@@ -141,7 +134,11 @@ const Mypage = () => {
       } else {
         return noData();
       }
-    } else if (type === "내가작성한 맛집") {
+    } else if (
+      type === "내가작성한 맛집" ||
+      type === "좋아요 맛집자세히보기" ||
+      type === "댓글 맛집자세히보기"
+    ) {
       if (myPlace?.length) {
         return (
           <>
@@ -157,7 +154,11 @@ const Mypage = () => {
       } else {
         return noData();
       }
-    } else if (type === "내가작성한 질문") {
+    } else if (
+      type === "내가작성한 질문" ||
+      type === "좋아요 상담자세히보기" ||
+      type === "댓글 상담자세히보기"
+    ) {
       if (myCs?.length) {
         return (
           <>
@@ -179,15 +180,7 @@ const Mypage = () => {
       }
     } else if (type === "내가댓글단 게시물") {
       if (typeof user != "string" && user != undefined) {
-        return (
-          <ContentsByUser
-            uniqueRecipeList={uniqueRecipeList}
-            uniquePlaceList={uniquePlaceList}
-            uniqueCsList={uniqueCsList}
-            onClick={setCheckType}
-            user={user}
-          />
-        );
+        return <ContentsByUser onClick={setCheckType} user={user} />;
       } else return;
     } else if (type === "내가추천한 게시물") {
       if (typeof user != "string" && user != undefined) {
@@ -291,144 +284,34 @@ const Mypage = () => {
           </div>
         );
       } else return;
-    } else if (type === "댓글 맛집자세히보기") {
-      if (uniquePlaceList && uniquePlaceList.length) {
-        return (
-          <>
-            <PlaceList items={CurrentPost(uniquePlaceList)} />
-            <ListPageMove
-              totalPosts={uniquePlaceList.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
-    } else if (type === "댓글 레시피자세히보기") {
-      if (uniqueRecipeList && uniqueRecipeList.length) {
-        return (
-          <>
-            <RecipeList item={CurrentPost(uniqueRecipeList)} />
-            <ListPageMove
-              totalPosts={uniqueRecipeList.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
-    } else if (type === "댓글 상담자세히보기") {
-      if (uniqueCsList && uniqueCsList.length) {
-        return (
-          <>
-            {typeof user != "string" ? (
-              <CounselingList items={CurrentPost(uniqueCsList)} user={user} />
-            ) : (
-              ""
-            )}
-            <ListPageMove
-              totalPosts={uniqueCsList.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
-    } else if (type === "좋아요 레시피자세히보기") {
-      if (likedRecipe && likedRecipe.length) {
-        return (
-          <>
-            <RecipeList item={CurrentPost(likedRecipe)} />
-            <ListPageMove
-              totalPosts={likedRecipe.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
-    } else if (type === "좋아요 맛집자세히보기") {
-      if (likedPlace && likedPlace.length) {
-        return (
-          <>
-            <PlaceList items={CurrentPost(likedPlace)} />
-            <ListPageMove
-              totalPosts={likedPlace.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
-    } else if (type === "좋아요 상담자세히보기") {
-      if (likedCs && likedCs.length) {
-        return (
-          <>
-            {typeof user != "string" ? (
-              <CounselingList items={CurrentPost(likedCs)} user={user} />
-            ) : (
-              ""
-            )}
-            <ListPageMove
-              totalPosts={likedCs.length}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      }
     }
   };
   useEffect(() => {
     const changedCheckType = async () => {
       await setCurrentPage(1);
-      if (typeof user != "string" && user) {
-        if (checkType === "내가작성한 레시피") {
-          const length = await getListLength("recipe", user.nickname);
-          setMyRecipeLength(length);
-        } else if (checkType === "내가작성한 맛집") {
-          const length = await getListLength("place", user.nickname);
-          setMyPlaceLength(length);
-        } else if (checkType === "내가작성한 질문") {
-          const length = await getListLength("counseling", user.nickname);
-          setMyCsLength(length);
-        } else if (checkType === "내가추천한 게시물") {
-        }
-      }
     };
     changedCheckType();
   }, [checkType]);
-
   useEffect(() => {
-    //페이지가 바뀌면 해당 type table에서 페이지에맞는 데이터를 가져오기위해 페이지가 바뀔때마다 실행되는 함수
-    let selectedSetList;
-    let type;
-    if (checkType === "내가작성한 레시피") {
-      selectedSetList = setMyRecipe;
-      type = "recipe";
-    } else if (checkType === "내가작성한 맛집") {
-      selectedSetList = setMyPlace;
-      type = "place";
-    } else if (checkType === "내가작성한 질문") {
-      selectedSetList = setMyCs;
-      type = "counseling";
-    }
-    if (typeof user != "string" && user && selectedSetList && type) {
-      SearchUserData({
-        user: user,
-        set: selectedSetList,
-        page: currentPage,
-        size: 9,
-        type: type,
-      });
-    }
-  }, [currentPage]);
+    const changedCheckTypeOrPage = async () => {
+      if (typeof user != "string" && user) {
+        ContentsByCheckType({
+          user: user,
+          checkType: checkType,
+          currentPage: currentPage,
+          setMyRecipe: setMyRecipe,
+          setMyPlace: setMyPlace,
+          setMyCs: setMyCs,
+          setMyRecipeLength: setMyRecipeLength,
+          setMyPlaceLength: setMyPlaceLength,
+          setMyCsLength: setMyCsLength,
+          ITEMNUM: ITEMNUM,
+        });
+      }
+    };
+    changedCheckTypeOrPage();
+  }, [checkType, currentPage]);
+
   useEffect(() => {
     const getUserData = async () => {
       const getU = await searchUser();
@@ -458,11 +341,6 @@ const Mypage = () => {
 
         setImgFile(getU.profile_img);
         setProfileText(getU.profile_text);
-        const { uniqueCsList, uniqueRecipeList, uniquePlaceList } =
-          await getMyComments(getU.nickname);
-        setUniqueCsList(uniqueCsList);
-        setUniqueRecipeList(uniqueRecipeList);
-        setUniquePlaceList(uniquePlaceList);
       } else {
         setModal(true);
       }

@@ -5,7 +5,9 @@ import {
   deleteComment,
   getComment,
   getCommentsNum,
+  getMyComments,
   updateComment,
+  getMyCommentsNum,
 } from "../queries/comment";
 import { isIncludeUndefined } from "../utils/request";
 import { BAD_REQUEST } from "../constants/response";
@@ -32,8 +34,20 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       }
     );
     app.get(`/${type}`, async (req, res) => {
-      const response = await getComment(conn, type);
-      res.status(response.code).json(response);
+      const { nickname, size, page } = req.query;
+      if (!nickname || !size || !page) {
+        const response = await getComment(conn, type);
+        res.status(response.code).json(response);
+      } else {
+        const nicknameStringType = String(nickname);
+        const response = await getMyComments(conn, {
+          nickname: nicknameStringType,
+          size: +size,
+          page: +page,
+          type: type,
+        });
+        res.status(response.code).json(response);
+      }
     });
     app.put(`/${type}/:id`, async (req, res) => {
       if (!("id" in req.params)) return BAD_REQUEST;
@@ -59,6 +73,16 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       if (!("id" in req.params)) return BAD_REQUEST;
       const { id } = req.params;
       const response = await getCommentsNum(conn, { type: type, id: +id });
+      res.status(response.code).json(response);
+    });
+    app.get(`/list/${type}`, async (req, res) => {
+      const { nickname } = req.query;
+      if (!nickname) return BAD_REQUEST;
+      const nicknameStringType = String(nickname);
+      const response = await getMyCommentsNum(conn, {
+        type: type,
+        nickname: nicknameStringType,
+      });
       res.status(response.code).json(response);
     });
   });

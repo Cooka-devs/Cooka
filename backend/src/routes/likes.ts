@@ -19,13 +19,17 @@ export const setLikesRoutes = (app: Express, conn: Pool) => {
   routeType.map((type) => {
     app.get(`/${type}_likes_num/:id`, async (req, res) => {
       if (!("id" in req.params)) return BAD_REQUEST;
+      console.log("req.query:", req.query);
+      console.log("req.params:", req.params);
       const { user } = req.query;
       if (!user) {
+        console.log("1");
         const { id } = req.params;
         const params = { type: type, id: +id };
         const response = await getLikesNum(conn, params);
         res.status(response.code).json(response);
       } else {
+        console.log("user:", user);
         const { id } = req.params;
         const params = { type: type, id: +id };
         const response = await getLikesNumByUser(conn, params);

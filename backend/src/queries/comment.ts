@@ -23,7 +23,16 @@ export interface UpdateCommentListParams {
   content: string;
   type: string;
 }
-
+export interface GetMyCommentsParams {
+  type: string;
+  size: number;
+  nickname: string;
+  page: number;
+}
+export interface GetMyCommentsNumParams {
+  nickname: string;
+  type: string;
+}
 export const addComment: QueriesFunctionWithBody<AddCommentListParams> = async (
   conn,
   params
@@ -98,6 +107,55 @@ export const getCommentsNum: QueriesFunctionWithBody<
     const result = await conn.execute(
       `SELECT COUNT(*) as count FROM ${type} WHERE postId = ?`,
       [id]
+    );
+    return makeSuccessResponse(result[0][0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
+
+export const getMyComments: QueriesFunctionWithBody<
+  GetMyCommentsParams
+> = async (conn, params) => {
+  const { nickname, type, size, page } = params;
+  const offet = (page - 1) * size;
+  let modifedType;
+  if (type === "recipe_comment") {
+    modifedType = "recipe";
+  } else if (type === "place_comment") {
+    modifedType = "place";
+  } else if (type === "counseling_comment") {
+    modifedType = "counseling";
+  }
+  try {
+    const result = await conn.execute(
+      `SELECT DISTINCT ${modifedType}.* FROM ${type} JOIN ${modifedType} ON ${type}.postId = ${modifedType}.id 
+      WHERE ${type}.writer = ? LIMIT ${size} OFFSET ${offet}`,
+      [nickname]
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
+export const getMyCommentsNum: QueriesFunctionWithBody<
+  //댓글단 게시물의 수 중복빼고
+  GetMyCommentsNumParams
+> = async (conn, params) => {
+  const { nickname, type } = params;
+  let modifedType;
+  if (type === "recipe_comment") {
+    modifedType = "recipe";
+  } else if (type === "place_comment") {
+    modifedType = "place";
+  } else if (type === "counseling_comment") {
+    modifedType = "counseling";
+  }
+  try {
+    const result = await conn.execute(
+      `SELECT COUNT(DISTINCT ${modifedType}.id) as count FROM ${type} JOIN ${modifedType} ON ${type}.postId = ${modifedType}.id 
+      WHERE ${type}.writer = ?`,
+      [nickname]
     );
     return makeSuccessResponse(result[0][0]);
   } catch (err) {

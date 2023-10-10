@@ -29,6 +29,7 @@ const RecipeDetail = () => {
   const router = useRouter();
   useEffect(() => {
     const id = router.query.id;
+    console.log("recipe detail id:", id);
     const result = id as string;
     const getP = async () => {
       const getPost = await useGetPost(result, "recipe");
@@ -37,7 +38,9 @@ const RecipeDetail = () => {
     };
     getP();
     const getC = async () => {
+      console.log("진입");
       const getComments = await useGetComments(result, "recipe");
+      console.log("getComments", getComments);
       setComments(getComments);
     };
     getC();
