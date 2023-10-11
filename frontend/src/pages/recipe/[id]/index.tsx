@@ -38,7 +38,6 @@ const RecipeDetail = () => {
     };
     getP();
     const getC = async () => {
-      console.log("진입");
       const getComments = await useGetComments(result, "recipe");
       console.log("getComments", getComments);
       setComments(getComments);

@@ -22,3 +22,11 @@ export const PLACECATEGORY = [
   "혼밥",
   "건강식",
 ];
+
+export const TYPES = ["recipe", "chef", "place", "counseling"];
+export const best = [
+  { title: "화제의 레시피", items: [] },
+  { title: "화제의 쉐프", items: [] },
+  { title: "화제의 맛집", items: [] },
+  { title: "화제의 고민", items: [] },
+];

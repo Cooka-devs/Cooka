@@ -22,6 +22,7 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
       }
     });
     app.get(`/list/${type}`, async (req, res) => {
+      console.log("1");
       if (!req.query) return BAD_REQUEST;
       const { page, size, nickname } = req.query;
       if (page === undefined || size === undefined) return BAD_REQUEST;
@@ -31,6 +32,7 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
         const params = { type: type, page: +page, size: +size };
         const response = await getListByPage(conn, params);
         res.status(response.code).json(response);
+        console.log("1");
       } else {
         const params = {
           writer: nickname,
@@ -40,6 +42,7 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
         };
         const response = await getListByPageAndUser(conn, params);
         res.status(response.code).json(response);
+        console.log("2");
       }
     });
   });

@@ -60,7 +60,6 @@ export const getListByPageAndUser: QueriesFunctionWithBody<
   GetListByPageAndUserProps
 > = async (conn, params) => {
   try {
-    console.log("params:", params);
     const { type, page, size, writer } = params;
     const result = await conn.execute(
       `SELECT * FROM ${type} WHERE writer = ? LIMIT ${size} OFFSET ${
@@ -70,7 +69,6 @@ export const getListByPageAndUser: QueriesFunctionWithBody<
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {
-    console.log("1");
     return DB_QUERY_ERROR;
   }
 };

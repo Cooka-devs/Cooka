@@ -44,6 +44,7 @@ export const DisplayLikes = ({
       className={Styles.like_span}
       onClick={async (e) => {
         if (user) {
+          console.log(user);
           e.stopPropagation();
           if (onLike) {
             await DefaultAxiosService.instance

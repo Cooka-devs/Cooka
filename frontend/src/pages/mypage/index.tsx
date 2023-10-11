@@ -220,7 +220,7 @@ const Mypage = () => {
                 <button
                   className={Styles.upload_btn}
                   style={{ marginLeft: "1rem" }}
-                  onClick={() => onClickProfileImgChange()}
+                  onClick={onClickProfileImgChange}
                 >
                   등록완료
                 </button>
@@ -287,12 +287,15 @@ const Mypage = () => {
     }
   };
   useEffect(() => {
+    //체크타입이 바뀔때마다 페이지를 1로 바꿔줍니다
     const changedCheckType = async () => {
       await setCurrentPage(1);
     };
     changedCheckType();
   }, [checkType]);
+
   useEffect(() => {
+    //체크타입과 페이지를 종합해 데이터를 가져옵니다.
     const changedCheckTypeOrPage = async () => {
       if (typeof user != "string" && user) {
         ContentsByCheckType({

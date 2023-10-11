@@ -8,7 +8,7 @@ export interface RecipeListProps {
 }
 
 const RecipeList = ({ item }: RecipeListProps) => {
-  const [user, setUser] = useState<undefined | User | string>("최초실행방지");
+  const [user, setUser] = useState<undefined | User>();
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();

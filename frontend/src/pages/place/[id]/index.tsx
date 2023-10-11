@@ -35,7 +35,9 @@ const PlaceDetail = () => {
 
     const getP = async () => {
       const getPost = await useGetPost(result, "place");
-      setPost(getPost as PlaceProps | undefined);
+      setPost(() => {
+        return { ...getPost } as PlaceProps | undefined;
+      });
     };
     getP();
 

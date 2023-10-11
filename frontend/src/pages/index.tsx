@@ -1,125 +1,43 @@
-import { Button, Divider } from "@/components";
-import Styles from "./index.module.css";
 import BestItems from "@/components/BestItems";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { CsItem, PlaceProps, Recipe, User } from "@/types";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { User } from "@/types";
-const CONTAINERS = [
-  [
-    {
-      title: "화제의 레시피",
-      items: [
-        {
-          id: 1,
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "한우 된장찌개!",
-          likes: 0,
-          views: 0,
-          recipe: "",
-        },
-        {
-          id: 2,
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "한우 된장찌개!",
-          likes: 0,
-          views: 0,
-          recipe: "",
-        },
-        {
-          id: 3,
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "한우 된장찌개!",
-          likes: 0,
-          views: 0,
-          recipe: "",
-        },
-        {
-          id: 4,
-          imgSrc:
-            "https://cdn.pixabay.com/photo/2015/10/01/14/26/fried-rice-967081_1280.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "한우 된장찌개!",
-          likes: 0,
-          views: 0,
-          recipe: "",
-        },
-      ],
-    },
-  ],
-  [
-    {
-      title: "인기 쉐프",
-      items: [
-        {
-          id: 0,
-          imgSrc: "nonuser.webp",
-          imgAlt: "bestcontent",
-          itemTitle: "쉐프",
-        },
-        {
-          id: 0,
-          imgSrc: "nonuser.webp",
-          imgAlt: "bestcontent",
-          itemTitle: "쉐프",
-        },
-        {
-          id: 0,
-          imgSrc: "nonuser.webp",
-          imgAlt: "bestcontent",
-          itemTitle: "쉐프",
-        },
-        {
-          id: 0,
-          imgSrc: "nonuser.webp",
-          imgAlt: "bestcontent",
-          itemTitle: "쉐프",
-        },
-      ],
-    },
-  ],
-  [
-    {
-      title: "화제의 고민",
-      items: [
-        {
-          id: 1,
-          content: "개봉한 파스타소스 유통기한?",
-        },
-        {
-          id: 2,
-          content: "개봉한 파스타소스 유통기한?",
-        },
-      ],
-    },
-    {
-      title: "화제의 맛집",
-      items: [
-        {
-          id: 0,
-          imgSrc:
-            "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20220216_86%2F16450062673229pD9x_JPEG%2FScreenshot_20220216-184157_NAVER.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "오늘 와인한잔",
-        },
-        {
-          id: 1,
-          imgSrc:
-            "https://search.pstatic.net/common/?src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20230428_91%2F1682638709082udtMM_JPEG%2FIMG_20230423_234810_923.jpg",
-          imgAlt: "bestcontent",
-          itemTitle: "정육점 김씨",
-        },
-      ],
-    },
-  ],
-];
+import Styles from "./index.module.css";
+import { best, TYPES } from "@/constants";
+import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
+
+interface BestItemProps {
+  title: string;
+  items: (Recipe | CsItem | PlaceProps)[];
+}
 
 export default function Home() {
+  const [bestItems, setBestItems] = useState<BestItemProps[] | undefined>(
+    undefined
+  );
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    const call = async () => {
+      const promises = TYPES.map(async (item, index) => {
+        await DefaultAxiosService.instance.get(`/best/${item}`).then((res) => {
+          best[index].items = res.data.data;
+        });
+      });
+      await Promise.all(promises);
+      setBestItems(() => {
+        return [...best]; // best가 변경됐을때 , 참조값으로 들어가면
+        //상태가 변경됨을 인지하지못해, 리렌더링을 막습니다.
+        //그래서 복사본을 떠서 주소값을 바꿔줌으로써 리렌더링을 하게됩니다.
+      });
+      const getU = await searchUser();
+      setUser(() => {
+        return { ...getU };
+      });
+    };
+    call();
+  }, []);
+
   return (
     <div className={Styles.main}>
       <div className={Styles.main_container}>
@@ -131,21 +49,18 @@ export default function Home() {
           </div>
         </div>
         <div className={Styles.best_container}>
-          {CONTAINERS.map((bestItem, index) => {
-            return (
-              <div className={Styles.flex_row} key={index}>
-                {bestItem.map((item, index) => {
-                  return (
-                    <BestItems
-                      title={item.title}
-                      items={item.items}
-                      key={index}
-                    />
-                  );
-                })}
-              </div>
-            );
-          })}
+          <div className={Styles.flex_row}>
+            {bestItems?.map((bestItem, index) => {
+              return (
+                <BestItems
+                  title={bestItem.title}
+                  items={bestItem.items}
+                  user={user}
+                  key={index}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

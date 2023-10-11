@@ -41,6 +41,7 @@ export default function RecipePage() {
       setList: setList,
       type: "recipe",
     });
+    console.log(list);
   }, [currentPage]);
   useEffect(() => {
     const fetch = async () => {

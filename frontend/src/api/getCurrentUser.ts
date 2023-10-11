@@ -14,7 +14,6 @@ export const getCurrentUser = async () => {
 
 export const searchUser = async (): Promise<User> => {
   const getU = await getCurrentUser(); //세션을통해 user id를 알아냄
-  console.log("getU", getU);
   const getUser = await DefaultAxiosService.instance.post(
     // user id로 해당 유저의 정보를 가져옴
     "/pw",

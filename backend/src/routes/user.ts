@@ -23,7 +23,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
   app.get("/users", async (req, res) => {
     console.log();
     const response = await getUsers(conn);
-    res.status(response.code).json(response); //성공시 code=200 실패시code=500
+    res.status(response.code).json(response);
   });
   app.post("/pw", async (req: RequestGeneric<GetPwParams>, res) => {
     const response = await getPw(conn, req.body);

@@ -29,6 +29,7 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
     };
     getLikesNum();
   }, [onLike]);
+
   useEffect(() => {
     const getCommentsNum = async () => {
       await DefaultAxiosService.instance
@@ -46,6 +47,7 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
         src={item.imgSrc}
         alt={item.imgAlt}
         onClick={() => router.push({ pathname: `/recipe/${item.id}` })}
+        className={Styles.list_img}
       />
       <div className={Styles.list_date}>{item.created_at}</div>
       <div className={Styles.list_title_row}>
