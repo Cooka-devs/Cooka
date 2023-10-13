@@ -1,20 +1,22 @@
 .chefpage {
   font-size: 2rem;
   font-family: "SUITE-Regular";
-  width: 120rem;
-  margin: auto;
+  width: 140rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  margin: auto;
+  gap: 4rem;
 }
 .chef_profile {
   display: flex;
+  padding-top: 1rem;
   gap: 1rem;
   margin-bottom: 2rem;
 }
 .profile_img {
   width: 30rem;
   height: 30rem;
+  border-radius: 1rem;
 }
 .profile_text {
   width: 89rem;
@@ -23,4 +25,27 @@
   min-height: 30rem;
   border-radius: 1rem;
   box-shadow: 1rem 1rem 1rem rgb(226, 223, 217);
+}
+.view_list {
+  position: relative;
+  padding-left: 10rem;
+}
+.arrowbtn {
+  font-size: 5rem;
+  color: burlywood;
+}
+.arrow_right {
+  position: absolute;
+  right: 3rem;
+  top: 20.844rem;
+}
+.arrow_left {
+  position: absolute;
+  left: 3rem;
+  top: 20.844rem;
+}
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "SUITE-Regular";
 }

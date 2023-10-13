@@ -26,7 +26,7 @@ export const PLACECATEGORY = [
 export const TYPES = ["recipe", "chef", "place", "counseling"];
 export const best = [
   { title: "화제의 레시피", items: [] },
-  { title: "화제의 쉐프", items: [] },
+  { title: "인기 쉐프", items: [] },
   { title: "화제의 맛집", items: [] },
   { title: "화제의 고민", items: [] },
 ];

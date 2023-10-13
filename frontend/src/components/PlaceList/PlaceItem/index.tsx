@@ -20,7 +20,6 @@ const PlaceItem = ({ item, user }: Place) => {
       await DefaultAxiosService.instance
         .get(`/place_likes_num/${item.id}`)
         .then((res) => {
-          console.log(res.data.data.count);
           setLikes(res.data.data.count);
         });
     };

@@ -23,7 +23,6 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
       await DefaultAxiosService.instance
         .get(`/recipe_likes_num/${item.id}`)
         .then((res) => {
-          console.log(res.data.data.count);
           setLikes(res.data.data.count);
         });
     };

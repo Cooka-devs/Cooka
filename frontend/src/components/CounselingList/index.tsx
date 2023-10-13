@@ -6,7 +6,7 @@ interface CsItemProps {
   user: User | undefined;
 }
 
-const CounselingList = ({ items, user }: CsItemProps) => {
+export const CounselingList = ({ items, user }: CsItemProps) => {
   return (
     <div className={Styles.cslist}>
       {items.map((item, index) => {

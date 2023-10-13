@@ -1,3 +1,9 @@
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
 .list_item {
   display: flex;
   flex-direction: column;

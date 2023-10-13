@@ -20,7 +20,6 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
       await DefaultAxiosService.instance
         .get(`/counseling_likes_num/${item.id}`)
         .then((res) => {
-          console.log(res.data.data.count);
           setLikes(res.data.data.count);
         });
     };

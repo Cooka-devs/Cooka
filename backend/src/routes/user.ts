@@ -5,6 +5,7 @@ import {
   AddUserParams,
   GetPwParams,
   addUser,
+  getUserById,
   getUsers,
   updateUserImage,
   updateUserText,
@@ -12,6 +13,7 @@ import {
 import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 import { getPw } from "../queries/user";
+import { returnBadRequest } from "../utils/response";
 interface SocialLoginProps {
   id: number;
   login_id: string;
@@ -21,8 +23,13 @@ interface SocialLoginProps {
 }
 export const setUserRoutes = (app: Express, conn: Pool) => {
   app.get("/users", async (req, res) => {
-    console.log();
     const response = await getUsers(conn);
+    res.status(response.code).json(response);
+  });
+  app.get("/users/:id", async (req, res) => {
+    if (!("id" in req.params)) return returnBadRequest(res);
+    const { id } = req.params;
+    const response = await getUserById(conn, +id);
     res.status(response.code).json(response);
   });
   app.post("/pw", async (req: RequestGeneric<GetPwParams>, res) => {

@@ -47,7 +47,7 @@ const Header = () => {
               className={Styles.search_btn}
               onClick={() => {
                 router.push({
-                  pathname: "search",
+                  pathname: "/search",
                   query: { keyword: searchText },
                 });
               }}

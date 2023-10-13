@@ -34,6 +34,7 @@ export const setLikesRoutes = (app: Express, conn: Pool) => {
       }
     });
     app.get(`/${type}_likes`, async (req, res) => {
+      console.log("query:", req.query);
       if (!req.query) return returnBadRequest(res);
       const { userId, postId } = req.query;
       const params = { type: type, postId: postId, userId: userId };

@@ -31,9 +31,7 @@ export default function Home() {
         //그래서 복사본을 떠서 주소값을 바꿔줌으로써 리렌더링을 하게됩니다.
       });
       const getU = await searchUser();
-      setUser(() => {
-        return { ...getU };
-      });
+      setUser(getU);
     };
     call();
   }, []);

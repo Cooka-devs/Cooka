@@ -10,7 +10,37 @@ export const getBest: QueriesFunctionWithType = async (conn, type) => {
          rl ON r.id = rl.recipe_id`);
       return makeSuccessResponse(result[0]);
     } else if (type === "chef") {
-      return makeSuccessResponse([]);
+      const result = await conn.execute(`WITH UserLikes AS (
+        SELECT
+          u.nickname AS user_nickname,
+          r.id AS recipe_id,
+          COUNT(DISTINCT rl.user_id) AS recipe_likes_count,
+          p.id AS place_id,
+          COUNT(DISTINCT pl.user_id) AS place_likes_count,
+          c.id AS counseling_id,
+          COUNT(DISTINCT cl.user_id) AS counseling_likes_count
+        FROM user u
+        LEFT JOIN recipe r ON u.nickname = r.writer
+        LEFT JOIN recipe_likes rl ON r.id = rl.recipe_id
+        LEFT JOIN place p ON u.nickname = p.writer
+        LEFT JOIN place_likes pl ON p.id = pl.place_id
+        LEFT JOIN counseling c ON u.nickname = c.writer
+        LEFT JOIN counseling_likes cl ON c.id = cl.counseling_id
+        GROUP BY u.nickname, r.id, p.id, c.id
+      ),
+      UserTotalLikes AS (
+        SELECT
+          user_nickname,
+          SUM(recipe_likes_count + place_likes_count + counseling_likes_count) AS total_likes
+        FROM UserLikes
+        GROUP BY user_nickname
+      )SELECT
+        u.*
+      FROM UserTotalLikes utl
+      JOIN user u ON utl.user_nickname = u.nickname
+      ORDER BY utl.total_likes DESC
+      LIMIT 4`);
+      return makeSuccessResponse(result[0]);
     } else if (type === "place") {
       const result = await conn.execute(`SELECT p.* FROM place AS p INNER JOIN
         ( SELECT place_id FROM place_likes AS pl GROUP BY place_id ORDER BY COUNT(*) DESC LIMIT 4 )

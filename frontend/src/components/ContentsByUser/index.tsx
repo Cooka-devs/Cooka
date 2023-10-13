@@ -6,7 +6,7 @@ import CounselingList from "../CounselingList";
 import { useEffect, useState } from "react";
 import { getMyComments } from "@/api/getMyComments";
 interface ContentsByUserProps {
-  onClick: any;
+  onClick?: any;
   user: User;
 }
 const ContentsByUser = ({ onClick, user }: ContentsByUserProps) => {

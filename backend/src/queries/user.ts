@@ -23,7 +23,14 @@ export interface GetPwParams {
   login_id: string;
   social_id: number;
 }
-
+export const getUserById = async (conn: Pool, id: number) => {
+  try {
+    const result = await conn.query("SELECT * FROM user WHERE id=?", [id]);
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getPw: QueriesFunctionWithBody<GetPwParams> = async (
   conn,
   req
