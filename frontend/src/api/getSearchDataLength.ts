@@ -5,6 +5,7 @@ interface GetSearchDataLength {
   setR: React.Dispatch<React.SetStateAction<number>>;
   setP: React.Dispatch<React.SetStateAction<number>>;
   setC: React.Dispatch<React.SetStateAction<number>>;
+  setN: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const getSearchDataLength = async ({
@@ -12,6 +13,7 @@ export const getSearchDataLength = async ({
   setR,
   setP,
   setC,
+  setN,
 }: GetSearchDataLength) => {
   SEARCHTYPE.map((searchType) => {
     DefaultAxiosService.instance
@@ -23,6 +25,8 @@ export const getSearchDataLength = async ({
           setP(res.data.data[0].count);
         } else if (searchType === "counseling") {
           setC(res.data.data[0].count);
+        } else if (searchType === "news") {
+          setN(res.data.data[0].count);
         }
       });
   });

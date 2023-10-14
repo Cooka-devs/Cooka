@@ -11,7 +11,7 @@ interface CounselingItemProp {
   user: User | undefined;
 }
 export const CounselingItem = ({ item, user }: CounselingItemProp) => {
-  const [likes, setLikes] = useState<number | string>("최초실행방지");
+  const [likes, setLikes] = useState<number>(0);
   const [onLike, setOnLike] = useState<boolean>(false);
   const [comments, setComments] = useState<number>(0);
   const router = useRouter();
@@ -50,6 +50,7 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
             onLike={onLike}
             likes={likes}
             setOnLike={setOnLike}
+            setLikesNum={setLikes}
             user={user}
             item={item}
             type="counseling"

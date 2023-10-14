@@ -13,11 +13,10 @@ export interface RecipeItemProps {
 }
 
 const RecipeItem = ({ item, user }: RecipeItemProps) => {
-  const [likes, setLikes] = useState<number | string>("최초실행방지");
+  const [likes, setLikes] = useState<number>(0);
   const [comments, setComments] = useState<number | string>(0); //댓글의 갯수
   const [onLike, setOnLike] = useState<boolean>(false); // 내가좋아요를 눌렀는지 여부
   const router = useRouter();
-
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
@@ -56,18 +55,15 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
         {item.isHot ? <div className={Styles.list_title_hot}>HOT!</div> : ""}
       </div>
       <div className={Styles.list_likes}>
-        {typeof likes != "string" ? (
-          <DisplayLikes
-            onLike={onLike}
-            likes={likes}
-            setOnLike={setOnLike}
-            user={user}
-            item={item}
-            type="recipe"
-          />
-        ) : (
-          ""
-        )}
+        <DisplayLikes
+          onLike={onLike}
+          likes={likes}
+          setOnLike={setOnLike}
+          setLikesNum={setLikes}
+          user={user}
+          item={item}
+          type="recipe"
+        />
         <div className={Styles.like_span}>
           <InsertCommentOutlinedIcon
             className={Styles.comment_icon}

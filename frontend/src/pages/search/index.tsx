@@ -1,4 +1,4 @@
-import { CsItem, PlaceProps, Recipe, User } from "@/types";
+import { CsItem, News, PlaceProps, Recipe, User } from "@/types";
 import Styles from "./index.module.css";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo } from "react";
@@ -10,6 +10,7 @@ import { LeftButton, RightButton } from "@/components/Button";
 import PlaceList from "@/components/PlaceList";
 import CounselingList from "@/components/CounselingList";
 import { searchUser } from "@/api/getCurrentUser";
+import NewsPagination from "@/components/NewsPagination";
 const Search = () => {
   const [searchRecipeList, setSearchRecipeList] = useState<
     //검색어, 페이지에따라 상태변경됩니다.
@@ -19,12 +20,15 @@ const Search = () => {
     PlaceProps[] | undefined
   >([]);
   const [searchCsList, setSearchCsList] = useState<CsItem[] | undefined>([]);
+  const [searchNewsList, setSearchNewsList] = useState<News[] | undefined>([]);
 
   const [recipeListNum, setRecipeListNum] = useState<number>(0); //데이터를 다불러오지않고 길이만 가져옴
   //그 길이로 화살표를 출력할지 안할지를 결정합니다.
   const [placeListNum, setPlaceListNum] = useState<number>(0);
   const [csListNum, setCsListNum] = useState<number>(0);
+  const [newsListNum, setNewsListNum] = useState<number>(0);
 
+  const [newsPageNum, setNewsPageNum] = useState<number>(1);
   const [recipePageNum, setRecipePageNum] = useState<number>(1); //
   const [placePageNum, setPlacePageNum] = useState<number>(1);
   const [csPageNum, setCsPageNum] = useState<number>(1);
@@ -42,6 +46,7 @@ const Search = () => {
       setP: setPlaceListNum,
       setR: setRecipeListNum,
       setC: setCsListNum,
+      setN: setNewsListNum,
     });
     const fetch = async () => {
       const getU = await searchUser();
@@ -73,8 +78,15 @@ const Search = () => {
       size: ITEMNUM,
       setList: setSearchCsList,
     });
+    getSearchData({
+      type: "news",
+      keyword: keyword,
+      page: newsPageNum,
+      size: ITEMNUM,
+      setList: setSearchNewsList,
+    });
     //////////////////////////////////////////////////////
-  }, [router.query, user]);
+  }, [router.query]);
 
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
@@ -111,7 +123,17 @@ const Search = () => {
       setList: setSearchCsList,
     });
   }, [csPageNum]);
-
+  useMemo(() => {
+    if (!router.isReady || router.query["keyword"] === undefined) return;
+    const keyword = router.query["keyword"].toString();
+    getSearchData({
+      type: "news",
+      keyword: keyword,
+      page: newsPageNum,
+      size: ITEMNUM,
+      setList: setSearchNewsList,
+    });
+  }, [newsPageNum]);
   return (
     <div className={Styles.searchpage}>
       <div className={Styles.keyword}>검색결과</div>
@@ -160,6 +182,21 @@ const Search = () => {
           <div className={Styles.title}>질문</div>
           {searchCsList && searchCsList.length > 0 ? (
             <CounselingList items={searchCsList} user={user} />
+          ) : (
+            <NoData paddingLeft="1rem" />
+          )}
+        </div>
+        <div className={Styles.result_category}>
+          <RightButton
+            listLength={newsListNum}
+            itemNum={ITEMNUM}
+            pageNum={newsPageNum}
+            setPageNum={setNewsPageNum}
+          />
+          <LeftButton pageNum={newsPageNum} setPageNum={setNewsPageNum} />
+          <div className={Styles.title}>뉴스</div>
+          {searchNewsList && searchNewsList.length > 0 ? (
+            <NewsPagination items={searchNewsList} />
           ) : (
             <NoData paddingLeft="1rem" />
           )}

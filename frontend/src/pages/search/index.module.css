@@ -23,20 +23,7 @@
   font-size: 3.5rem;
   font-weight: 700;
 }
-.arrowbtn {
-  font-size: 5rem;
-  color: burlywood;
-}
-.arrow_right {
-  position: absolute;
-  right: 3rem;
-  top: 20.844rem;
-}
-.arrow_left {
-  position: absolute;
-  left: 3rem;
-  top: 20.844rem;
-}
+
 .title {
   padding-left: 1rem;
   font-size: 2.5rem;

@@ -11,7 +11,7 @@ interface Place {
   user: User | undefined;
 }
 const PlaceItem = ({ item, user }: Place) => {
-  const [likes, setLikes] = useState<number | string>("최초실행방지");
+  const [likes, setLikes] = useState<number>(0);
   const [onLike, setOnLike] = useState<boolean>(false);
   const [comments, setComments] = useState<number>(0);
   const router = useRouter();
@@ -51,18 +51,15 @@ const PlaceItem = ({ item, user }: Place) => {
         {item.isHot ? <div className={Styles.list_title_hot}>HOT!</div> : ""}
       </div>
       <div className={Styles.list_likes}>
-        {typeof likes != "string" ? (
-          <DisplayLikes
-            onLike={onLike}
-            likes={likes}
-            setOnLike={setOnLike}
-            user={user}
-            item={item}
-            type="place"
-          />
-        ) : (
-          ""
-        )}
+        <DisplayLikes
+          onLike={onLike}
+          likes={likes}
+          setOnLike={setOnLike}
+          setLikesNum={setLikes}
+          user={user}
+          item={item}
+          type="place"
+        />
         <div className={Styles.like_span}>
           <InsertCommentOutlinedIcon
             className={Styles.like_icon}

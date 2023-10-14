@@ -15,14 +15,13 @@ const RecipeList = ({ item }: RecipeListProps) => {
       await setUser(getU);
     };
     fetch();
+    console.log("recipelist에서의 user:", user);
   }, []);
   return (
     <div className={Styles.list_container}>
       {item.map((item, index) => {
-        return typeof user != "string" ? (
+        return (
           <RecipeItem key={`${index}-${item.title}`} item={item} user={user} />
-        ) : (
-          ""
         );
       })}
     </div>

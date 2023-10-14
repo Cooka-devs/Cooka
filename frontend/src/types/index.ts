@@ -9,7 +9,13 @@ export interface Comment extends Rowable {
   content: string;
   created_at: string;
 }
-
+export interface News extends Rowable {
+  imgSrc: string;
+  imgAlt: string;
+  title: string;
+  url: string;
+  created_at: string;
+}
 export interface Recipe extends Rowable {
   imgSrc: string;
   imgAlt: string;
