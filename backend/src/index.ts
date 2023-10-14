@@ -8,7 +8,6 @@ import cors from "cors";
 import session from "express-session";
 import * as expressSession from "express-session";
 import mysqlSession from "express-mysql-session";
-import { setRecipeRoutes } from "./routes/recipe";
 import { setImageRoutes } from "./routes/image";
 import path from "path";
 import { setPlaceRoutes } from "./routes/place";
@@ -17,6 +16,7 @@ import { setCommentRoutes } from "./routes/comment";
 import { setLikesRoutes } from "./routes/likes";
 import { setIntergratedRoutes } from "./routes/intergrate";
 import { setBestRoutes } from "./routes/best";
+import { setRecipeRoutes } from "./routes/recipe";
 
 dotenv.config();
 const PORT = 8000;

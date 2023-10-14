@@ -1,9 +1,14 @@
-const Divider = ({ color = "black", style = "solid" }) => {
+const Divider = ({
+  color = "black",
+  style = "solid",
+  weight = "0.1rem",
+  width = "100%",
+}) => {
   return (
     <div
       style={{
-        width: "100%",
-        borderTop: `0.1rem ${style} ${color}`,
+        width: `${width}`,
+        borderTop: `${weight} ${style} ${color}`,
         marginBottom: "1rem",
       }}
     />

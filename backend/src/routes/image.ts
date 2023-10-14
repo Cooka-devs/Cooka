@@ -5,6 +5,7 @@ import { BAD_REQUEST } from "../constants/response";
 import multer, { Multer } from "multer";
 import randomstring from "randomstring";
 import path from "path";
+import { returnBadRequest } from "../utils/response";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -20,7 +21,7 @@ const upload: Multer = multer({ storage: storage });
 export const setImageRoutes = (app: Express) => {
   app.post("/image", upload.single("image"), async (req, res) => {
     if (!req.file || isIncludeUndefined(req.file)) {
-      return BAD_REQUEST;
+      return returnBadRequest(res);
     }
     const imgUrl = `http://${process.env.DB_HOST}:${process.env.DB_PORT}/uploads/${req.file.filename}`;
     console.log(imgUrl);

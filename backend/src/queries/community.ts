@@ -4,6 +4,7 @@ import { makeSuccessResponse } from "../utils/response";
 import { DB_QUERY_ERROR } from "../constants/response";
 import { getTime } from "../utils/time";
 import { GetLikedListParams } from "./recipe";
+import e from "express";
 
 export interface AddCounselingListParams {
   writer: string;
@@ -19,6 +20,22 @@ export interface UpdateCounselingListParams {
 export interface DeleteCounselingListParams {
   id: number;
 }
+interface GetCounselingListParam {
+  id: number;
+}
+export const getCounselingById: QueriesFunctionWithBody<
+  GetCounselingListParam
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(
+      `SELECT * FROM counseling WHERE id = ${id}`
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getCounseling: QueriesFunction = async (conn: Pool) => {
   try {
     const result = await conn.execute("SELECT * FROM counseling");

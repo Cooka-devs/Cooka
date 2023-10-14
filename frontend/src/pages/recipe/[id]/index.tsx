@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 import { Divider } from "@/components";
 import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/utilities/getPost";
 import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { MakeComment } from "@/components/MakeComment";
 import { WantDeleteList } from "@/components/WantDeleteList";
 import { ListModify } from "@/components/ListModify";
+import { getPostById } from "@/api/getPostById";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const [comments, setComments] = useState<Comment[]>();
@@ -20,20 +20,21 @@ const RecipeDetail = () => {
   const [inputComment, setInputComment] = useState<string>("");
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
   const [modify, setModify] = useState<boolean>(false);
+  const router = useRouter();
+
   const closeDeleteModal = () => {
     setDeleteModal(false);
   };
   const closeModal = () => {
     setModal(false);
   };
-  const router = useRouter();
+
   useEffect(() => {
+    if (!router.isReady || router.query.id === undefined) return;
     const id = router.query.id;
-    console.log("recipe detail id:", id);
     const result = id as string;
     const getP = async () => {
-      const getPost = await useGetPost(result, "recipe");
-      console.log(getPost);
+      const getPost = await getPostById(result, "recipe");
       setPost(getPost as Recipe | undefined);
     };
     getP();
@@ -49,7 +50,7 @@ const RecipeDetail = () => {
       setUser(getU);
     };
     fetch();
-  }, [router.query.id]);
+  }, [router.query]);
   return (
     <div>
       {modal ? (

@@ -1,175 +1,169 @@
-import { useEffect, useMemo, useState } from "react";
+import { CsItem, PlaceProps, Recipe, User } from "@/types";
 import Styles from "./index.module.css";
-import { RecipeList } from "@/components";
-import useSearchItems from "@/hooks/useSearchItems";
-import PlaceList from "@/components/PlaceList";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import NewsPagination from "@/components/NewsPagination";
-import CounselingList from "@/components/CounselingList";
 import { useRouter } from "next/router";
+import { useEffect, useState, useMemo } from "react";
+import { getSearchDataLength } from "@/api/getSearchDataLength";
+import { getSearchData } from "@/api/getSearchData";
+import { Divider, RecipeList } from "@/components";
+import NoData from "@/components/NoData";
+import { LeftButton, RightButton } from "@/components/Button";
+import PlaceList from "@/components/PlaceList";
+import CounselingList from "@/components/CounselingList";
+import { searchUser } from "@/api/getCurrentUser";
 const Search = () => {
-  const [recipeNum, setRecipeNum] = useState(0);
-  const [placeNum, setPlaceNum] = useState(0);
-  const [newsNum, setNewsNum] = useState(0);
-  const [counselingNum, setCounselingNum] = useState(0);
+  const [searchRecipeList, setSearchRecipeList] = useState<
+    //검색어, 페이지에따라 상태변경됩니다.
+    Recipe[] | undefined
+  >([]);
+  const [searchPlaceList, setSearchPlaceList] = useState<
+    PlaceProps[] | undefined
+  >([]);
+  const [searchCsList, setSearchCsList] = useState<CsItem[] | undefined>([]);
 
-  const itemNum = 4;
+  const [recipeListNum, setRecipeListNum] = useState<number>(0); //데이터를 다불러오지않고 길이만 가져옴
+  //그 길이로 화살표를 출력할지 안할지를 결정합니다.
+  const [placeListNum, setPlaceListNum] = useState<number>(0);
+  const [csListNum, setCsListNum] = useState<number>(0);
+
+  const [recipePageNum, setRecipePageNum] = useState<number>(1); //
+  const [placePageNum, setPlacePageNum] = useState<number>(1);
+  const [csPageNum, setCsPageNum] = useState<number>(1);
+
+  const [user, setUser] = useState<User | undefined>();
+  const ITEMNUM = 4;
+
   const router = useRouter();
 
-  const {
-    searchCounselingData,
-    searchNewsData,
-    searchPlaceListData,
-    searchRecipeListData,
-  } = useSearchItems();
-
   useEffect(() => {
-    setRecipeNum(0);
-    setPlaceNum(0);
-    setNewsNum(0);
-    setCounselingNum(0);
-  }, [router.query]);
+    if (!router.isReady || router.query["keyword"] === undefined) return;
+    const keyword = router.query["keyword"].toString();
+    getSearchDataLength({
+      keyword: keyword,
+      setP: setPlaceListNum,
+      setR: setRecipeListNum,
+      setC: setCsListNum,
+    });
+    const fetch = async () => {
+      const getU = await searchUser();
+      setUser(getU);
+    };
+    fetch();
+    /////useMemo를 사용하여
+    /////페이지이동시 불필요한 랜더링을 방지하고 해당 카테고리만 랜더링하게 하고싶었습니다.
+    /////새로고침시 pageNum가 변동되지않아 useMemo함수가 실행되지않습니다.
+    /////그래서 useEffect에 한번더 실행시켰습니다.
+    getSearchData({
+      type: "recipe",
+      keyword: keyword,
+      page: recipePageNum,
+      size: ITEMNUM,
+      setList: setSearchRecipeList,
+    });
+    getSearchData({
+      type: "place",
+      keyword: keyword,
+      page: placePageNum,
+      size: ITEMNUM,
+      setList: setSearchPlaceList,
+    });
+    getSearchData({
+      type: "counseling",
+      keyword: keyword,
+      page: csPageNum,
+      size: ITEMNUM,
+      setList: setSearchCsList,
+    });
+    //////////////////////////////////////////////////////
+  }, [router.query, user]);
 
-  const Lists = useMemo(() => {
-    return [
-      {
-        title: "레시피",
-        component: (
-          <RecipeList
-            item={searchRecipeListData.slice(recipeNum, recipeNum + itemNum)}
-          />
-        ),
-        data: searchRecipeListData,
-      },
-      {
-        title: "맛집",
-        component: (
-          <PlaceList
-            items={searchPlaceListData.slice(placeNum, placeNum + itemNum)}
-          />
-        ),
-        data: searchPlaceListData,
-      },
-      {
-        title: "뉴스",
-        component: (
-          <NewsPagination
-            items={searchNewsData.slice(newsNum, newsNum + itemNum)}
-          />
-        ),
-        data: searchNewsData,
-      },
-      {
-        title: "질문",
-        component: (
-          <CounselingList
-            items={searchCounselingData.slice(
-              counselingNum,
-              counselingNum + itemNum
-            )}
-            user={undefined}
-          />
-        ),
-        data: searchCounselingData,
-      },
-    ];
-  }, [
-    searchRecipeListData,
-    searchPlaceListData,
-    searchCounselingData,
-    searchNewsData,
-    placeNum,
-    recipeNum,
-    counselingNum,
-    newsNum,
-  ]);
+  useMemo(() => {
+    if (!router.isReady || router.query["keyword"] === undefined) return;
+    const keyword = router.query["keyword"].toString();
+    getSearchData({
+      type: "recipe",
+      keyword: keyword,
+      page: recipePageNum,
+      size: ITEMNUM,
+      setList: setSearchRecipeList,
+    });
+  }, [recipePageNum]);
 
-  const onClickLeftHandler = (title: string) => {
-    if (title === "레시피") {
-      recipeNum != 0 ? setRecipeNum((prev) => prev - itemNum) : "";
-    }
-    if (title === "맛집") {
-      placeNum != 0 ? setPlaceNum((prev) => prev - itemNum) : "";
-    }
-    if (title === "뉴스") {
-      newsNum != 0 ? setNewsNum((prev) => prev - itemNum) : "";
-    }
-    if (title === "질문") {
-      counselingNum != 0 ? setCounselingNum((prev) => prev - itemNum) : "";
-    }
-  };
+  useMemo(() => {
+    if (!router.isReady || router.query["keyword"] === undefined) return;
+    const keyword = router.query["keyword"].toString();
+    getSearchData({
+      type: "place",
+      keyword: keyword,
+      page: placePageNum,
+      size: ITEMNUM,
+      setList: setSearchPlaceList,
+    });
+  }, [placePageNum]);
 
-  const onClickRightHandler = (title: string) => {
-    if (title === "레시피") {
-      recipeNum + itemNum < searchRecipeListData.length
-        ? setRecipeNum((prev) => prev + itemNum)
-        : "";
-    }
-    if (title === "맛집") {
-      placeNum + itemNum < searchPlaceListData.length
-        ? setPlaceNum((prev) => prev + itemNum)
-        : "";
-    }
-    if (title === "뉴스") {
-      newsNum + itemNum < searchNewsData.length
-        ? setNewsNum((prev) => prev + itemNum)
-        : "";
-    }
-    if (title === "질문") {
-      counselingNum + itemNum < searchCounselingData.length
-        ? setCounselingNum((prev) => prev + itemNum)
-        : "";
-    }
-  };
+  useMemo(() => {
+    if (!router.isReady || router.query["keyword"] === undefined) return;
+    const keyword = router.query["keyword"].toString();
+    getSearchData({
+      type: "counseling",
+      keyword: keyword,
+      page: csPageNum,
+      size: ITEMNUM,
+      setList: setSearchCsList,
+    });
+  }, [csPageNum]);
 
   return (
     <div className={Styles.searchpage}>
-      <div className={Styles.main_container}>
-        {Lists.map((list) => {
-          return (
-            <div key={list.title} className={Styles.container_item}>
-              <div className={Styles.item_title}>{list.title}</div>
-              {list.data.length === 0 ? (
-                <div className={Styles.none_data}>검색된 정보가 없습니다.</div>
-              ) : (
-                <>
-                  <div className={Styles.item_content}>{list.component}</div>
-                  <button
-                    className={
-                      list.title === "뉴스"
-                        ? Styles.news_arrowleft_btn
-                        : list.title === "질문"
-                        ? Styles.counseling_arrowleft_btn
-                        : Styles.arrowleft_btn
-                    }
-                    onClick={() => onClickLeftHandler(list.title)}
-                    style={{
-                      display: list.data.length === 0 ? "none" : "inline-block",
-                    }}
-                  >
-                    <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-                  </button>
-                  <button
-                    className={
-                      list.title === "뉴스"
-                        ? Styles.news_arrowright_btn
-                        : list.title === "질문"
-                        ? Styles.counseling_arrowright_btn
-                        : Styles.arrowright_btn
-                    }
-                    onClick={() => onClickRightHandler(list.title)}
-                    style={{
-                      display: list.data.length === 0 ? "none" : "inline-block",
-                    }}
-                  >
-                    <ArrowForwardIosIcon className={Styles.arrowbtn} />
-                  </button>
-                </>
-              )}
-            </div>
-          );
-        })}
+      <div className={Styles.keyword}>검색결과</div>
+      <div style={{ paddingLeft: "5rem", marginBottom: "5rem" }}>
+        <Divider color="burlywood" weight="0.5rem" width="130rem" />
+      </div>
+      <div className={Styles.search_result}>
+        <div className={Styles.result_category}>
+          <RightButton
+            listLength={recipeListNum}
+            itemNum={ITEMNUM}
+            pageNum={recipePageNum}
+            setPageNum={setRecipePageNum}
+          />
+          <LeftButton pageNum={recipePageNum} setPageNum={setRecipePageNum} />
+          <div className={Styles.title}>레시피</div>
+          {searchRecipeList && searchRecipeList.length > 0 ? (
+            <RecipeList item={searchRecipeList} />
+          ) : (
+            <NoData paddingLeft="1rem" />
+          )}
+        </div>
+        <div className={Styles.result_category}>
+          <RightButton
+            listLength={placeListNum}
+            itemNum={ITEMNUM}
+            pageNum={placePageNum}
+            setPageNum={setPlacePageNum}
+          />
+          <LeftButton pageNum={placePageNum} setPageNum={setPlacePageNum} />
+          <div className={Styles.title}>맛집</div>
+          {searchPlaceList && searchPlaceList.length > 0 ? (
+            <PlaceList items={searchPlaceList} />
+          ) : (
+            <NoData paddingLeft="1rem" />
+          )}
+        </div>
+        <div className={Styles.result_category}>
+          <RightButton
+            listLength={csListNum}
+            itemNum={ITEMNUM}
+            pageNum={csPageNum}
+            setPageNum={setCsPageNum}
+          />
+          <LeftButton pageNum={csPageNum} setPageNum={setCsPageNum} />
+          <div className={Styles.title}>질문</div>
+          {searchCsList && searchCsList.length > 0 ? (
+            <CounselingList items={searchCsList} user={user} />
+          ) : (
+            <NoData paddingLeft="1rem" />
+          )}
+        </div>
       </div>
     </div>
   );

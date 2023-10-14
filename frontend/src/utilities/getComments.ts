@@ -8,39 +8,19 @@ const useGetComments = async (id: string, type: string) => {
   switch (type) {
     case "counseling":
       comment = await DefaultAxiosService.instance
-        .get("counseling_comment")
+        .get(`counseling_comment/${result}`)
         .then((res) => res.data.data);
-      break;
+      return comment;
     case "recipe":
       comment = await DefaultAxiosService.instance
-        .get("recipe_comment")
+        .get(`recipe_comment/${result}`)
         .then((res) => res.data.data);
-      break;
+      return comment;
     case "place":
       comment = await DefaultAxiosService.instance
-        .get("place_comment")
+        .get(`place_comment/${result}`)
         .then((res) => res.data.data);
-      break;
-  }
-  // if (type === "counseling") {
-  //   comment = await DefaultAxiosService.instance
-  //     .get("counseling_comment")
-  //     .then((res) => res.data.data);
-  // } else if (type === "recipe") {
-  //   comment = await DefaultAxiosService.instance
-  //     .get("recipe_comment")
-  //     .then((res) => res.data.data);
-  // } else if (type === "place") {
-  //   comment = await DefaultAxiosService.instance
-  //     .get("place_comment")
-  //     .then((res) => res.data.data);
-  // }
-  try {
-    const comments = comment.filter((comment) => comment.postId === result);
-    console.log("comments", comments);
-    return comments;
-  } catch (err) {
-    throw err;
+      return comment;
   }
 };
 export default useGetComments;

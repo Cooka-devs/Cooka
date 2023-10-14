@@ -26,7 +26,9 @@ export interface UpdateRecipeListParams {
   title: string;
   isHot: boolean;
 }
-
+export interface GetRecipeListParam {
+  id: number;
+}
 export interface DeleteRecipeListParams {
   id: number;
 }
@@ -86,6 +88,17 @@ export const addRecipe: QueriesFunctionWithBody<AddRecipeListParams> = async (
 export const getRecipe: QueriesFunction = async (conn: Pool) => {
   try {
     const result = await conn.query("SELECT * from recipe");
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
+export const getRecipeById: QueriesFunctionWithBody<
+  GetRecipeListParam
+> = async (conn, params) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(`SELECT * from recipe WHERE id = ${id}`);
     return makeSuccessResponse(result[0]);
   } catch (err) {
     return DB_QUERY_ERROR;

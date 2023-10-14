@@ -26,7 +26,21 @@ export interface UpdatePlaceListParams {
 export interface DeletePlaceListParams {
   id: number;
 }
-
+interface GetPlaceListParam {
+  id: number;
+}
+export const getPlaceById: QueriesFunctionWithBody<GetPlaceListParam> = async (
+  conn,
+  params
+) => {
+  const { id } = params;
+  try {
+    const result = await conn.execute(`SELECT * FROM place WHERE id = ${id}`);
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getPlace: QueriesFunction = async (conn: Pool) => {
   try {
     const result = await conn.execute("SELECT * FROM place");

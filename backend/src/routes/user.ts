@@ -38,7 +38,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
   });
   app.post("/users", async (req: RequestGeneric<AddUserParams>, res) => {
     if (!req.body || isIncludeUndefined(req.body)) {
-      return BAD_REQUEST;
+      return returnBadRequest(res);
     }
     const response = await addUser(conn, req.body);
     res.status(response.code).json(response);
@@ -138,7 +138,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
     }
   });
   app.put(`/user/image/:id`, async (req, res) => {
-    if (!("id" in req.params)) return BAD_REQUEST;
+    if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const { profile_img } = req.body;
     const response = await updateUserImage(conn, {
@@ -148,7 +148,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
     res.status(response.code).json(response);
   });
   app.put(`/user/text/:id`, async (req, res) => {
-    if (!("id" in req.params)) return BAD_REQUEST;
+    if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const { profile_text } = req.body;
     const response = await updateUserText(conn, {

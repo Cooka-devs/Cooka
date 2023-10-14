@@ -14,6 +14,7 @@ import CounselingList from "@/components/CounselingList";
 import { searchUser } from "@/api/getCurrentUser";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { LeftButton, RightButton } from "@/components/Button";
 const ChefDetail = () => {
   const [myRecipe, setMyRecipe] = useState<Recipe[] | undefined>();
   const [myPlace, setMyPlace] = useState<PlaceProps[] | undefined>();
@@ -88,95 +89,48 @@ const ChefDetail = () => {
             </div>
           </div>
           <div className={Styles.view_list}>
-            <button
-              style={{
-                display:
-                  recipeListNum / SIZE <= recipePage ? "none" : "inline-block",
-              }}
-              onClick={() => {
-                setRecipePage((prev) => prev + 1);
-              }}
-              className={Styles.arrow_right}
-            >
-              <ArrowForwardIosIcon className={Styles.arrowbtn} />
-            </button>
-            <button
-              style={{
-                display: recipePage === 1 ? "none" : "inline-block",
-              }}
-              className={Styles.arrow_left}
-              onClick={() => {
-                setRecipePage((prev) => prev - 1);
-              }}
-            >
-              <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-            </button>
+            <RightButton
+              listLength={recipeListNum}
+              itemNum={SIZE}
+              pageNum={recipePage}
+              setPageNum={setRecipePage}
+            />
+            <LeftButton pageNum={recipePage} setPageNum={setRecipePage} />
             <div className={Styles.title}>{userData.nickname}님의 레시피</div>
             {myRecipe && myRecipe.length ? (
               <RecipeList item={myRecipe} />
             ) : (
-              <NoData paddingTop="1rem" />
+              <NoData paddingTop="1rem" paddingLeft="1rem" />
             )}
           </div>
           <div className={Styles.view_list}>
-            <button
-              style={{
-                display:
-                  placeListNum / SIZE <= placePage ? "none" : "inline-block",
-              }}
-              onClick={() => {
-                setPlacePage((prev) => prev + 1);
-              }}
-              className={Styles.arrow_right}
-            >
-              <ArrowForwardIosIcon className={Styles.arrowbtn} />
-            </button>
-            <button
-              style={{
-                display: placePage === 1 ? "none" : "inline-block",
-              }}
-              className={Styles.arrow_left}
-              onClick={() => {
-                setPlacePage((prev) => prev - 1);
-              }}
-            >
-              <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-            </button>
+            <RightButton
+              listLength={placeListNum}
+              itemNum={SIZE}
+              pageNum={placePage}
+              setPageNum={setPlacePage}
+            />
+            <LeftButton pageNum={placePage} setPageNum={setPlacePage} />
             <div className={Styles.title}>{userData.nickname}님의 맛집</div>
             {myPlace && myPlace.length ? (
               <PlaceList items={myPlace} />
             ) : (
-              <NoData paddingTop="1rem" />
+              <NoData paddingTop="1rem" paddingLeft="1rem" />
             )}
           </div>
           <div className={Styles.view_list}>
-            <button
-              style={{
-                display: csListNum / SIZE <= csPage ? "none" : "inline-block",
-              }}
-              onClick={() => {
-                setCsPage((prev) => prev + 1);
-              }}
-              className={Styles.arrow_right}
-            >
-              <ArrowForwardIosIcon className={Styles.arrowbtn} />
-            </button>
-            <button
-              style={{
-                display: csPage === 1 ? "none" : "inline-block",
-              }}
-              className={Styles.arrow_left}
-              onClick={() => {
-                setCsPage((prev) => prev - 1);
-              }}
-            >
-              <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-            </button>
+            <RightButton
+              listLength={csListNum}
+              itemNum={SIZE}
+              pageNum={csPage}
+              setPageNum={setCsPage}
+            />
+            <LeftButton pageNum={csPage} setPageNum={setCsPage} />
             <div className={Styles.title}>{userData.nickname}님의 질문</div>
             {myCs && myCs.length ? (
               <CounselingList items={myCs} user={currentUser} />
             ) : (
-              <NoData paddingTop="1rem" />
+              <NoData paddingTop="1rem" paddingLeft="1rem" />
             )}
           </div>
         </>

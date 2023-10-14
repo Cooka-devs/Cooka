@@ -24,6 +24,7 @@ export const PLACECATEGORY = [
 ];
 
 export const TYPES = ["recipe", "chef", "place", "counseling"];
+export const SEARCHTYPE = ["recipe", "news", "place", "counseling"];
 export const best = [
   { title: "화제의 레시피", items: [] },
   { title: "인기 쉐프", items: [] },

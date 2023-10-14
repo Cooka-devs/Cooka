@@ -1,17 +1,14 @@
-.button {
-  background-color: #60aaeb;
-  border: none;
-  cursor: pointer;
-  padding: 1rem 2rem;
-  color: white;
-  border-radius: 0.4rem;
-  font-size: 2rem;
+.arrowbtn {
+  font-size: 5rem;
+  color: burlywood;
 }
-
-.button:hover {
-  background-color: #4d9fe8;
+.arrow_right {
+  position: absolute;
+  right: 3rem;
+  top: 20.844rem;
 }
-
-.button:active {
-  background-color: #2185de;
+.arrow_left {
+  position: absolute;
+  left: 3rem;
+  top: 20.844rem;
 }

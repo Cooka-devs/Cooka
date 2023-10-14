@@ -14,6 +14,10 @@ export interface AddCommentListParams {
   postId: number;
   type: string;
 }
+export interface GetCommentsByPostId {
+  id: number;
+  type: string;
+}
 export interface DeleteCommentListParams {
   id: number;
   type: string;
@@ -33,6 +37,19 @@ export interface GetMyCommentsNumParams {
   nickname: string;
   type: string;
 }
+export const getCommentsByPostId: QueriesFunctionWithBody<
+  GetCommentsByPostId
+> = async (conn, params) => {
+  const { id, type } = params;
+  try {
+    const result = await conn.execute(
+      `SELECT * FROM ${type} WHERE postId = ${id}`
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const addComment: QueriesFunctionWithBody<AddCommentListParams> = async (
   conn,
   params

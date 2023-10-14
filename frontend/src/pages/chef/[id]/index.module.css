@@ -12,6 +12,7 @@
   padding-top: 1rem;
   gap: 1rem;
   margin-bottom: 2rem;
+  padding-left: 1rem;
 }
 .profile_img {
   width: 30rem;
@@ -48,4 +49,5 @@
   font-size: 2rem;
   font-weight: 700;
   font-family: "SUITE-Regular";
+  padding-left: 1rem;
 }

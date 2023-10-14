@@ -8,10 +8,12 @@ import {
   getMyComments,
   updateComment,
   getMyCommentsNum,
+  getCommentsByPostId,
 } from "../queries/comment";
 import { isIncludeUndefined } from "../utils/request";
 import { BAD_REQUEST } from "../constants/response";
 import { RequestGeneric } from "../types/request";
+import { returnBadRequest } from "../utils/response";
 interface AddCommentListParamsNoType {
   writer: string;
   content: string;
@@ -24,7 +26,7 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       `/${type}`,
       async (req: RequestGeneric<AddCommentListParamsNoType>, res) => {
         if (!req.body || isIncludeUndefined(req.body)) {
-          return BAD_REQUEST;
+          return returnBadRequest(res);
         }
         const response = await addComment(conn, {
           ...req.body,
@@ -33,6 +35,12 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
         res.status(response.code).json(response);
       }
     );
+    app.get(`/${type}/:id`, async (req, res) => {
+      if (!("id" in req.params)) return returnBadRequest(res);
+      const { id } = req.params;
+      const response = await getCommentsByPostId(conn, { id: +id, type: type });
+      res.status(response.code).json(response);
+    });
     app.get(`/${type}`, async (req, res) => {
       const { nickname, size, page } = req.query;
       if (!nickname || !size || !page) {
@@ -50,8 +58,9 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       }
     });
     app.put(`/${type}/:id`, async (req, res) => {
-      if (!("id" in req.params)) return BAD_REQUEST;
-      if (!req.body || isIncludeUndefined(req.body)) return BAD_REQUEST;
+      if (!("id" in req.params)) return returnBadRequest(res);
+      if (!req.body || isIncludeUndefined(req.body))
+        return returnBadRequest(res);
       const { id } = req.params;
       const response = await updateComment(conn, {
         id: +id,
@@ -61,7 +70,7 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       res.status(response.code).json(response);
     });
     app.delete(`/${type}/:id`, async (req, res) => {
-      if (!("id" in req.params)) return BAD_REQUEST;
+      if (!("id" in req.params)) return returnBadRequest(res);
       const { id } = req.params;
       const response = await deleteComment(conn, {
         id: +id,
@@ -70,14 +79,14 @@ export const setCommentRoutes = (app: Express, conn: Pool) => {
       res.status(response.code).json(response);
     });
     app.get(`/${type}_num/:id`, async (req, res) => {
-      if (!("id" in req.params)) return BAD_REQUEST;
+      if (!("id" in req.params)) return returnBadRequest(res);
       const { id } = req.params;
       const response = await getCommentsNum(conn, { type: type, id: +id });
       res.status(response.code).json(response);
     });
     app.get(`/list/${type}`, async (req, res) => {
       const { nickname } = req.query;
-      if (!nickname) return BAD_REQUEST;
+      if (!nickname) return returnBadRequest(res);
       const nicknameStringType = String(nickname);
       const response = await getMyCommentsNum(conn, {
         type: type,

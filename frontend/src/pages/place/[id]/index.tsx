@@ -2,7 +2,6 @@ import Styles from "./index.module.css";
 import { Divider } from "@/components";
 import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/utilities/getPost";
 import { useEffect, useState } from "react";
 import { Comment, PlaceProps, User } from "@/types";
 import { useRouter } from "next/router";
@@ -13,6 +12,7 @@ import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { WantDeleteList } from "@/components/WantDeleteList";
 import CreateList from "@/components/CreateList";
 import { ListModify } from "@/components/ListModify";
+import { getPostById } from "@/api/getPostById";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
@@ -30,14 +30,13 @@ const PlaceDetail = () => {
     setModal(false);
   };
   useEffect(() => {
+    if (!router.isReady || router.query.id === undefined) return;
     const id = router.query.id;
     const result = id as string;
 
     const getP = async () => {
-      const getPost = await useGetPost(result, "place");
-      setPost(() => {
-        return { ...getPost } as PlaceProps | undefined;
-      });
+      const getPost = await getPostById(result, "place");
+      setPost(getPost as PlaceProps | undefined);
     };
     getP();
 
@@ -52,7 +51,7 @@ const PlaceDetail = () => {
       setUser(getU);
     };
     fetch();
-  }, [router.query.id]);
+  }, [router.query]);
   <div className=""></div>;
   return (
     <div>

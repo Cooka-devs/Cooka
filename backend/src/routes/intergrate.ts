@@ -5,8 +5,11 @@ import {
   getListByPageAndUser,
   getListLength,
   getListLengthByUser,
+  getSearchData,
+  getSearchDataLength,
 } from "../queries/intergrate";
 import { BAD_REQUEST } from "../constants/response";
+import { returnBadRequest } from "../utils/response";
 export const setIntergratedRoutes = (app: Express, conn: Pool) => {
   const queryType = ["recipe", "place", "counseling", "news"];
   queryType.map((type) => {
@@ -21,18 +24,40 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
         res.status(response.code).json(response);
       }
     });
+    app.get(`/search_num/${type}`, async (req, res) => {
+      if (!req.query) return returnBadRequest(res);
+      const { keyword } = req.query;
+      console.log(keyword);
+      const params = { type: type, keyword: keyword };
+      const response = await getSearchDataLength(conn, params);
+      console.log(response);
+      res.status(response.code).json(response);
+    });
+    app.get(`/search/${type}`, async (req, res) => {
+      if (!req.query) return returnBadRequest(res);
+      const { page, size, keyword } = req.query;
+      if (page === undefined || size === undefined || keyword === undefined)
+        return returnBadRequest(res);
+      const params = {
+        type: type,
+        page: +page,
+        size: +size,
+        keyword: keyword,
+      };
+      const response = await getSearchData(conn, params);
+      res.status(response.code).json(response);
+    });
     app.get(`/list/${type}`, async (req, res) => {
-      console.log("1");
-      if (!req.query) return BAD_REQUEST;
+      if (!req.query) return returnBadRequest(res);
       const { page, size, nickname } = req.query;
-      if (page === undefined || size === undefined) return BAD_REQUEST;
+      if (page === undefined || size === undefined)
+        return returnBadRequest(res);
       if (!nickname) {
         console.log("page:", page);
         console.log("size:", size);
         const params = { type: type, page: +page, size: +size };
         const response = await getListByPage(conn, params);
         res.status(response.code).json(response);
-        console.log("1");
       } else {
         const params = {
           writer: nickname,
@@ -42,7 +67,6 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
         };
         const response = await getListByPageAndUser(conn, params);
         res.status(response.code).json(response);
-        console.log("2");
       }
     });
   });

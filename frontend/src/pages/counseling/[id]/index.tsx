@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { Comment, CsItem, User } from "@/types";
 import useGetComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { useGetPost } from "@/utilities/getPost";
 import { MakeComment } from "@/components/MakeComment";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
@@ -12,6 +11,7 @@ import { searchUser } from "@/api/getCurrentUser";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { WantDeleteList } from "@/components/WantDeleteList";
 import { ListModify } from "@/components/ListModify";
+import { getPostById } from "@/api/getPostById";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState<boolean>(false);
@@ -32,7 +32,7 @@ const CounselingDetail = () => {
     const result = id as string;
 
     const getP = async () => {
-      const getPost = await useGetPost(result, "counseling");
+      const getPost = await getPostById(result, "counseling");
       setPost(getPost as CsItem | undefined);
     };
     getP();
