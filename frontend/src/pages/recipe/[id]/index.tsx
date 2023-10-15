@@ -113,13 +113,13 @@ const RecipeDetail = () => {
           <div className={Styles.list_likes}>
             <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
-          <Divider />
+          <Divider weight="1.5px" color="#7e7b7b" />
           <div
             dangerouslySetInnerHTML={{ __html: post.content }}
-            style={{ marginBottom: "10rem" }}
+            style={{ marginBottom: "15rem" }}
             className={Styles.content}
           />
-          <Divider />
+          <Divider weight="1.5px" color="#7e7b7b" />
           <textarea
             placeholder="댓글을 입력하세요!"
             className={Styles.comment_input_text}

@@ -1,6 +1,5 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { encodePw } from "@/utilities/encodePw";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import Styles from "./index.module.css";
@@ -10,11 +9,6 @@ export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
 export const kakao_Secret_code = process.env.NEXT_PUBLIC_KAKAO_SECRET;
 export const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_client_Id}&redirect_uri=${kakao_redirect_Uri}&response_type=code`;
 
-export const naver_client_Id = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
-export const naver_redirect_Uri = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URL;
-export const naver_state = process.env.NEXT_PUBLIC_NAVER_STATE;
-const naver_Auth_Uri = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naver_client_Id}&redirect_uri=${naver_redirect_Uri}&state=${naver_state}`;
-
 const LoginPage = () => {
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -23,9 +17,6 @@ const LoginPage = () => {
 
   const kakaoLoginHandler = useCallback(() => {
     router.push(kakao_Auth_Uri);
-  }, [router]);
-  const naverLoginHandler = useCallback(() => {
-    router.push(naver_Auth_Uri);
   }, [router]);
 
   const onChangeId: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -108,12 +99,6 @@ const LoginPage = () => {
           </button>
         </div>
         <div className={Styles.social_login}>
-          <div
-            className={Styles.social_login_naver}
-            onClick={() => naverLoginHandler()}
-          >
-            <img src={"naverlogin.png"} alt="네이버" />
-          </div>
           <div
             className={Styles.social_login_kakao}
             onClick={() => kakaoLoginHandler()}

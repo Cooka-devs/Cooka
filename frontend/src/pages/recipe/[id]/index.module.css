@@ -16,7 +16,7 @@
   padding-top: 1rem;
   display: flex;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .like_span {
@@ -62,4 +62,7 @@
 }
 .content img {
   max-width: 70rem;
+}
+.content {
+  padding-top: 1.5rem;
 }

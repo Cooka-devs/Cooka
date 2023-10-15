@@ -1,5 +1,5 @@
 .cs_itemdetail {
-  width: 65rem;
+  width: 70rem;
   min-height: 75rem;
   margin: auto;
   display: flex;
@@ -9,7 +9,7 @@
   padding-top: 2rem;
 }
 .cs_itemdetail img {
-  width: 65rem;
+  width: 70rem;
 }
 .cs_itemdetail h1 {
   font-size: 3.5rem;
@@ -19,15 +19,16 @@
   display: flex;
   gap: 1rem;
   width: 100%;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid black;
+  padding-bottom: 2.5rem;
+  border-bottom: 1.5px solid #7e7b7b;
   position: relative;
 }
 .detail_content {
-  padding-top: 1rem;
+  padding-top: 2.5rem;
   min-height: 30rem;
-  border-bottom: 1px solid black;
-  padding-bottom: 10rem;
+  padding-bottom: 15rem;
+  border-bottom: 1.5px solid #7e7b7b;
+  margin-bottom: 1.5px;
 }
 
 .comment_input_text {
