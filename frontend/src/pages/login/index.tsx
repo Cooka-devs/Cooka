@@ -1,7 +1,7 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { encodePw } from "@/utilities/encodePw";
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useMemo } from "react";
 import Styles from "./index.module.css";
 import useStore from "@/store";
 
@@ -16,7 +16,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState<string>("");
   const [text, setText] = useState<string>("");
   const router = useRouter();
-
   const kakaoLoginHandler = useCallback(() => {
     router.push(kakao_Auth_Uri);
   }, [router]);
@@ -28,6 +27,7 @@ const LoginPage = () => {
     setPassword(e.target.value);
   };
   const onClickJoin = () => {
+    console.log("id:", id);
     DefaultAxiosService.instance
       .post("/pw", {
         login_id: id,
@@ -58,6 +58,15 @@ const LoginPage = () => {
       })
       .catch((err) => console.log(err));
   };
+  const passwordInput = document.getElementById("password");
+
+  //엔터키 로그인 추가
+  passwordInput?.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      onClickJoin();
+    }
+  });
 
   return (
     <div style={{ paddingTop: "15rem" }}>
@@ -73,6 +82,7 @@ const LoginPage = () => {
             onChange={onChangeId}
           />
           <input
+            id="password"
             type="password"
             placeholder="비밀번호를 입력하세요!"
             className={Styles.input_text}
