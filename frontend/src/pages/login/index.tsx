@@ -3,6 +3,7 @@ import { encodePw } from "@/utilities/encodePw";
 import { useRouter } from "next/router";
 import { useCallback, useState } from "react";
 import Styles from "./index.module.css";
+import useStore from "@/store";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -10,6 +11,7 @@ export const kakao_Secret_code = process.env.NEXT_PUBLIC_KAKAO_SECRET;
 export const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id=${kakao_client_Id}&redirect_uri=${kakao_redirect_Uri}&response_type=code`;
 
 const LoginPage = () => {
+  const { url } = useStore();
   const [id, setId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [text, setText] = useState<string>("");
@@ -44,7 +46,7 @@ const LoginPage = () => {
               const status = res.status;
               console.log(status);
               if (status === 200) {
-                router.push("/");
+                router.push(`/${url}`);
               } else if (status === 202) {
                 setText("입력하신 비밀번호가 틀렸습니다.");
               }

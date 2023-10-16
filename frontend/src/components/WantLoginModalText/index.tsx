@@ -1,5 +1,6 @@
 import Styles from "./index.module.css";
 import { useRouter } from "next/router";
+import useStore from "@/store";
 interface WantLoginModalProp {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   //React.Dispatch란 React에서 제공되는 제네릭타입중하나.
@@ -12,7 +13,9 @@ interface WantLoginModalProp {
 export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
   closeModal,
 }) => {
+  const { setUrl } = useStore();
   const router = useRouter();
+  console.log(router.pathname);
   return (
     <div className={Styles.loginModalText}>
       <h1 style={{ fontSize: "3rem" }}>로그인이 필요합니다.</h1>
@@ -29,6 +32,7 @@ export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
       >
         <button
           onClick={() => {
+            setUrl(router.pathname);
             router.push("/login");
           }}
         >
