@@ -39,13 +39,7 @@ export default function Home() {
   return (
     <div className={Styles.main}>
       <div className={Styles.main_container}>
-        <div className={Styles.main_item}>
-          <div className={Styles.main_ad}>
-            <div className={Styles.main_ad_item}>ad1</div>
-            <div className={Styles.main_ad_item}>ad2</div>
-            <div className={Styles.main_ad_item}>ad3</div>
-          </div>
-        </div>
+        <div className={Styles.main_item}>{/** 여기에 ad들어가기  */}</div>
         <div className={Styles.best_container}>
           <div className={Styles.flex_row}>
             {bestItems?.map((bestItem, index) => {
