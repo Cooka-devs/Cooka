@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import { best, TYPES } from "@/constants";
 import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
+import { SlideImg } from "@/components/SlideImg";
 
 interface BestItemProps {
   title: string;
@@ -39,7 +40,9 @@ export default function Home() {
   return (
     <div className={Styles.main}>
       <div className={Styles.main_container}>
-        <div className={Styles.main_item}>{/** 여기에 ad들어가기  */}</div>
+        <div className={Styles.main_item}>
+          <SlideImg />
+        </div>
         <div className={Styles.best_container}>
           <div className={Styles.flex_row}>
             {bestItems?.map((bestItem, index) => {

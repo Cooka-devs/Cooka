@@ -24,18 +24,3 @@
   flex-direction: column;
   gap: 4rem;
 }
-
-.main_ad {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 100%;
-}
-
-.main_ad_item {
-  height: 20rem;
-  width: 30rem;
-  background-color: aliceblue;
-  text-align: center;
-  line-height: 20rem;
-}
