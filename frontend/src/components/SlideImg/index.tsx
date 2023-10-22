@@ -23,7 +23,7 @@ export const SlideImg = () => {
               src={item}
               alt="ad"
               style={{ width: "118rem", height: "30rem", paddingLeft: "2rem" }}
-              className="img"
+              className={Styles.img}
             />
           </div>
         );
