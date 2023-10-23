@@ -4,7 +4,10 @@
   font-size: 2rem;
   min-height: 190rem;
 }
-
+.main_item {
+  width: 118rem;
+  padding-left: 2rem;
+}
 .main_container {
   display: flex;
   flex-direction: column;

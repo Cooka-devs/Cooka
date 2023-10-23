@@ -4,27 +4,49 @@ import "slick-carousel/slick/slick-theme.css";
 import Styles from "./index.module.css";
 export const SlideImg = () => {
   const imgList = ["adimg1.jpg", "adimg2.jpg", "adimg3.jpg", "adimg4.jpg"];
+  function NextArrow(props: any) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, display: "block", background: "black" }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  function PrevArrow(props: any) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+          display: "block",
+          background: "black",
+        }}
+        onClick={onClick}
+      />
+    );
+  }
   const settings = {
     dots: true,
     infinite: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 3000,
-    autoplaySpeed: 5000,
+    speed: 1000,
+    autoplaySpeed: 3000,
     arrow: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   return (
     <Slider {...settings}>
       {imgList.map((item) => {
         return (
-          <div style={{ textAlign: "center" }}>
-            <img
-              src={item}
-              alt="ad"
-              style={{ width: "118rem", height: "30rem", paddingLeft: "2rem" }}
-              className={Styles.img}
-            />
+          <div className={Styles.div}>
+            <img src={item} alt="ad" className={Styles.img} />
           </div>
         );
       })}
