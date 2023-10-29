@@ -1,28 +1,30 @@
-import RecipeList from "@/components/RecipeList";
-import CreateList from "@/components/CreateList";
-import { useEffect, useState } from "react";
-import Styles from "./index.module.css";
-import MakeRecipeButton from "@/components/MakeRecipeButton";
-import { Recipe, User } from "@/types";
 import { searchUser } from "@/api/getCurrentUser";
-import Modal from "@/components/Modal";
-import { WantLoginModalText } from "@/components/WantLoginModalText";
-import { getReipce } from "@/api/getRecipe";
-import { getListLength } from "@/api/getListLength";
 import { getListByPage } from "@/api/getListByPage";
+import { getListLength } from "@/api/getListLength";
+import AniButton from "@/components/AniButton";
+import CreateList from "@/components/CreateList";
 import ListPageMove from "@/components/ListPageMove";
+import MakeRecipeButton from "@/components/MakeRecipeButton";
+import Modal from "@/components/Modal";
+import RecipeList from "@/components/RecipeList";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
+import { Recipe, User } from "@/types";
+import { useCallback, useEffect, useState } from "react";
+import Styles from "./index.module.css";
+
+const itemnum = 9; //페이지당 출력될 item 수
+
 export default function RecipePage() {
-  const [listLength, setListLength] = useState<number>(0); //리스트 길이
-  const [modal, setModal] = useState<boolean>(false);
+  const [listLength, setListLength] = useState(0); //리스트 길이
+  const [modal, setModal] = useState(false);
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [user, setUser] = useState<undefined | User>();
-  const itemnum = 9; //페이지당 출력될 item 수
+  const [user, setUser] = useState<User>();
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModal(false);
-  };
+  }, []);
 
   const makeRecipe = () => {
     if (user != undefined) {
@@ -31,18 +33,20 @@ export default function RecipePage() {
       setModal(true);
     }
   };
+
   const listRecipe = () => {
     setOnRecipe(false);
   };
+
   useEffect(() => {
-    const getList = getListByPage({
+    getListByPage({
       page: currentPage,
       size: itemnum,
       setList: setList,
       type: "recipe",
     });
-    console.log(list);
   }, [currentPage]);
+
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
@@ -85,10 +89,7 @@ export default function RecipePage() {
         <div className={Styles.recipe_right}>
           <div className={Styles.recipe_right_make}>
             {onRecipe ? (
-              <button
-                onClick={() => listRecipe()}
-                className={Styles.goback_btn}
-              >
+              <AniButton onClick={listRecipe} className={Styles.goback_btn}>
                 <div style={{ fontSize: "2rem", fontWeight: "700" }}>
                   돌아가기
                 </div>
@@ -97,7 +98,7 @@ export default function RecipePage() {
                   <br />
                   돌아갈께요.
                 </div>
-              </button>
+              </AniButton>
             ) : (
               <MakeRecipeButton onClick={makeRecipe} />
             )}

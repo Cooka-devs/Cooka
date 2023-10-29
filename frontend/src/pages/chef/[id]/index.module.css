@@ -14,11 +14,13 @@
   margin-bottom: 2rem;
   padding-left: 1rem;
 }
+
 .profile_img {
   width: 30rem;
   height: 30rem;
   border-radius: 1rem;
 }
+
 .profile_text {
   width: 89rem;
   word-wrap: break-word;

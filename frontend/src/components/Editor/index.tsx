@@ -1,16 +1,17 @@
 import { searchUser } from "@/api/getCurrentUser";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import FormAxiosService from "@/service/FormAxiosService";
 import { CsItem, PlaceProps, Recipe, User } from "@/types";
 import { getImgInText } from "@/utilities/getImgSrcInText";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import AniButton from "../AniButton";
 import Modal from "../Modal";
 import { WantLoginModalText } from "../WantLoginModalText";
-import Styles from "./index.module.css";
-import { useRouter } from "next/router";
-import FormAxiosService from "@/service/FormAxiosService";
-import ReactQuill from "react-quill";
-import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { CategorySelect } from "./CategorySelect";
+import Styles from "./index.module.css";
 
 const formats = [
   "header",
@@ -46,7 +47,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   const [modal, setModal] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [errText, setErrorText] = useState<string>("");
-  const [mainImg, setMainImg] = useState<string>("최초렌더링실행방지");
+  const [mainImg, setMainImg] = useState<null | string>(null);
   const quillRef = useRef<ReactQuill>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [shouldSetSelection, setShouldSetSelection] = useState(false);
@@ -99,7 +100,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   }, []);
 
   useEffect(() => {
-    if (mainImg !== "최초렌더링실행방지") {
+    if (!!mainImg) {
       if (textType === "modify") {
         if (
           (modifyType === "recipe" && post) ||
@@ -202,7 +203,17 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         }
       }
     }
-  }, [mainImg]);
+  }, [
+    category,
+    mainImg,
+    modifyType,
+    post,
+    router,
+    text,
+    textType,
+    title,
+    user,
+  ]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -213,7 +224,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
     if (post && textType === "modify") {
       setText(post.content);
     }
-  }, []);
+  }, [post, textType]);
 
   useEffect(() => {
     if (shouldSetSelection) {
@@ -236,7 +247,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
       }
       setShouldSetSelection(false);
     }
-  }, [shouldSetSelection]);
+  }, [shouldSetSelection, text]);
 
   return (
     <div className={Styles.makeboard}>
@@ -358,12 +369,12 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         </div>
       </div>
       <div style={{ width: "100%", textAlign: "center", paddingTop: "2rem" }}>
-        <button
+        <AniButton
           className={Styles.submit_btn}
           onClick={() => onClickCreateList()}
         >
           작성완료
-        </button>
+        </AniButton>
       </div>
       <div className={Styles.err_text}>{errText}</div>
     </div>

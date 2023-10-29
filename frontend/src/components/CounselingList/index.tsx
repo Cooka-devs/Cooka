@@ -1,9 +1,10 @@
 import { CsItem, User } from "@/types";
 import Styles from "./index.module.css";
 import { CounselingItem } from "./CounselingItem";
+
 interface CsItemProps {
   items: CsItem[];
-  user: User | undefined;
+  user?: User;
 }
 
 export const CounselingList = ({ items, user }: CsItemProps) => {
@@ -15,4 +16,5 @@ export const CounselingList = ({ items, user }: CsItemProps) => {
     </div>
   );
 };
+
 export default CounselingList;

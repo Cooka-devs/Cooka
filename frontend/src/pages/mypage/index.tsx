@@ -1,28 +1,26 @@
+import { searchUser } from "@/api/getCurrentUser";
 import { RecipeList } from "@/components";
-import CounselingList from "@/components/CounselingList";
-import PlaceList from "@/components/PlaceList";
-import ListPageMove from "@/components/ListPageMove";
-import SearchUserData from "@/components/SearchUserData";
-import { CsItem, PlaceProps, Recipe, Table, User } from "@/types";
-import { useEffect, useState } from "react";
-import Styles from "./index.module.scss";
-import { useRef } from "react";
+import AniButton from "@/components/AniButton";
+import { ContentsByCheckType } from "@/utilities/ContentsByCheckType";
 import ContentsByUser from "@/components/ContentsByUser";
-import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
-import { useRouter } from "next/router";
-import Modal from "@/components/Modal";
-import { WantLoginModalText } from "@/components/WantLoginModalText";
+import CounselingList from "@/components/CounselingList";
 import LikesContentsByUser from "@/components/LikesContentsByUser";
-import FormAxiosService from "@/service/FormAxiosService";
+import ListPageMove from "@/components/ListPageMove";
+import Modal from "@/components/Modal";
+import PlaceList from "@/components/PlaceList";
+import SearchUserData from "@/utilities/SearchUserData";
+import { WantLoginModalText } from "@/components/WantLoginModalText";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { getListLength } from "@/api/getListLength";
-import { getMyLikedList, getMyLikes } from "@/utilities/getMyLikes";
-import { getLikedList } from "@/api/getLikedList";
-import { getListNumByComments, getMyCommentsByType } from "@/api/getMyComments";
-import { ContentsByCheckType } from "@/components/ContentsByCheckType";
+import FormAxiosService from "@/service/FormAxiosService";
+import { CsItem, PlaceProps, Recipe, User } from "@/types";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Styles from "./index.module.scss";
+import NoData from "@/components/NoData";
 
 const Mypage = () => {
-  const [user, setUser] = useState<User | string | undefined>("최초실행방지");
+  const [user, setUser] = useState<User | null>(null);
   const [modal, setModal] = useState<boolean>(false);
 
   const [checkType, setCheckType] = useState<string>("마이페이지");
@@ -50,7 +48,7 @@ const Mypage = () => {
     await setProfileText(event.target.value);
   };
   const onClickMyIntroduceChange = async () => {
-    if (typeof user != "string" && user != undefined && profileText != "") {
+    if (!!user && profileText != "") {
       try {
         await DefaultAxiosService.instance.put(`/user/text/${user.id}`, {
           profile_text: profileText,
@@ -66,8 +64,7 @@ const Mypage = () => {
       imgRef.current != null &&
       imgRef.current.files != null &&
       imgRef.current.files[0] != undefined &&
-      user != undefined &&
-      typeof user != "string"
+      !!user
     ) {
       const file = imgRef.current.files[0];
       const formData = new FormData();
@@ -87,6 +84,7 @@ const Mypage = () => {
       alert("이미지를 선택해주세요!");
     }
   };
+
   const saveImgFile = () => {
     if (imgRef.current != null && imgRef.current.files != null) {
       const file = imgRef.current.files[0];
@@ -101,17 +99,10 @@ const Mypage = () => {
       }
     } else return;
   };
-  const closeModal = () => {
-    setModal(false);
-  };
 
-  const noData = () => {
-    return (
-      <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
-        게시물이 존재하지 않습니다.
-      </div>
-    );
-  };
+  const closeModal = useCallback(() => {
+    setModal(false);
+  }, []);
 
   const TypeByContent = (type: string) => {
     if (
@@ -132,7 +123,7 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData();
+        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
       }
     } else if (
       type === "내가작성한 맛집" ||
@@ -152,7 +143,7 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData();
+        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
       }
     } else if (
       type === "내가작성한 질문" ||
@@ -162,11 +153,7 @@ const Mypage = () => {
       if (myCs?.length) {
         return (
           <>
-            {typeof user != "string" ? (
-              <CounselingList items={myCs} user={user} />
-            ) : (
-              ""
-            )}
+            {!!user ? <CounselingList items={myCs} user={user} /> : ""}
             <ListPageMove
               totalPosts={myCsLength}
               postsPerPage={ITEMNUM}
@@ -176,18 +163,18 @@ const Mypage = () => {
           </>
         );
       } else {
-        return noData();
+        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
       }
     } else if (type === "내가댓글단 게시물") {
-      if (typeof user != "string" && user != undefined) {
+      if (!!user) {
         return <ContentsByUser onClick={setCheckType} user={user} />;
       } else return;
     } else if (type === "내가추천한 게시물") {
-      if (typeof user != "string" && user != undefined) {
+      if (!!user) {
         return <LikesContentsByUser onClick={setCheckType} user={user} />;
       }
     } else if (type === "마이페이지") {
-      if (typeof user != "string" && user != undefined) {
+      if (!!user) {
         return (
           <div className={Styles.profile}>
             <div>프로필 이미지 등록</div>
@@ -199,10 +186,12 @@ const Mypage = () => {
                   textAlign: "center",
                 }}
               >
-                <img
+                <Image
                   src={imgFile}
                   alt="프로필 이미지"
                   className={Styles.img_preview}
+                  width={300}
+                  height={300}
                 />
                 <div>이미지 미리보기</div>
               </div>
@@ -217,13 +206,13 @@ const Mypage = () => {
                 <label htmlFor="upload" className={Styles.upload_btn}>
                   업로드
                 </label>
-                <button
+                <AniButton
                   className={Styles.upload_btn}
                   style={{ marginLeft: "1rem" }}
                   onClick={onClickProfileImgChange}
                 >
                   등록완료
-                </button>
+                </AniButton>
                 <div style={{ paddingTop: "2rem" }}>
                   <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
                   <div>등록완료를 눌러야 저장됩니다!</div>
@@ -257,28 +246,28 @@ const Mypage = () => {
             >
               {profileEdit ? (
                 <>
-                  <button
+                  <AniButton
                     className={Styles.upload_btn}
                     onClick={() => setProfileEdit(false)}
                   >
                     수정취소
-                  </button>
-                  <button
+                  </AniButton>
+                  <AniButton
                     className={Styles.upload_btn}
                     onClick={() => onClickMyIntroduceChange()}
                   >
                     수정완료
-                  </button>
+                  </AniButton>
                 </>
               ) : (
-                <button
+                <AniButton
                   className={Styles.upload_btn}
                   onClick={() => {
                     setProfileEdit(true);
                   }}
                 >
                   수정
-                </button>
+                </AniButton>
               )}
             </div>
           </div>
@@ -297,9 +286,9 @@ const Mypage = () => {
   useEffect(() => {
     //체크타입과 페이지를 종합해 데이터를 가져옵니다.
     const changedCheckTypeOrPage = async () => {
-      if (typeof user != "string" && user) {
+      if (!!user) {
         ContentsByCheckType({
-          user: user,
+          user,
           checkType: checkType,
           currentPage: currentPage,
           setMyRecipe: setMyRecipe,
@@ -313,7 +302,7 @@ const Mypage = () => {
       }
     };
     changedCheckTypeOrPage();
-  }, [checkType, currentPage]);
+  }, [checkType, currentPage, user]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -368,7 +357,7 @@ const Mypage = () => {
             setCheckType("마이페이지");
           }}
         >
-          <button className={Styles.head_btn}>마이페이지</button>
+          <AniButton className={Styles.head_btn}>마이페이지</AniButton>
         </h1>
         <div className={Styles.head_right}>
           <h1 style={{}}>{checkType}</h1>
@@ -383,22 +372,22 @@ const Mypage = () => {
                 setCheckType("내가작성한 레시피");
               }}
             >
-              <button className={Styles.li_btn}>나만의 레시피</button>
+              <AniButton className={Styles.li_btn}>나만의 레시피</AniButton>
             </li>
             <li onClick={() => setCheckType("내가작성한 맛집")}>
-              <button className={Styles.li_btn}>이런곳도 있어요!</button>
+              <AniButton className={Styles.li_btn}>이런곳도 있어요!</AniButton>
             </li>
             <li onClick={() => setCheckType("내가작성한 질문")}>
-              <button className={Styles.li_btn}>요리연구소</button>
+              <AniButton className={Styles.li_btn}>요리연구소</AniButton>
             </li>
           </ul>
           <div className={Styles.snb_subhead}>나의 관심목록</div>
           <ul className={Styles.snb_menu}>
             <li onClick={() => setCheckType("내가추천한 게시물")}>
-              <button className={Styles.li_btn}>추천한 목록</button>
+              <AniButton className={Styles.li_btn}>추천한 목록</AniButton>
             </li>
             <li onClick={() => setCheckType("내가댓글단 게시물")}>
-              <button className={Styles.li_btn}>댓글단 목록</button>
+              <AniButton className={Styles.li_btn}>댓글단 목록</AniButton>
             </li>
           </ul>
         </div>

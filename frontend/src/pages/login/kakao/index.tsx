@@ -13,8 +13,7 @@ import randomstring from "randomstring";
 import Styles from "./index.module.css";
 import { User } from "@/types";
 import { kakaoLogin } from "@/api/kakaoLogin";
-const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
-const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
+import AniButton from "@/components/AniButton";
 
 export interface KaKaoLoginData {
   connected_at: string;
@@ -37,33 +36,38 @@ export interface KaKaoLoginData {
   properties: { nickname: string };
 }
 
+const getTokenUrl = `https://kauth.kakao.com/oauth/token`;
+const getUserUrl = `https://kapi.kakao.com/v2/user/me`;
+const phoneNumRegExp = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+const nicknameRegExp = /^[가-힣]{2,8}$/;
+
 const KakaoLoginPage = () => {
   const router = useRouter();
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState("");
   const [users, setUsers] = useState<User[]>([]); //DB에서 불러온 user 목록
   const [kakaoLoginData, setKakaoLoginData] = useState<KaKaoLoginData>();
   const [code, setCode] = useState("");
-  const [state, setState] = useState<string | undefined>(undefined);
+  const [state, setState] = useState<string>();
 
   //입력받을 nickname,phoneNum
-  const [nickname, setNickname] = useState<string>("");
-  const [phoneNum, setPhoneNum] = useState<string>("");
+  const [nickname, setNickname] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
 
   //유효성검사
-  const [isNickname, setIsNickname] = useState<boolean>(false);
-  const [isPhoneNum, setIsPhoneNum] = useState<boolean>(false);
+  const [isNickname, setIsNickname] = useState(false);
+  const [isPhoneNum, setIsPhoneNum] = useState(false);
   //유효성검사에 따른 상태메시지
-  const [nicknameMessage, setNicknameMessage] = useState<string>("");
-  const [phoneMessage, setPhoneMessage] = useState<string>("");
+  const [nicknameMessage, setNicknameMessage] = useState("");
+  const [phoneMessage, setPhoneMessage] = useState("");
 
-  const phoneNumRegExp = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
-  const nicknameRegExp = /^[가-힣]{2,8}$/;
   const onChangeNickname: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setNickname(e.target.value);
   };
+
   const onChangePhoneNum: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPhoneNum(e.target.value);
   };
+
   const onClickJoin = async () => {
     if (isNickname && isPhoneNum) {
       const salt = await createSalt();
@@ -97,6 +101,7 @@ const KakaoLoginPage = () => {
       alert("양식에 맞게 입력해주세요!");
     }
   };
+
   const onClickCheckNickName = () => {
     if (nicknameRegExp.test(nickname)) {
       setIsNickname(true);
@@ -128,16 +133,15 @@ const KakaoLoginPage = () => {
       setPhoneMessage("-를 포함하여 입력바랍니다.");
     }
   };
+
   useEffect(() => {
     DefaultAxiosService.instance
       .get("/users")
       .then((res) => res.data.data)
       .then((data) => setUsers(data));
-    console.log("query??", router.query);
     if (!router.isReady || !router.query["code"]) return;
     setCode(router.query["code"].toString());
-    console.log("code:", code);
-  }, [router]);
+  }, [code, router]);
 
   useEffect(() => {
     if (!code) return;
@@ -184,7 +188,7 @@ const KakaoLoginPage = () => {
         }
       })
     );
-  }, [code]);
+  }, [code, router]);
 
   return (
     <div>
@@ -200,12 +204,12 @@ const KakaoLoginPage = () => {
               onChange={onChangeNickname}
               className={Styles.input_text}
             />
-            <button
+            <AniButton
               className={Styles.check_btn}
               onClick={() => onClickCheckNickName()}
             >
               중복확인
-            </button>
+            </AniButton>
             <div className={isNickname ? Styles.okmessage : Styles.nomessage}>
               {nicknameMessage}
             </div>
@@ -217,19 +221,19 @@ const KakaoLoginPage = () => {
               onChange={onChangePhoneNum}
               className={Styles.input_text}
             />
-            <button
+            <AniButton
               className={Styles.check_btn}
               onClick={() => onClickPhoneNum()}
             >
               중복확인
-            </button>
+            </AniButton>
             <div className={isPhoneNum ? Styles.okmessage : Styles.nomessage}>
               {phoneMessage}
             </div>
           </div>
-          <button className={Styles.gojoin_btn} onClick={onClickJoin}>
+          <AniButton className={Styles.gojoin_btn} onClick={onClickJoin}>
             가입하기
-          </button>
+          </AniButton>
         </div>
       ) : (
         ""

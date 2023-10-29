@@ -6,13 +6,15 @@ import ListPageMove from "@/components/ListPageMove";
 import { getListByPage } from "@/api/getListByPage";
 import { getListLength } from "@/api/getListLength";
 import { searchUser } from "@/api/getCurrentUser";
+import AniButton from "@/components/AniButton";
+
+const itemnum = 12;
 
 const News = () => {
   const [list, setList] = useState<NewItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [listLength, setListLength] = useState<number>(0); //리스트 길이
-  const [user, setUser] = useState<undefined | User>();
-  const itemnum = 12;
+  const [listLength, setListLength] = useState(0); //리스트 길이
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const getRecipeListLength = async () => {
@@ -26,19 +28,20 @@ const News = () => {
     };
     fetch();
   }, []);
+
   useEffect(() => {
-    const getList = getListByPage({
+    getListByPage({
       page: currentPage,
       size: itemnum,
       setList: setList,
       type: "news",
     });
-    console.log(list);
   }, [currentPage]);
+
   return (
     <div className={Styles.news}>
       {user?.login_type === "admin" ? (
-        <button className={Styles.news_make_btn}>작성하기</button>
+        <AniButton className={Styles.news_make_btn}>작성하기</AniButton>
       ) : (
         ""
       )}

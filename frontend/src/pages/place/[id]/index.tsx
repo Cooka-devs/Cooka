@@ -1,6 +1,6 @@
 import Styles from "./index.module.css";
 import { Divider } from "@/components";
-import useGetComments from "@/utilities/getComments";
+import getComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
 import { useEffect, useState } from "react";
 import { Comment, PlaceProps, User } from "@/types";
@@ -13,6 +13,7 @@ import { WantDeleteList } from "@/components/WantDeleteList";
 import CreateList from "@/components/CreateList";
 import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
+import AniButton from "@/components/AniButton";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
@@ -41,8 +42,8 @@ const PlaceDetail = () => {
     getP();
 
     const getC = async () => {
-      const getComments = await useGetComments(result, "place");
-      setComments(getComments);
+      const comments = await getComments(result, "place");
+      setComments(comments);
     };
     getC();
 
@@ -51,8 +52,8 @@ const PlaceDetail = () => {
       setUser(getU);
     };
     fetch();
-  }, [router.query]);
-  <div className=""></div>;
+  }, [router.isReady, router.query]);
+
   return (
     <div>
       {modal ? (
@@ -92,18 +93,18 @@ const PlaceDetail = () => {
                   gap: "1rem",
                 }}
               >
-                <button
+                <AniButton
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setDeleteModal(true)}
                 >
                   ❌글삭제
-                </button>
-                <button
+                </AniButton>
+                <AniButton
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setModify(true)}
                 >
                   ❗글수정
-                </button>
+                </AniButton>
               </span>
             ) : (
               ""
@@ -130,7 +131,7 @@ const PlaceDetail = () => {
             }}
           />
           <div className={Styles.input_comment}>
-            <button
+            <AniButton
               className={Styles.input_commentbtn}
               onClick={async () => {
                 if (user) {
@@ -148,7 +149,7 @@ const PlaceDetail = () => {
               }}
             >
               입력완료
-            </button>
+            </AniButton>
           </div>
           {comments ? <ShowComment comments={comments} type="place" /> : ""}
         </div>

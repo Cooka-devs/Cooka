@@ -1,16 +1,20 @@
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import Styles from "./index.module.css";
+import AniButton from "../AniButton";
+
 interface RightButtonProps {
   listLength: number;
   itemNum: number;
   pageNum: number;
   setPageNum: React.Dispatch<React.SetStateAction<number>>;
 }
+
 interface LeftButtonProps {
   pageNum: number;
   setPageNum: React.Dispatch<React.SetStateAction<number>>;
 }
+
 export const RightButton = ({
   listLength,
   itemNum,
@@ -18,7 +22,7 @@ export const RightButton = ({
   setPageNum,
 }: RightButtonProps) => {
   return (
-    <button
+    <AniButton
       style={{
         display: listLength / itemNum <= pageNum ? "none" : "inline-block",
       }}
@@ -28,12 +32,13 @@ export const RightButton = ({
       className={Styles.arrow_right}
     >
       <ArrowForwardIosIcon className={Styles.arrowbtn} />
-    </button>
+    </AniButton>
   );
 };
+
 export const LeftButton = ({ pageNum, setPageNum }: LeftButtonProps) => {
   return (
-    <button
+    <AniButton
       style={{
         display: pageNum === 1 ? "none" : "inline-block",
       }}
@@ -43,6 +48,6 @@ export const LeftButton = ({ pageNum, setPageNum }: LeftButtonProps) => {
       }}
     >
       <ArrowBackIosNewIcon className={Styles.arrowbtn} />
-    </button>
+    </AniButton>
   );
 };

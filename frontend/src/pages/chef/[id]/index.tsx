@@ -1,35 +1,34 @@
-import { CsItem, PlaceProps, User } from "@/types";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import SearchUserData from "@/components/SearchUserData";
-import Styles from "./index.module.css";
-import { Recipe } from "@/types";
-import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { ContentsByChef } from "@/components/ContentsByChef";
-import { getListLength } from "@/components/ContentsByChef/getLength";
+import { searchUser } from "@/api/getCurrentUser";
 import { RecipeList } from "@/components";
+import { LeftButton, RightButton } from "@/components/Button";
+import CounselingList from "@/components/CounselingList";
 import NoData from "@/components/NoData";
 import PlaceList from "@/components/PlaceList";
-import CounselingList from "@/components/CounselingList";
-import { searchUser } from "@/api/getCurrentUser";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { LeftButton, RightButton } from "@/components/Button";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { CsItem, PlaceProps, Recipe, User } from "@/types";
+import { ContentsByChef } from "@/utilities/ContentsByChef";
+import { getListLength } from "@/utilities/ContentsByChef/getLength";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Styles from "./index.module.css";
+
+const SIZE = 4;
+
 const ChefDetail = () => {
-  const [myRecipe, setMyRecipe] = useState<Recipe[] | undefined>();
-  const [myPlace, setMyPlace] = useState<PlaceProps[] | undefined>();
-  const [myCs, setMyCs] = useState<CsItem[] | undefined>();
+  const [myRecipe, setMyRecipe] = useState<Recipe[]>();
+  const [myPlace, setMyPlace] = useState<PlaceProps[]>();
+  const [myCs, setMyCs] = useState<CsItem[]>();
 
-  const [recipeListNum, setRecipeListNum] = useState<number>(0);
-  const [placeListNum, setPlaceListNum] = useState<number>(0);
-  const [csListNum, setCsListNum] = useState<number>(0);
+  const [recipeListNum, setRecipeListNum] = useState(0);
+  const [placeListNum, setPlaceListNum] = useState(0);
+  const [csListNum, setCsListNum] = useState(0);
 
-  const [userData, setUserData] = useState<User | undefined>();
-  const [currentUser, setCurrentUser] = useState<User | undefined>();
-  const [recipePage, setRecipePage] = useState<number>(1);
-  const [placePage, setPlacePage] = useState<number>(1);
-  const [csPage, setCsPage] = useState<number>(1);
-  const SIZE = 4;
+  const [userData, setUserData] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User>();
+  const [recipePage, setRecipePage] = useState(1);
+  const [placePage, setPlacePage] = useState(1);
+  const [csPage, setCsPage] = useState(1);
   const router = useRouter();
   const chefId = router.query.id;
 
@@ -42,7 +41,8 @@ const ChefDetail = () => {
       setCurrentUser(currentUser);
     };
     getUser();
-  }, [router.query.id]);
+  }, [chefId, router.query.id]);
+
   useEffect(() => {
     if (userData) {
       getListLength({
@@ -53,6 +53,7 @@ const ChefDetail = () => {
       });
     }
   }, [userData]);
+
   useEffect(() => {
     if (userData) {
       ContentsByChef({
@@ -67,6 +68,7 @@ const ChefDetail = () => {
       });
     }
   }, [recipePage, placePage, csPage, userData]);
+
   return (
     <div className={Styles.chefpage}>
       {userData ? (
@@ -80,7 +82,9 @@ const ChefDetail = () => {
           >
             <div className={Styles.title}>{userData.nickname}님의 프로필</div>
             <div className={Styles.chef_profile}>
-              <img
+              <Image
+                width={300}
+                height={300}
                 src={userData.profile_img}
                 className={Styles.profile_img}
                 alt="프로필이미지"

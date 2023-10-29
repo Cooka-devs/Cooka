@@ -45,21 +45,23 @@
   display: flex;
   gap: 1rem;
 }
+
 .social_login {
-  padding-top: 2rem;
+  margin-top: 2rem;
   width: 50rem;
   height: 5rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  overflow: hidden;
 }
+
 .social_login_naver {
   background-color: #03c75a;
 }
+
 .social_login_kakao {
   cursor: pointer;
   background-color: #fee500;
-}
-.social_login img {
   height: 5rem;
 }

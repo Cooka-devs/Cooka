@@ -1,9 +1,11 @@
+import AniButton from "@/components/AniButton";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { encodePw } from "@/utilities/encodePw";
-import { useRouter } from "next/router";
-import { useCallback, useState, useMemo } from "react";
-import Styles from "./index.module.css";
 import useStore from "@/store";
+import { encodePw } from "@/utilities/encodePw";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
+import Styles from "./index.module.css";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -12,9 +14,9 @@ export const kakao_Auth_Uri = `https://kauth.kakao.com/oauth/authorize?client_id
 
 const LoginPage = () => {
   const { url } = useStore();
-  const [id, setId] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [text, setText] = useState<string>("");
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [text, setText] = useState("");
   const router = useRouter();
   const kakaoLoginHandler = useCallback(() => {
     router.push(kakao_Auth_Uri);
@@ -26,7 +28,8 @@ const LoginPage = () => {
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
   };
-  const onClickJoin = () => {
+
+  const onClickJoin = useCallback(() => {
     console.log("id:", id);
     DefaultAxiosService.instance
       .post("/pw", {
@@ -57,16 +60,21 @@ const LoginPage = () => {
         }
       })
       .catch((err) => console.log(err));
-  };
-  const passwordInput = document.getElementById("password");
+  }, [id, password, router, url]);
 
-  //엔터키 로그인 추가
-  passwordInput?.addEventListener("keyup", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      onClickJoin();
-    }
-  });
+  useEffect(() => {
+    if (!document) return;
+
+    const passwordInput = document.getElementById("password");
+
+    //엔터키 로그인 추가
+    passwordInput?.addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        onClickJoin();
+      }
+    });
+  }, [onClickJoin]);
 
   return (
     <div style={{ paddingTop: "15rem" }}>
@@ -97,25 +105,33 @@ const LoginPage = () => {
           ""
         )}
         <div className={Styles.login_btn}>
-          <button
+          <AniButton
             className={Styles.login_btnitem}
             onClick={() => onClickJoin()}
           >
             로그인
-          </button>
-          <button
+          </AniButton>
+          <AniButton
             className={Styles.login_btnitem}
             onClick={() => router.push(`/join`)}
           >
             회원가입
-          </button>
+          </AniButton>
         </div>
         <div className={Styles.social_login}>
           <div
             className={Styles.social_login_kakao}
             onClick={() => kakaoLoginHandler()}
           >
-            <img src={"kakaologin.png"} alt="카카오" />
+            <Image
+              width={183 * 1.2}
+              height={45 * 1.2}
+              src={"/kakaologin.png"}
+              alt="카카오"
+              style={{
+                objectFit: "cover",
+              }}
+            />
           </div>
         </div>
       </div>

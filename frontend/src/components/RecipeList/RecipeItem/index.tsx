@@ -1,22 +1,22 @@
-import Styles from "./index.module.css";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import { DisplayLikes } from "@/components/DisplayLikes";
+import ListItem from "@/components/ListItem";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { Recipe, User } from "@/types";
 import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Recipe, User } from "@/types";
-import DefaultAxiosService from "@/service/DefaultAxiosService";
-import { searchUser } from "@/api/getCurrentUser";
-import { DisplayLikes } from "@/components/DisplayLikes";
+import Styles from "./index.module.css";
 export interface RecipeItemProps {
   item: Recipe;
   user: User | undefined;
 }
 
 const RecipeItem = ({ item, user }: RecipeItemProps) => {
-  const [likes, setLikes] = useState<number>(0);
-  const [comments, setComments] = useState<number | string>(0); //댓글의 갯수
-  const [onLike, setOnLike] = useState<boolean>(false); // 내가좋아요를 눌렀는지 여부
+  const [likes, setLikes] = useState(0);
+  const [comments, setComments] = useState(0); //댓글의 갯수
+  const [onLike, setOnLike] = useState(false); // 내가좋아요를 눌렀는지 여부
   const router = useRouter();
+
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
@@ -26,7 +26,7 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
         });
     };
     getLikesNum();
-  }, [onLike]);
+  }, [item.id, onLike]);
 
   useEffect(() => {
     const getCommentsNum = async () => {
@@ -37,16 +37,17 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
         });
     };
     getCommentsNum();
-  }, []);
+  }, [item.id]);
 
   return (
-    <div className={Styles.list_item}>
-      <img
-        src={item.imgSrc}
-        alt={item.imgAlt}
-        onClick={() => router.push({ pathname: `/recipe/${item.id}` })}
-        className={Styles.list_img}
-      />
+    <ListItem
+      imgProps={{
+        src: item.imgSrc,
+        alt: item.imgAlt,
+        className: Styles.list_img,
+        onClick: () => router.push({ pathname: `/recipe/${item.id}` }),
+      }}
+    >
       <div className={Styles.list_date}>{item.created_at}</div>
       <div className={Styles.list_title_row}>
         <div
@@ -72,7 +73,7 @@ const RecipeItem = ({ item, user }: RecipeItemProps) => {
           {comments}
         </div>
       </div>
-    </div>
+    </ListItem>
   );
 };
 export default RecipeItem;

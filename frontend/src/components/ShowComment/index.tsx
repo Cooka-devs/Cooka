@@ -7,21 +7,23 @@ import { useRouter } from "next/router";
 import { WantDeleteList } from "../WantDeleteList";
 import Modal from "../Modal";
 import ListPageMove from "../ListPageMove";
+import AniButton from "../AniButton";
 interface ShowCommentProp {
   comments: Comment[];
   type: string;
 }
 const ShowComment = ({ comments, type }: ShowCommentProp) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [user, setUser] = useState<undefined | User>();
-  const [modify, setModify] = useState<boolean>(false);
-  const [findModifyComment, setFindModifyComment] = useState<number>(-1); //수정된 댓글의 id값
-  const [modifyText, setModifyText] = useState<string>("");
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
+  const [user, setUser] = useState<User>();
+  const [modify, setModify] = useState(false);
+  const [findModifyComment, setFindModifyComment] = useState(-1); //수정된 댓글의 id값
+  const [modifyText, setModifyText] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
   const router = useRouter();
   const itemnum = 3; //페이지당 출력될 item 수
   const indexOfLast = currentPage * itemnum; //slice할때 마지막item 순서
   const indexOfFirst = indexOfLast - itemnum; // slice할때 첫item순서
+
   const onClickDeleteModal = () => {
     setDeleteModal(false);
   };
@@ -29,11 +31,13 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
   const onChangeModifyText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setModifyText(e.target.value);
   };
+
   const CurrentPost = (post: Comment[]) => {
     let currentPosts: Comment[] = [];
     currentPosts = post.slice(indexOfFirst, indexOfLast);
     return currentPosts;
   };
+
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
@@ -41,6 +45,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
     };
     fetch();
   }, []);
+
   return (
     <>
       {CurrentPost(comments).map((comment) => (
@@ -66,7 +71,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
             {user && user?.nickname === comment.writer ? (
               <>
                 <div>
-                  <button
+                  <AniButton
                     className={Styles.modify_btn}
                     onClick={() => {
                       setDeleteModal(true);
@@ -74,10 +79,10 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
                     }}
                   >
                     삭제
-                  </button>
+                  </AniButton>
                 </div>
                 <div>
-                  <button
+                  <AniButton
                     className={Styles.modify_btn}
                     onClick={() => {
                       setModify(true);
@@ -85,7 +90,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
                     }}
                   >
                     수정
-                  </button>
+                  </AniButton>
                 </div>
               </>
             ) : (
@@ -110,7 +115,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
                   gap: "1rem",
                 }}
               >
-                <button
+                <AniButton
                   className={Styles.modify_row_btn}
                   onClick={async () => {
                     await MakeComment({
@@ -123,13 +128,13 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
                   }}
                 >
                   수정완료
-                </button>
-                <button
+                </AniButton>
+                <AniButton
                   className={Styles.modify_row_btn}
                   onClick={() => setModify(false)}
                 >
                   나가기
-                </button>
+                </AniButton>
               </div>
             </div>
           ) : (

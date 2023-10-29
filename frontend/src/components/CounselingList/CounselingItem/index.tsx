@@ -6,15 +6,19 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { DisplayLikes } from "@/components/DisplayLikes";
+import ListItem from "@/components/ListItem";
+
 interface CounselingItemProp {
   item: CsItem;
-  user: User | undefined;
+  user?: User;
 }
+
 export const CounselingItem = ({ item, user }: CounselingItemProp) => {
-  const [likes, setLikes] = useState<number>(0);
-  const [onLike, setOnLike] = useState<boolean>(false);
-  const [comments, setComments] = useState<number>(0);
+  const [likes, setLikes] = useState(0);
+  const [onLike, setOnLike] = useState(false);
+  const [comments, setComments] = useState(0);
   const router = useRouter();
+
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
@@ -24,7 +28,8 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
         });
     };
     getLikesNum();
-  }, [onLike]);
+  }, [item.id, onLike]);
+
   useEffect(() => {
     const getCommentsNum = async () => {
       await DefaultAxiosService.instance
@@ -34,38 +39,40 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
         });
     };
     getCommentsNum();
-  }, []);
+  }, [item.id]);
+
   return (
-    <div
-      className={Styles.csitem}
+    <ListItem
       onClick={() => {
         router.push({ pathname: `/counseling/${item.id}` });
       }}
     >
-      <div className={Styles.item_date}>{item.created_at}</div>
-      <div className={Styles.item_title}>{item.title}</div>
-      <div className={Styles.item_likes}>
-        {typeof likes != "string" ? (
-          <DisplayLikes
-            onLike={onLike}
-            likes={likes}
-            setOnLike={setOnLike}
-            setLikesNum={setLikes}
-            user={user}
-            item={item}
-            type="counseling"
-          />
-        ) : (
-          ""
-        )}
-        <div className={Styles.like_span}>
-          <InsertCommentOutlinedIcon
-            className={Styles.like_icon}
-            fontSize={"large"}
-          />
-          {comments}
+      <div className={Styles.csitem}>
+        <div className={Styles.item_date}>{item.created_at}</div>
+        <div className={Styles.item_title}>{item.title}</div>
+        <div className={Styles.item_likes}>
+          {typeof likes != "string" ? (
+            <DisplayLikes
+              onLike={onLike}
+              likes={likes}
+              setOnLike={setOnLike}
+              setLikesNum={setLikes}
+              user={user}
+              item={item}
+              type="counseling"
+            />
+          ) : (
+            ""
+          )}
+          <div className={Styles.like_span}>
+            <InsertCommentOutlinedIcon
+              className={Styles.like_icon}
+              fontSize={"large"}
+            />
+            {comments}
+          </div>
         </div>
       </div>
-    </div>
+    </ListItem>
   );
 };

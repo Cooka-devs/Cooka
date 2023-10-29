@@ -3,6 +3,7 @@ interface NoDataProps {
   marginBottom?: string;
   paddingTop?: string;
 }
+
 const NoData = ({ paddingLeft, marginBottom, paddingTop }: NoDataProps) => {
   return (
     <div

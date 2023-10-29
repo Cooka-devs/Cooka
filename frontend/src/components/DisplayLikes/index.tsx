@@ -1,8 +1,9 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
-import Styles from "./index.module.css";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import { useEffect, useState } from "react";
 import { CsItem, PlaceProps, Recipe, User } from "@/types";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import { useEffect } from "react";
+import Styles from "./index.module.css";
+
 interface DisplayLikesProps {
   onLike: boolean;
   likes: number;
@@ -12,6 +13,7 @@ interface DisplayLikesProps {
   item: Recipe | PlaceProps | CsItem;
   type: string;
 }
+
 export const DisplayLikes = ({
   onLike,
   likes,
@@ -41,7 +43,8 @@ export const DisplayLikes = ({
       };
       getLikes();
     }
-  }, [onLike, user]);
+  }, [item.id, setOnLike, type, user]);
+
   return (
     <div
       className={Styles.like_span}

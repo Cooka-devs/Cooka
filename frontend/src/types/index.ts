@@ -3,12 +3,14 @@ export interface CurrentUserProps {
   user_Uid: number;
   user_Id: string;
 }
+
 export interface Comment extends Rowable {
   postId: number;
   writer: string;
   content: string;
   created_at: string;
 }
+
 export interface News extends Rowable {
   imgSrc: string;
   imgAlt: string;
@@ -16,6 +18,7 @@ export interface News extends Rowable {
   url: string;
   created_at: string;
 }
+
 export interface Recipe extends Rowable {
   imgSrc: string;
   imgAlt: string;

@@ -1,28 +1,31 @@
-import Styles from "./index.module.css";
-import { useState, useEffect } from "react";
-import PlaceList from "@/components/PlaceList";
+import { searchUser } from "@/api/getCurrentUser";
+import { getListByPage } from "@/api/getListByPage";
+import { getListLength } from "@/api/getListLength";
+import AniButton from "@/components/AniButton";
+import CreateList from "@/components/CreateList";
 import ListPageMove from "@/components/ListPageMove";
 import MakePlaceButton from "@/components/MakePlaceButton";
-import CreateList from "@/components/CreateList";
-import { PlaceProps } from "@/types";
 import Modal from "@/components/Modal";
+import PlaceList from "@/components/PlaceList";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
-import { searchUser } from "@/api/getCurrentUser";
-import { User } from "@/types";
-import { getListLength } from "@/api/getListLength";
-import { getListByPage } from "@/api/getListByPage";
+import { PlaceProps, User } from "@/types";
+import { useCallback, useEffect, useState } from "react";
+import Styles from "./index.module.css";
+
+const itemnum = 9; //페이지당 출력될 item 수
+
 const Place = () => {
-  const [modal, setModal] = useState<boolean>(false);
-  const [user, setUser] = useState<undefined | User>();
-  const [onplace, setOnPlace] = useState<boolean>(false);
+  const [modal, setModal] = useState(false);
+  const [user, setUser] = useState<User>();
+  const [onplace, setOnPlace] = useState(false);
   const [listLength, setListLength] = useState<number>(0); //리스트 길이
   const [list, setList] = useState<PlaceProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const itemnum = 9; //페이지당 출력될 item 수
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModal(false);
-  };
+  }, []);
+
   const makePlace = () => {
     if (user != undefined) {
       setOnPlace(true);
@@ -30,12 +33,15 @@ const Place = () => {
       setModal(true);
     }
   };
-  const listPlace = () => {
+
+  const listPlace = useCallback(() => {
     setOnPlace(false);
-  };
+  }, []);
+
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
+      console.log(getU);
       setUser(getU);
     };
     fetch();
@@ -45,14 +51,16 @@ const Place = () => {
     };
     getPlaceListLength();
   }, []);
+
   useEffect(() => {
-    const getList = getListByPage({
+    getListByPage({
       page: currentPage,
       size: itemnum,
       setList: setList,
       type: "place",
     });
   }, [currentPage]);
+
   return (
     <div>
       {modal ? (
@@ -82,7 +90,10 @@ const Place = () => {
         <div className={Styles.place_right}>
           <div className={Styles.place_right_make}>
             {onplace ? (
-              <button onClick={() => listPlace()} className={Styles.goback_btn}>
+              <AniButton
+                onClick={() => listPlace()}
+                className={Styles.goback_btn}
+              >
                 <div style={{ fontSize: "2rem", fontWeight: "700" }}>
                   돌아가기
                 </div>
@@ -91,7 +102,7 @@ const Place = () => {
                   <br />
                   돌아갈께요.
                 </div>
-              </button>
+              </AniButton>
             ) : (
               <MakePlaceButton onClick={makePlace} />
             )}

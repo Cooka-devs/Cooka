@@ -10,7 +10,7 @@ const NaverLoginPage = () => {
     if (!router.isReady || !router.query["code"]) return;
     setCode(router.query["code"].toString());
     console.log("code:", code);
-  }, []);
+  }, [code, router.isReady, router.query]);
 
   return (
     <div>

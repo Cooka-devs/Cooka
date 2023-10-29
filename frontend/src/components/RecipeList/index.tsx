@@ -8,15 +8,16 @@ export interface RecipeListProps {
 }
 
 const RecipeList = ({ item }: RecipeListProps) => {
-  const [user, setUser] = useState<undefined | User>();
+  const [user, setUser] = useState<User>();
+
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
       await setUser(getU);
     };
     fetch();
-    console.log("recipelist에서의 user:", user);
   }, []);
+
   return (
     <div className={Styles.list_container}>
       {item.map((item, index) => {

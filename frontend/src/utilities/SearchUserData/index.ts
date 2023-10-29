@@ -1,9 +1,6 @@
-import { CsItem, PlaceProps, Recipe, User } from "@/types";
-import { useState } from "react";
-import { getReipce } from "@/api/getRecipe";
-import { getPlace } from "@/api/getPlace";
-import { getCounseling } from "@/api/getCounseling";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { User } from "@/types";
+
 interface SearchUserDataProps {
   user: User;
   set: React.Dispatch<React.SetStateAction<any>>;
@@ -11,6 +8,7 @@ interface SearchUserDataProps {
   size: number;
   type: string;
 }
+
 const SearchUserData = async ({
   user,
   set,

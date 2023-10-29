@@ -17,6 +17,7 @@ interface ContentsByCheckTypeProps {
   ITEMNUM: number;
   currentPage: number;
 }
+
 export const ContentsByCheckType = async ({
   user,
   checkType,

@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import { Comment } from "@/types";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
-const useGetComments = async (id: string, type: string) => {
+import { Comment } from "@/types";
+
+const getComments = async (id: string, type: string) => {
   const result = Number(id);
   let comment: Comment[] = [];
   switch (type) {
@@ -23,4 +22,5 @@ const useGetComments = async (id: string, type: string) => {
       return comment;
   }
 };
-export default useGetComments;
+
+export default getComments;

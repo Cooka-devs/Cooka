@@ -1,20 +1,22 @@
-import Styles from "./index.module.css";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
-import { PlaceProps, User } from "@/types";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { DisplayLikes } from "@/components/DisplayLikes";
+import ListItem from "@/components/ListItem";
+import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { PlaceProps, User } from "@/types";
+import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Styles from "./index.module.css";
+
 interface Place {
   item: PlaceProps;
   user: User | undefined;
 }
 const PlaceItem = ({ item, user }: Place) => {
-  const [likes, setLikes] = useState<number>(0);
-  const [onLike, setOnLike] = useState<boolean>(false);
-  const [comments, setComments] = useState<number>(0);
+  const [likes, setLikes] = useState(0);
+  const [onLike, setOnLike] = useState(false);
+  const [comments, setComments] = useState(0);
   const router = useRouter();
+
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
@@ -24,7 +26,8 @@ const PlaceItem = ({ item, user }: Place) => {
         });
     };
     getLikesNum();
-  }, [onLike]);
+  }, [item.id, onLike]);
+
   useEffect(() => {
     const getCommentsNum = async () => {
       await DefaultAxiosService.instance
@@ -34,15 +37,17 @@ const PlaceItem = ({ item, user }: Place) => {
         });
     };
     getCommentsNum();
-  }, []);
+  }, [item.id]);
+
   return (
-    <div className={Styles.list_item}>
-      <img
-        src={item.imgSrc}
-        alt={item.imgAlt}
-        onClick={() => router.push({ pathname: `/place/${item.id}` })}
-        className={Styles.list_img}
-      />
+    <ListItem
+      imgProps={{
+        src: item.imgSrc,
+        alt: item.imgAlt,
+        className: Styles.list_img,
+        onClick: () => router.push({ pathname: `/place/${item.id}` }),
+      }}
+    >
       <div className={Styles.list_date}>{item.created_at}</div>
       <div className={Styles.list_title_row}>
         <div
@@ -68,7 +73,7 @@ const PlaceItem = ({ item, user }: Place) => {
           {comments}
         </div>
       </div>
-    </div>
+    </ListItem>
   );
 };
 export default PlaceItem;

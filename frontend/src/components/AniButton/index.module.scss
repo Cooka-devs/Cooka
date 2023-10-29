@@ -1,0 +1,15 @@
+.AniButton {
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    border-color: lightgray;
+    box-shadow: 0 0.5em 0.5em -0.4em lightgray;
+    transform: translateY(-0.5rem);
+  }
+}

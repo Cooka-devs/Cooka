@@ -1,0 +1,59 @@
+.img {
+  image-rendering: -webkit-optimize-contrast;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+/* Arrows */
+.slickPrev,
+.slickNext {
+  font-size: 0;
+  line-height: 0;
+
+  position: absolute;
+  top: 50%;
+
+  display: block;
+
+  padding: 0;
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+
+  z-index: 999;
+
+  cursor: pointer;
+
+  color: transparent;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.slickPrev,
+.slickNext {
+  svg {
+    font-size: 80px;
+    line-height: 1;
+
+    color: white;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    &:hover {
+      font-size: 90px;
+      color: var(--color-primary-dim);
+      transition: all 0.3s ease-in-out;
+    }
+  }
+}
+
+.slickPrev {
+  left: 5px;
+}
+
+.slickNext {
+  right: 5px;
+}

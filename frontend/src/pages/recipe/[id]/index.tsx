@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Comment, Recipe, User } from "@/types";
 import { useRouter } from "next/router";
 import { Divider } from "@/components";
-import useGetComments from "@/utilities/getComments";
+import getComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
 import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
@@ -12,6 +12,7 @@ import { MakeComment } from "@/components/MakeComment";
 import { WantDeleteList } from "@/components/WantDeleteList";
 import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
+import AniButton from "@/components/AniButton";
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const [comments, setComments] = useState<Comment[]>();
@@ -39,9 +40,8 @@ const RecipeDetail = () => {
     };
     getP();
     const getC = async () => {
-      const getComments = await useGetComments(result, "recipe");
-      console.log("getComments", getComments);
-      setComments(getComments);
+      const comments = await getComments(result, "recipe");
+      setComments(comments);
     };
     getC();
 
@@ -50,7 +50,8 @@ const RecipeDetail = () => {
       setUser(getU);
     };
     fetch();
-  }, [router.query]);
+  }, [router.isReady, router.query]);
+
   return (
     <div>
       {modal ? (
@@ -90,18 +91,18 @@ const RecipeDetail = () => {
                   gap: "1rem",
                 }}
               >
-                <button
+                <AniButton
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setDeleteModal(true)}
                 >
                   ❌글삭제
-                </button>
-                <button
+                </AniButton>
+                <AniButton
                   style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                   onClick={() => setModify(true)}
                 >
                   ❗글수정
-                </button>
+                </AniButton>
               </span>
             ) : (
               ""
@@ -128,7 +129,7 @@ const RecipeDetail = () => {
             }}
           />
           <div className={Styles.input_comment}>
-            <button
+            <AniButton
               className={Styles.input_commentbtn}
               onClick={async () => {
                 if (user) {
@@ -146,7 +147,7 @@ const RecipeDetail = () => {
               }}
             >
               입력완료
-            </button>
+            </AniButton>
           </div>
           {comments ? <ShowComment comments={comments} type="recipe" /> : ""}
         </div>

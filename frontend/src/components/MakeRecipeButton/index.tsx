@@ -1,7 +1,9 @@
+import AniButton from "../AniButton";
 import Styles from "./index.module.css";
+
 const MakeRecipeButton = ({ onClick }: any) => {
   return (
-    <button onClick={() => onClick()} className={Styles.make_btn}>
+    <AniButton onClick={onClick} className={Styles.make_btn}>
       <div style={{ fontSize: "2rem", fontWeight: "700" }}>작성하기</div>
       <div style={{ fontSize: "1.5rem", paddingTop: "1rem" }}>
         자기만의 요리법, 예쁜 플레이팅,
@@ -10,7 +12,8 @@ const MakeRecipeButton = ({ onClick }: any) => {
         <br />
         나누어요!
       </div>
-    </button>
+    </AniButton>
   );
 };
+
 export default MakeRecipeButton;

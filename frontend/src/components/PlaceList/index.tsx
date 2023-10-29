@@ -3,11 +3,14 @@ import PlaceItem from "./PlaceItem";
 import Styles from "./index.module.css";
 import { PlaceProps, User } from "@/types";
 import { useState, useEffect } from "react";
+
 interface PlaceListProps {
   items: PlaceProps[];
 }
+
 const PlaceList = ({ items }: PlaceListProps) => {
-  const [user, setUser] = useState<undefined | User | string>("최초실행방지");
+  const [user, setUser] = useState<null | User>(null);
+
   useEffect(() => {
     const fetch = async () => {
       const getU = await searchUser();
@@ -15,14 +18,11 @@ const PlaceList = ({ items }: PlaceListProps) => {
     };
     fetch();
   }, []);
+
   return (
     <div className={Styles.list_container}>
       {items.map((place, index) => {
-        return typeof user != "string" ? (
-          <PlaceItem item={place} key={index} user={user} />
-        ) : (
-          ""
-        );
+        return !!user ? <PlaceItem item={place} key={index} user={user} /> : "";
       })}
     </div>
   );

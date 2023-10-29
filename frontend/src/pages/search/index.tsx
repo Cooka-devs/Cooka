@@ -11,27 +11,26 @@ import PlaceList from "@/components/PlaceList";
 import CounselingList from "@/components/CounselingList";
 import { searchUser } from "@/api/getCurrentUser";
 import NewsPagination from "@/components/NewsPagination";
+
 const Search = () => {
   const [searchRecipeList, setSearchRecipeList] = useState<
     //검색어, 페이지에따라 상태변경됩니다.
-    Recipe[] | undefined
+    Recipe[]
   >([]);
-  const [searchPlaceList, setSearchPlaceList] = useState<
-    PlaceProps[] | undefined
-  >([]);
-  const [searchCsList, setSearchCsList] = useState<CsItem[] | undefined>([]);
-  const [searchNewsList, setSearchNewsList] = useState<News[] | undefined>([]);
+  const [searchPlaceList, setSearchPlaceList] = useState<PlaceProps[]>([]);
+  const [searchCsList, setSearchCsList] = useState<CsItem[]>([]);
+  const [searchNewsList, setSearchNewsList] = useState<News[]>([]);
 
-  const [recipeListNum, setRecipeListNum] = useState<number>(0); //데이터를 다불러오지않고 길이만 가져옴
+  const [recipeListNum, setRecipeListNum] = useState(0); //데이터를 다불러오지않고 길이만 가져옴
   //그 길이로 화살표를 출력할지 안할지를 결정합니다.
-  const [placeListNum, setPlaceListNum] = useState<number>(0);
-  const [csListNum, setCsListNum] = useState<number>(0);
-  const [newsListNum, setNewsListNum] = useState<number>(0);
+  const [placeListNum, setPlaceListNum] = useState(0);
+  const [csListNum, setCsListNum] = useState(0);
+  const [newsListNum, setNewsListNum] = useState(0);
 
-  const [newsPageNum, setNewsPageNum] = useState<number>(1);
-  const [recipePageNum, setRecipePageNum] = useState<number>(1); //
-  const [placePageNum, setPlacePageNum] = useState<number>(1);
-  const [csPageNum, setCsPageNum] = useState<number>(1);
+  const [newsPageNum, setNewsPageNum] = useState(1);
+  const [recipePageNum, setRecipePageNum] = useState(1); //
+  const [placePageNum, setPlacePageNum] = useState(1);
+  const [csPageNum, setCsPageNum] = useState(1);
 
   const [user, setUser] = useState<User | undefined>();
   const ITEMNUM = 4;
@@ -86,7 +85,14 @@ const Search = () => {
       setList: setSearchNewsList,
     });
     //////////////////////////////////////////////////////
-  }, [router.query]);
+  }, [
+    csPageNum,
+    newsPageNum,
+    placePageNum,
+    recipePageNum,
+    router.isReady,
+    router.query,
+  ]);
 
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
@@ -98,7 +104,7 @@ const Search = () => {
       size: ITEMNUM,
       setList: setSearchRecipeList,
     });
-  }, [recipePageNum]);
+  }, [recipePageNum, router.isReady, router.query]);
 
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
@@ -110,7 +116,7 @@ const Search = () => {
       size: ITEMNUM,
       setList: setSearchPlaceList,
     });
-  }, [placePageNum]);
+  }, [placePageNum, router.isReady, router.query]);
 
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
@@ -122,7 +128,8 @@ const Search = () => {
       size: ITEMNUM,
       setList: setSearchCsList,
     });
-  }, [csPageNum]);
+  }, [csPageNum, router.isReady, router.query]);
+
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
     const keyword = router.query["keyword"].toString();
@@ -133,7 +140,8 @@ const Search = () => {
       size: ITEMNUM,
       setList: setSearchNewsList,
     });
-  }, [newsPageNum]);
+  }, [newsPageNum, router.isReady, router.query]);
+
   return (
     <div className={Styles.searchpage}>
       <div className={Styles.keyword}>검색결과</div>

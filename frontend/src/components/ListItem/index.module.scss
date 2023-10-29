@@ -1,0 +1,27 @@
+.list_item {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.6rem;
+  align-items: center;
+  box-shadow: 0 1px 2px 1px lightgray;
+  border-radius: 0.8rem;
+  cursor: pointer;
+}
+
+.list_item:hover {
+  border-color: lightgray;
+  box-shadow: 0 0.5em 0.5em -0.4em #d3d3d3;
+  transform: translateY(-0.5rem);
+  transition: all 0.3s ease-in-out;
+}
+
+.img_container {
+  img {
+    width: 28rem;
+    height: 30rem;
+    border-radius: 0.8rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    object-fit: cover;
+  }
+}

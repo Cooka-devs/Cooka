@@ -13,10 +13,8 @@ interface BestItemProps {
 }
 
 export default function Home() {
-  const [bestItems, setBestItems] = useState<BestItemProps[] | undefined>(
-    undefined
-  );
-  const [user, setUser] = useState<User | undefined>();
+  const [bestItems, setBestItems] = useState<BestItemProps[]>();
+  const [user, setUser] = useState<User>();
 
   useEffect(() => {
     const call = async () => {

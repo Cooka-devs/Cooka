@@ -2,7 +2,7 @@ import Styles from "./index.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Comment, CsItem, User } from "@/types";
-import useGetComments from "@/utilities/getComments";
+import getComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
 import { MakeComment } from "@/components/MakeComment";
 import Modal from "@/components/Modal";
@@ -12,14 +12,15 @@ import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { WantDeleteList } from "@/components/WantDeleteList";
 import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
+import AniButton from "@/components/AniButton";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
-  const [modal, setModal] = useState<boolean>(false);
+  const [modal, setModal] = useState(false);
   const [comments, setComments] = useState<Comment[]>();
-  const [inputComment, setInputComment] = useState<string>("");
+  const [inputComment, setInputComment] = useState("");
   const [user, setUser] = useState<undefined | User>();
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const [modify, setModify] = useState<boolean>(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [modify, setModify] = useState(false);
   const router = useRouter();
   const closeDeleteModal = () => {
     setDeleteModal(false);
@@ -38,8 +39,8 @@ const CounselingDetail = () => {
     getP();
 
     const getC = async () => {
-      const getComments = await useGetComments(result, "counseling");
-      setComments(getComments);
+      const comments = await getComments(result, "counseling");
+      setComments(comments);
     };
     getC();
 
@@ -49,6 +50,7 @@ const CounselingDetail = () => {
     };
     fetch();
   }, [router.query.id]);
+
   return (
     <div>
       {modal ? (
@@ -91,18 +93,18 @@ const CounselingDetail = () => {
                     gap: "1rem",
                   }}
                 >
-                  <button
+                  <AniButton
                     style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                     onClick={() => setDeleteModal(true)}
                   >
                     ❌글삭제
-                  </button>
-                  <button
+                  </AniButton>
+                  <AniButton
                     style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
                     onClick={() => setModify(true)}
                   >
                     ❗글수정
-                  </button>
+                  </AniButton>
                 </span>
               ) : (
                 ""
@@ -121,7 +123,7 @@ const CounselingDetail = () => {
             }}
           />
           <div className={Styles.input_comment}>
-            <button
+            <AniButton
               className={Styles.input_commentbtn}
               onClick={async () => {
                 if (user) {
@@ -139,7 +141,7 @@ const CounselingDetail = () => {
               }}
             >
               입력완료
-            </button>
+            </AniButton>
           </div>
           {comments ? (
             <ShowComment comments={comments} type="counseling" />

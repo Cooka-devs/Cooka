@@ -1,6 +1,8 @@
 import Styles from "./index.module.css";
 import { useRouter } from "next/router";
 import useStore from "@/store";
+import AniButton from "../AniButton";
+
 interface WantLoginModalProp {
   closeModal: React.Dispatch<React.SetStateAction<boolean>>;
   //React.Dispatch란 React에서 제공되는 제네릭타입중하나.
@@ -10,12 +12,14 @@ interface WantLoginModalProp {
   //useState함수를 사용하여 상태를 업데이트할때 사용되는 값의 타입을 나타냄.
   //bollean값을 받아서 해당상태를 업데이트하는 함수의타입이다
 }
+
 export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
   closeModal,
 }) => {
   const { setUrl } = useStore();
   const router = useRouter();
   console.log(router.pathname);
+
   return (
     <div className={Styles.loginModalText}>
       <h1 style={{ fontSize: "3rem" }}>로그인이 필요합니다.</h1>
@@ -30,21 +34,21 @@ export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
           justifyContent: "center",
         }}
       >
-        <button
+        <AniButton
           onClick={() => {
             setUrl(router.pathname);
             router.push("/login");
           }}
         >
           예
-        </button>
-        <button
+        </AniButton>
+        <AniButton
           onClick={() => {
             closeModal(false);
           }}
         >
           아니오
-        </button>
+        </AniButton>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { useRouter } from "next/router";
+import AniButton from "../AniButton";
 
 export const Logout = () => {
   const router = useRouter();
+
   const onClickLogout = async () => {
     try {
       DefaultAxiosService.instance.get("/logout").then((res) => {
@@ -16,23 +18,24 @@ export const Logout = () => {
       console.log(err);
     }
   };
+
   return (
     <div style={{ display: "flex", gap: "1rem" }} className="logout">
-      <button
+      <AniButton
         onClick={onClickLogout}
         style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
       >
         로그아웃
-      </button>
+      </AniButton>
       |
-      <button
+      <AniButton
         style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
         onClick={() => {
           router.push("/mypage");
         }}
       >
         마이페이지
-      </button>
+      </AniButton>
     </div>
   );
 };

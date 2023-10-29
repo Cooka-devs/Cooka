@@ -9,12 +9,14 @@
   flex-direction: column;
   gap: 2rem;
 }
+
 .cslist {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 2rem;
 }
+
 .csitem {
   box-shadow: 0 0 3px 1px lightgray;
   border-radius: 0.8rem;
@@ -22,18 +24,16 @@
   height: 20rem;
   padding: 1.5rem;
 }
-.csitem:hover {
-  border-color: lightgray;
-  box-shadow: 0 0.5em 0.5em -0.4em lightgray;
-  transform: translateY(-0.5rem);
-}
+
 .item_date {
   font-size: 1.4rem;
 }
+
 .item_title {
   height: 13rem;
   font-family: "SUITE-Regular";
 }
+
 .item_likes {
   display: flex;
   gap: 1rem;
@@ -48,21 +48,25 @@
 .like_icon {
   margin-top: 2px;
 }
+
 .cs_maker {
   position: absolute;
   right: 1rem;
   bottom: 0rem;
 }
+
 .btn_maker {
   font-size: 2.5rem;
   border-radius: 0.6rem;
-  border: 1px solid black;
+  border: 1px solid gray;
   width: 15rem;
   height: 5rem;
 }
+
 .pagemove {
   position: relative;
 }
+
 .left {
   width: 90rem;
   display: inline-block;
@@ -76,15 +80,19 @@
   font-size: 2rem;
   display: flex;
 }
+
 .counseling_makeleft {
   width: 90rem;
 }
+
 .counseling_makeright {
   width: 30rem;
 }
+
 .counseling_right_make {
   margin-top: 1rem;
 }
+
 .goback_btn {
   text-align: left;
   font-size: 2rem;

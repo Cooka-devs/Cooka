@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { User } from "@/types";
 import { createSalt } from "@/utilities/createSalt";
 import { encodePw } from "@/utilities/encodePw";
+import AniButton from "@/components/AniButton";
 
 const JoinContent = ({ closeModal }: any) => {
   const [users, setUsers] = useState<User[]>([]); //DB에서 불러온 user 목록
@@ -32,18 +33,23 @@ const JoinContent = ({ closeModal }: any) => {
   const passwordRegExp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
   const phoneNumRegExp = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
   const router = useRouter();
+
   const onChangeId: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setId(e.target.value);
   };
+
   const onChangeNickname: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setNickname(e.target.value);
   };
+
   const onChangePhoneNum: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPhoneNum(e.target.value);
   };
+
   const onChangeName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
   };
+
   const onChangePassword: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setPassword(e.target.value);
     if (passwordRegExp.test(e.target.value)) {
@@ -154,15 +160,14 @@ const JoinContent = ({ closeModal }: any) => {
   };
 
   useEffect(() => {
-    const getUser = axios(
-      `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`
-    )
+    axios(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`)
       .then((res) => res.data)
       .then((res) => res.data)
       .then((res) => {
         setUsers(res), console.log(res);
       });
   }, []);
+
   return (
     <div className={Styles.join}>
       <div className={Styles.join_title}>
@@ -188,12 +193,12 @@ const JoinContent = ({ closeModal }: any) => {
           className={Styles.input_text}
           onChange={onChangeNickname}
         />
-        <button
+        <AniButton
           className={Styles.check_btn}
           onClick={() => onClickCheckNickName()}
         >
           중복확인
-        </button>
+        </AniButton>
         <div className={isNickname ? Styles.okmessage : Styles.nomessage}>
           {nicknameMessage}
         </div>
@@ -207,9 +212,12 @@ const JoinContent = ({ closeModal }: any) => {
           className={Styles.input_text}
           onChange={onChangeId}
         />
-        <button className={Styles.check_btn} onClick={() => onClickCheckId()}>
+        <AniButton
+          className={Styles.check_btn}
+          onClick={() => onClickCheckId()}
+        >
           중복확인
-        </button>
+        </AniButton>
         <div className={isId ? Styles.okmessage : Styles.nomessage}>
           {idMessage}
         </div>
@@ -255,23 +263,26 @@ const JoinContent = ({ closeModal }: any) => {
           className={Styles.input_text}
           onChange={onChangePhoneNum}
         />
-        <button className={Styles.check_btn} onClick={() => onClickPhoneNum()}>
+        <AniButton
+          className={Styles.check_btn}
+          onClick={() => onClickPhoneNum()}
+        >
           중복확인
-        </button>
+        </AniButton>
         <div className={isPhoneNum ? Styles.okmessage : Styles.nomessage}>
           {phoneMessage}
         </div>
       </div>
       <div className={Styles.gojoin}>
-        <button className={Styles.gojoin_btn} onClick={onClickJoin}>
+        <AniButton className={Styles.gojoin_btn} onClick={onClickJoin}>
           가입하기
-        </button>
-        <button
+        </AniButton>
+        <AniButton
           className={Styles.gojoin_btn}
           onClick={() => router.push(`/login`)}
         >
           돌아가기
-        </button>
+        </AniButton>
       </div>
     </div>
   );

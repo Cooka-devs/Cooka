@@ -1,6 +1,6 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import { CsItem, PlaceProps, Recipe } from "@/types";
-import { useState, useEffect, useMemo } from "react";
+
 interface ContentsByChefProps {
   rPage: number;
   pPage: number;
@@ -11,6 +11,7 @@ interface ContentsByChefProps {
   setP: React.Dispatch<React.SetStateAction<PlaceProps[] | undefined>>;
   setC: React.Dispatch<React.SetStateAction<CsItem[] | undefined>>;
 }
+
 export const ContentsByChef = ({
   rPage,
   pPage,

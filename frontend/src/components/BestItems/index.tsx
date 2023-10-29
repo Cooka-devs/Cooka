@@ -1,16 +1,16 @@
-import { CsItem, PlaceProps, Recipe, User } from "@/types";
-import { Divider } from "..";
-import RecipeItem from "../RecipeList/RecipeItem";
-import Styles from "./index.module.css";
-import { useRouter } from "next/router";
+import { User } from "@/types";
+import { ChefItem } from "../ChefItem";
 import { CounselingItem } from "../CounselingList/CounselingItem";
 import PlaceItem from "../PlaceList/PlaceItem";
-import { ChefItem, ChefList } from "../ChefItem";
+import RecipeItem from "../RecipeList/RecipeItem";
+import Styles from "./index.module.css";
+
 interface BestItemsProps {
   title: string;
   items: any[];
-  user: User | undefined;
+  user?: User;
 }
+
 const BestItems = ({ title, items, user }: BestItemsProps) => {
   return (
     <div className={Styles.main_item}>

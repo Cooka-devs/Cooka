@@ -1,34 +1,45 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Styles from "./index.module.css";
+import Styles from "./index.module.scss";
+import {
+  ArrowBackIosNewOutlined as PrevIcon,
+  ArrowForwardIosOutlined as NextIcon,
+} from "@mui/icons-material";
+import Image from "next/image";
+
 export const SlideImg = () => {
-  const imgList = ["adimg1.jpg", "adimg2.jpg", "adimg3.jpg", "adimg4.jpg"];
-  function NextArrow(props: any) {
-    const { className, style, onClick } = props;
+  const imgList = ["/adimg1.jpg", "/adimg2.jpg", "/adimg3.jpg", "/adimg4.jpg"];
+
+  function PrevArrow(props: any) {
+    const { style, onClick } = props;
     return (
       <div
-        className={className}
-        style={{ ...style, display: "block", background: "black" }}
+        className={Styles.slickPrev}
+        style={{ ...style, display: "block" }}
         onClick={onClick}
-      />
+      >
+        <PrevIcon />
+      </div>
     );
   }
 
-  function PrevArrow(props: any) {
-    const { className, style, onClick } = props;
+  function NextArrow(props: any) {
+    const { style, onClick } = props;
     return (
       <div
-        className={className}
+        className={Styles.slickNext}
         style={{
           ...style,
           display: "block",
-          background: "black",
         }}
         onClick={onClick}
-      />
+      >
+        <NextIcon />
+      </div>
     );
   }
+
   const settings = {
     dots: true,
     infinite: true,
@@ -41,12 +52,19 @@ export const SlideImg = () => {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
   };
+
   return (
     <Slider {...settings}>
-      {imgList.map((item) => {
+      {imgList.map((item, Idx) => {
         return (
-          <div className={Styles.div}>
-            <img src={item} alt="ad" className={Styles.img} />
+          <div key={Idx} className={Styles.div}>
+            <Image
+              width={1180}
+              height={300}
+              src={item}
+              alt="ad"
+              className={Styles.img}
+            />
           </div>
         );
       })}

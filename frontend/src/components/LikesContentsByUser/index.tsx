@@ -5,10 +5,13 @@ import PlaceList from "../PlaceList";
 import CounselingList from "../CounselingList";
 import { useEffect, useState } from "react";
 import { getMyLikes } from "@/utilities/getMyLikes";
+import AniButton from "../AniButton";
+
 interface LikesContentsByUserProps {
   onClick: React.Dispatch<React.SetStateAction<string>>;
   user: User;
 }
+
 const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
   const [likedRecipeList, setLikedRecipeList] = useState<Recipe[] | undefined>(
     undefined
@@ -19,16 +22,18 @@ const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
   const [likedCsList, setLikedCsList] = useState<CsItem[] | undefined>(
     undefined
   );
+
   useEffect(() => {
     getMyLikes({
-      user: user,
+      user,
       setRecipe: setLikedRecipeList,
       setPlace: setLikedPlaceList,
       setCs: setLikedCsList,
       size: 4,
       page: 1,
     });
-  }, []);
+  }, [user]);
+
   const noData = () => {
     return (
       <div style={{ paddingLeft: "1rem", marginBottom: "1rem" }}>
@@ -43,12 +48,12 @@ const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
           <div className={Styles.head_name}>레시피</div>
           {likedRecipeList && likedRecipeList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
-              <button
+              <AniButton
                 className={Styles.li_btn}
                 onClick={() => onClick("좋아요 레시피자세히보기")}
               >
                 자세히보기
-              </button>
+              </AniButton>
             </div>
           ) : (
             ""
@@ -65,14 +70,14 @@ const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
           <div className={Styles.head_name}>맛집</div>
           {likedPlaceList && likedPlaceList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
-              <button
+              <AniButton
                 className={Styles.li_btn}
                 onClick={() => {
                   onClick("좋아요 맛집자세히보기");
                 }}
               >
                 자세히보기
-              </button>
+              </AniButton>
             </div>
           ) : (
             ""
@@ -89,12 +94,12 @@ const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
           <div className={Styles.head_name}>상담소</div>
           {likedCsList && likedCsList.length > 3 ? (
             <div style={{ position: "absolute", right: "1rem", bottom: "0" }}>
-              <button
+              <AniButton
                 className={Styles.li_btn}
                 onClick={() => onClick("좋아요 상담자세히보기")}
               >
                 자세히보기
-              </button>
+              </AniButton>
             </div>
           ) : (
             ""
