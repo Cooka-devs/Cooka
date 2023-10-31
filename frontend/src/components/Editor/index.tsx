@@ -12,6 +12,7 @@ import Modal from "../Modal";
 import { WantLoginModalText } from "../WantLoginModalText";
 import { CategorySelect } from "./CategorySelect";
 import Styles from "./index.module.css";
+import GetUser from "@/utilities/GetUser";
 
 const formats = [
   "header",
@@ -43,7 +44,7 @@ interface TextType {
 const Editor = ({ textType, modifyType, post }: TextType) => {
   const [text, setText] = useState<string>("");
   const [title, setTitle] = useState<string>("");
-  const [user, setUser] = useState<undefined | User>();
+  const [user, setUser] = useState<null | User>(null);
   const [modal, setModal] = useState<boolean>(false);
   const [category, setCategory] = useState<string>("");
   const [errText, setErrorText] = useState<string>("");
@@ -108,9 +109,9 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         ) {
           if (title === "" || text === "" || category === "") {
             setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
-            setMainImg("최초렌더링실행방지");
+            setMainImg(null);
           } else {
-            if (user != undefined) {
+            if (!!user) {
               DefaultAxiosService.instance
                 .put(`/${modifyType}/${post.id}`, {
                   writer: user.nickname,
@@ -133,9 +134,9 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         } else if (modifyType === "counseling" && post) {
           if (title === "" || text === "") {
             setErrorText("제목,글내용을 확인해주세요!");
-            setMainImg("최초렌더링실행방지");
+            setMainImg(null);
           } else {
-            if (user != undefined) {
+            if (!!user) {
               DefaultAxiosService.instance
                 .put(`/${modifyType}/${post.id}`, {
                   writer: user.nickname,
@@ -156,10 +157,9 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         if (textType === "recipe" || textType === "place") {
           if (title === "" || text === "" || category === "") {
             setErrorText("제목,글내용,카테고리선택을 확인해주세요!");
-            setMainImg("최초렌더링실행방지");
+            setMainImg(null);
           } else {
-            if (user != undefined) {
-              console.log("11");
+            if (!!user) {
               DefaultAxiosService.instance
                 .post(`/${textType}`, {
                   writer: user.nickname,
@@ -182,9 +182,9 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         } else if (textType === "counseling") {
           if (title === "" || text === "") {
             setErrorText("제목,글내용을 확인해주세요!");
-            setMainImg("최초렌더링실행방지");
+            setMainImg(null);
           } else {
-            if (user != undefined) {
+            if (!!user) {
               DefaultAxiosService.instance
                 .post(`/${textType}`, {
                   writer: user.nickname,
@@ -216,11 +216,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   ]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
     if (post && textType === "modify") {
       setText(post.content);
     }
@@ -228,9 +224,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
 
   useEffect(() => {
     if (shouldSetSelection) {
-      console.log("1");
       if (inputRef.current && quillRef.current?.editor) {
-        console.log("2");
         // inputRef.current.value = "";
         // quillRef.current.setEditorSelection(quillRef.current.editor, {
         //   index: 9999,

@@ -9,7 +9,7 @@ interface DisplayLikesProps {
   likes: number;
   setOnLike: React.Dispatch<React.SetStateAction<boolean>>;
   setLikesNum: React.Dispatch<React.SetStateAction<number>>;
-  user: User | undefined;
+  user: User | null;
   item: Recipe | PlaceProps | CsItem;
   type: string;
 }

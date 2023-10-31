@@ -11,6 +11,7 @@ import ListPageMove from "@/components/ListPageMove";
 import { getListLength } from "@/api/getListLength";
 import { getListByPage } from "@/api/getListByPage";
 import AniButton from "@/components/AniButton";
+import GetUser from "@/utilities/GetUser";
 
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
@@ -43,11 +44,7 @@ const Counseling = () => {
   }, [currentPage]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
     const getCounselingListLength = async () => {
       const counselingListLength = await getListLength("counseling"); //데이터의 갯수를 받아옴
       setListLength(counselingListLength);
@@ -91,7 +88,7 @@ const Counseling = () => {
         ) : (
           ""
         )}
-        {!!user ? <CounselingList items={list} user={user} /> : ""}
+        <CounselingList items={list} user={user} />
         <div className={Styles.pagemove}>
           <ListPageMove
             totalPosts={listLength}

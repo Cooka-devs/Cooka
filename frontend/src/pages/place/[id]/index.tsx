@@ -14,11 +14,12 @@ import CreateList from "@/components/CreateList";
 import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
 import AniButton from "@/components/AniButton";
+import GetUser from "@/utilities/GetUser";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
   const [comments, setComments] = useState<Comment[]>();
-  const [user, setUser] = useState<undefined | User>();
+  const [user, setUser] = useState<null | User>(null);
   const [inputComment, setInputComment] = useState<string>("");
   const [modal, setModal] = useState<boolean>(false);
   const [deleteModal, setDeleteModal] = useState<boolean>(false);
@@ -47,11 +48,7 @@ const PlaceDetail = () => {
     };
     getC();
 
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, [router.isReady, router.query]);
 
   return (
@@ -83,7 +80,7 @@ const PlaceDetail = () => {
           <div className={Styles.title}>
             <span>{`[${post?.category}]`}</span>
             <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
-            {user && user.nickname === post.writer ? (
+            {!!user && user.nickname === post.writer ? (
               <span
                 style={{
                   position: "absolute",
@@ -134,7 +131,7 @@ const PlaceDetail = () => {
             <AniButton
               className={Styles.input_commentbtn}
               onClick={async () => {
-                if (user) {
+                if (!!user) {
                   await MakeComment({
                     type: "place",
                     text: inputComment,

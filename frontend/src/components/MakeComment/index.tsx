@@ -1,4 +1,6 @@
-import DefaultAxiosService from "@/service/DefaultAxiosService";
+import { postComment } from "@/api/postComment";
+import { updateComment } from "@/api/updateComment";
+import { COMMENTTYPE } from "@/constants";
 
 interface MakeCommentProps {
   type: string;
@@ -18,66 +20,20 @@ export const MakeComment = async ({
   id,
 }: MakeCommentProps) => {
   const textReplace = text.replace(/(?:\r\n|\r|\n)/g, "<br />");
-
-  if (apiRequestType === "post") {
-    switch (type) {
-      case "counseling":
-        DefaultAxiosService.instance
-          .post("counseling_comment", {
-            content: textReplace,
-            writer: nickName,
-            postId: postId,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
-      case "recipe":
-        DefaultAxiosService.instance
-          .post("recipe_comment", {
-            content: textReplace,
-            writer: nickName,
-            postId: postId,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
-      case "place":
-        DefaultAxiosService.instance
-          .post("place_comment", {
-            content: textReplace,
-            writer: nickName,
-            postId: postId,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
+  COMMENTTYPE.map((item) => {
+    if (item === type && apiRequestType === "post") {
+      postComment({
+        type,
+        content: textReplace,
+        writer: nickName,
+        postId: postId,
+      });
+    } else if (item === type && apiRequestType === "put") {
+      updateComment({
+        type,
+        content: textReplace,
+        id: id,
+      });
     }
-  } else if (apiRequestType === "put") {
-    switch (type) {
-      case "counseling":
-        DefaultAxiosService.instance
-          .put(`counseling_comment/${id}`, {
-            content: textReplace,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
-      case "recipe":
-        DefaultAxiosService.instance
-          .put(`recipe_comment/${id}`, {
-            content: textReplace,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
-      case "place":
-        DefaultAxiosService.instance
-          .put(`place_comment/${id}`, {
-            content: textReplace,
-          })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-        break;
-    }
-  }
+  });
 };

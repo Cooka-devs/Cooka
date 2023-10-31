@@ -31,6 +31,7 @@ const LoginPage = () => {
 
   const onClickJoin = useCallback(() => {
     console.log("id:", id);
+    console.log(url);
     DefaultAxiosService.instance
       .post("/pw", {
         login_id: id,
@@ -49,7 +50,7 @@ const LoginPage = () => {
               const status = res.status;
               console.log(status);
               if (status === 200) {
-                router.push(`/${url}`);
+                router.push(`${url}`);
               } else if (status === 202) {
                 setText("입력하신 비밀번호가 틀렸습니다.");
               }

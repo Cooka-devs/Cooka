@@ -11,6 +11,7 @@ import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { Recipe, User } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import Styles from "./index.module.css";
+import GetUser from "@/utilities/GetUser";
 
 const itemnum = 9; //페이지당 출력될 item 수
 
@@ -20,14 +21,14 @@ export default function RecipePage() {
   const [onRecipe, setOnRecipe] = useState(false);
   const [list, setList] = useState<Recipe[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   const closeModal = useCallback(() => {
     setModal(false);
   }, []);
 
   const makeRecipe = () => {
-    if (user != undefined) {
+    if (!!user) {
       setOnRecipe(true);
     } else {
       setModal(true);
@@ -48,11 +49,7 @@ export default function RecipePage() {
   }, [currentPage]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
     const getRecipeListLength = async () => {
       const recipeListLength = await getListLength("recipe"); //데이터의 갯수를 받아옴
       setListLength(recipeListLength);

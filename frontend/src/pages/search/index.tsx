@@ -11,6 +11,10 @@ import PlaceList from "@/components/PlaceList";
 import CounselingList from "@/components/CounselingList";
 import { searchUser } from "@/api/getCurrentUser";
 import NewsPagination from "@/components/NewsPagination";
+import GetUser from "@/utilities/GetUser";
+import { SEARCHTYPE } from "@/constants";
+
+const ITEMNUM = 4;
 
 const Search = () => {
   const [searchRecipeList, setSearchRecipeList] = useState<
@@ -32,10 +36,35 @@ const Search = () => {
   const [placePageNum, setPlacePageNum] = useState(1);
   const [csPageNum, setCsPageNum] = useState(1);
 
-  const [user, setUser] = useState<User | undefined>();
-  const ITEMNUM = 4;
+  const [user, setUser] = useState<User | null>(null);
 
   const router = useRouter();
+
+  ////////////////////////////////////////getSearchData를 반복적으로 실행시키기위해 만든 객체입니다.
+
+  const SETBYTYPE: Record<
+    string,
+    React.Dispatch<React.SetStateAction<any>>
+  > = useMemo(
+    () => ({
+      recipe: setSearchRecipeList,
+      place: setSearchPlaceList,
+      counseling: setSearchCsList,
+      news: setSearchNewsList,
+    }),
+    []
+  );
+  const NUMBYTYPE: Record<string, number> = useMemo(
+    () => ({
+      recipe: recipePageNum,
+      place: placePageNum,
+      counseling: csPageNum,
+      news: newsPageNum,
+    }),
+    [recipePageNum, placePageNum, csPageNum, newsPageNum]
+  );
+
+  ////////////////////////////////////////////////////////////
 
   useEffect(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;
@@ -47,52 +76,8 @@ const Search = () => {
       setC: setCsListNum,
       setN: setNewsListNum,
     });
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
-    /////useMemo를 사용하여
-    /////페이지이동시 불필요한 랜더링을 방지하고 해당 카테고리만 랜더링하게 하고싶었습니다.
-    /////새로고침시 pageNum가 변동되지않아 useMemo함수가 실행되지않습니다.
-    /////그래서 useEffect에 한번더 실행시켰습니다.
-    getSearchData({
-      type: "recipe",
-      keyword: keyword,
-      page: recipePageNum,
-      size: ITEMNUM,
-      setList: setSearchRecipeList,
-    });
-    getSearchData({
-      type: "place",
-      keyword: keyword,
-      page: placePageNum,
-      size: ITEMNUM,
-      setList: setSearchPlaceList,
-    });
-    getSearchData({
-      type: "counseling",
-      keyword: keyword,
-      page: csPageNum,
-      size: ITEMNUM,
-      setList: setSearchCsList,
-    });
-    getSearchData({
-      type: "news",
-      keyword: keyword,
-      page: newsPageNum,
-      size: ITEMNUM,
-      setList: setSearchNewsList,
-    });
-    //////////////////////////////////////////////////////
-  }, [
-    csPageNum,
-    newsPageNum,
-    placePageNum,
-    recipePageNum,
-    router.isReady,
-    router.query,
-  ]);
+    GetUser(setUser);
+  }, [router.isReady, router.query]);
 
   useMemo(() => {
     if (!router.isReady || router.query["keyword"] === undefined) return;

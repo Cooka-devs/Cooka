@@ -9,7 +9,7 @@ import Styles from "./index.module.css";
 
 interface Place {
   item: PlaceProps;
-  user: User | undefined;
+  user: User | null;
 }
 const PlaceItem = ({ item, user }: Place) => {
   const [likes, setLikes] = useState(0);

@@ -10,7 +10,7 @@ import ListItem from "@/components/ListItem";
 
 interface CounselingItemProp {
   item: CsItem;
-  user?: User;
+  user: User | null;
 }
 
 export const CounselingItem = ({ item, user }: CounselingItemProp) => {
@@ -18,7 +18,7 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
   const [onLike, setOnLike] = useState(false);
   const [comments, setComments] = useState(0);
   const router = useRouter();
-
+  console.log("item", item);
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
@@ -51,19 +51,15 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
         <div className={Styles.item_date}>{item.created_at}</div>
         <div className={Styles.item_title}>{item.title}</div>
         <div className={Styles.item_likes}>
-          {typeof likes != "string" ? (
-            <DisplayLikes
-              onLike={onLike}
-              likes={likes}
-              setOnLike={setOnLike}
-              setLikesNum={setLikes}
-              user={user}
-              item={item}
-              type="counseling"
-            />
-          ) : (
-            ""
-          )}
+          <DisplayLikes
+            onLike={onLike}
+            likes={likes}
+            setOnLike={setOnLike}
+            setLikesNum={setLikes}
+            user={user}
+            item={item}
+            type="counseling"
+          />
           <div className={Styles.like_span}>
             <InsertCommentOutlinedIcon
               className={Styles.like_icon}

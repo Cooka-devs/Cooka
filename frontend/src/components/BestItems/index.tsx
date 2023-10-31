@@ -8,7 +8,7 @@ import Styles from "./index.module.css";
 interface BestItemsProps {
   title: string;
   items: any[];
-  user?: User;
+  user: User | null;
 }
 
 const BestItems = ({ title, items, user }: BestItemsProps) => {

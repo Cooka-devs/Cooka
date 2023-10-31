@@ -4,7 +4,7 @@ import { CounselingItem } from "./CounselingItem";
 
 interface CsItemProps {
   items: CsItem[];
-  user?: User;
+  user: User | null;
 }
 
 export const CounselingList = ({ items, user }: CsItemProps) => {

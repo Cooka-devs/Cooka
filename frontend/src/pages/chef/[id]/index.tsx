@@ -12,6 +12,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
+import GetUser from "@/utilities/GetUser";
 
 const SIZE = 4;
 
@@ -25,7 +26,7 @@ const ChefDetail = () => {
   const [csListNum, setCsListNum] = useState(0);
 
   const [userData, setUserData] = useState<User>();
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [recipePage, setRecipePage] = useState(1);
   const [placePage, setPlacePage] = useState(1);
   const [csPage, setCsPage] = useState(1);
@@ -37,8 +38,7 @@ const ChefDetail = () => {
       if (!chefId) return;
       const user = await DefaultAxiosService.instance.get(`/users/${chefId}`);
       setUserData(user.data.data[0]);
-      const currentUser = await searchUser();
-      setCurrentUser(currentUser);
+      GetUser(setCurrentUser);
     };
     getUser();
   }, [chefId, router.query.id]);

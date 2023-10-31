@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.css";
 export interface RecipeItemProps {
   item: Recipe;
-  user: User | undefined;
+  user: User | null;
 }
 
 const RecipeItem = ({ item, user }: RecipeItemProps) => {

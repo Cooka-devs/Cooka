@@ -36,7 +36,7 @@ export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
       >
         <AniButton
           onClick={() => {
-            setUrl(router.pathname);
+            setUrl(router.asPath);
             router.push("/login");
           }}
         >

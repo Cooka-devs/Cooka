@@ -8,13 +8,14 @@ import { WantDeleteList } from "../WantDeleteList";
 import Modal from "../Modal";
 import ListPageMove from "../ListPageMove";
 import AniButton from "../AniButton";
+import GetUser from "@/utilities/GetUser";
 interface ShowCommentProp {
   comments: Comment[];
   type: string;
 }
 const ShowComment = ({ comments, type }: ShowCommentProp) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   const [modify, setModify] = useState(false);
   const [findModifyComment, setFindModifyComment] = useState(-1); //수정된 댓글의 id값
   const [modifyText, setModifyText] = useState("");
@@ -39,11 +40,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
   };
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, []);
 
   return (
@@ -68,7 +65,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
             <div>{comment.writer}</div>
             <div>|</div>
             <div>{comment.created_at}</div>
-            {user && user?.nickname === comment.writer ? (
+            {!!user && user?.nickname === comment.writer ? (
               <>
                 <div>
                   <AniButton
@@ -98,6 +95,7 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
             )}
           </div>
           {modify &&
+          !!user &&
           user?.nickname === comment.writer &&
           comment.id === findModifyComment ? (
             <div className={Styles.modify_row}>

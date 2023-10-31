@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Styles from "./index.module.scss";
 import NoData from "@/components/NoData";
+import GetUser from "@/utilities/GetUser";
 
 const Mypage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -306,39 +307,38 @@ const Mypage = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      const getU = await searchUser();
-      await setUser(getU);
-      if (getU != undefined) {
+      GetUser(setUser);
+      if (!!user) {
         SearchUserData({
-          user: getU,
+          user: user,
           set: setMyRecipe,
           page: 1,
           size: 9,
           type: "recipe",
         });
         SearchUserData({
-          user: getU,
+          user: user,
           set: setMyPlace,
           page: 1,
           size: 9,
           type: "place",
         });
         SearchUserData({
-          user: getU,
+          user: user,
           set: setMyCs,
           page: 1,
           size: 9,
           type: "counseling",
         });
 
-        setImgFile(getU.profile_img);
-        setProfileText(getU.profile_text);
+        setImgFile(user.profile_img);
+        setProfileText(user.profile_text);
       } else {
         setModal(true);
       }
     };
     getUserData();
-  }, []);
+  }, [user]);
 
   return (
     <div className={Styles.mypage}>

@@ -11,12 +11,13 @@ import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { PlaceProps, User } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import Styles from "./index.module.css";
+import GetUser from "@/utilities/GetUser";
 
 const itemnum = 9; //페이지당 출력될 item 수
 
 const Place = () => {
   const [modal, setModal] = useState(false);
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
   const [onplace, setOnPlace] = useState(false);
   const [listLength, setListLength] = useState<number>(0); //리스트 길이
   const [list, setList] = useState<PlaceProps[]>([]);
@@ -39,12 +40,7 @@ const Place = () => {
   }, []);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      console.log(getU);
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
     const getPlaceListLength = async () => {
       const placeListLength = await getListLength("place"); //데이터의 갯수를 받아옴
       setListLength(placeListLength);

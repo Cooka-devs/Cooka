@@ -8,7 +8,7 @@ export interface RecipeListProps {
 }
 
 const RecipeList = ({ item }: RecipeListProps) => {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetch = async () => {

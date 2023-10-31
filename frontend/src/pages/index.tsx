@@ -6,6 +6,7 @@ import Styles from "./index.module.css";
 import { best, TYPES } from "@/constants";
 import { getCurrentUser, searchUser } from "@/api/getCurrentUser";
 import { SlideImg } from "@/components/SlideImg";
+import GetUser from "@/utilities/GetUser";
 
 interface BestItemProps {
   title: string;
@@ -14,7 +15,7 @@ interface BestItemProps {
 
 export default function Home() {
   const [bestItems, setBestItems] = useState<BestItemProps[]>();
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const call = async () => {
@@ -29,8 +30,7 @@ export default function Home() {
         //상태가 변경됨을 인지하지못해, 리렌더링을 막습니다.
         //그래서 복사본을 떠서 주소값을 바꿔줌으로써 리렌더링을 하게됩니다.
       });
-      const getU = await searchUser();
-      setUser(getU);
+      GetUser(setUser);
     };
     call();
   }, []);

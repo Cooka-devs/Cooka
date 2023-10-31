@@ -1,11 +1,11 @@
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 
-interface GetSearchData {
+interface GetSearchDataProps {
   type: string;
   keyword: string;
   page: number;
   size: number;
-  setList: React.Dispatch<React.SetStateAction<any>>; //타입이 recipe[] / news[]/ place[] / counseling[]
+  setList: React.Dispatch<React.SetStateAction<any>>;
 }
 export const getSearchData = async ({
   type,
@@ -13,13 +13,13 @@ export const getSearchData = async ({
   page,
   size,
   setList,
-}: GetSearchData) => {
+}: GetSearchDataProps) => {
   DefaultAxiosService.instance
     .get(`/search/${type}`, {
       params: { keyword: keyword, page: page, size: size },
     })
     .then((res) => {
-      console.log(res.data.data);
+      console.log(`${type}Search : `, res.data.data);
       setList(() => {
         return [...res.data.data];
       });

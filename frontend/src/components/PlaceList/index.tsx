@@ -22,7 +22,7 @@ const PlaceList = ({ items }: PlaceListProps) => {
   return (
     <div className={Styles.list_container}>
       {items.map((place, index) => {
-        return !!user ? <PlaceItem item={place} key={index} user={user} /> : "";
+        return <PlaceItem item={place} key={index} user={user} />;
       })}
     </div>
   );

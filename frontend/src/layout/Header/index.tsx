@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import Styles from "./index.module.scss";
 import AniButton from "@/components/AniButton";
 import Image from "next/image";
+import useStore from "@/store";
 
 const Header = () => {
   const [searchText, setSearchText] = useState("");
@@ -17,7 +18,7 @@ const Header = () => {
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
-
+  const { setUrl } = useStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -83,7 +84,10 @@ const Header = () => {
                 >
                   <AniButton
                     style={{ fontFamily: "SUITE-Regular", fontSize: "2rem" }}
-                    onClick={() => router.push("/login")}
+                    onClick={() => {
+                      router.push("/login");
+                      setUrl(router.asPath);
+                    }}
                   >
                     로그인
                   </AniButton>

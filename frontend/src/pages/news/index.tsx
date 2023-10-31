@@ -7,6 +7,7 @@ import { getListByPage } from "@/api/getListByPage";
 import { getListLength } from "@/api/getListLength";
 import { searchUser } from "@/api/getCurrentUser";
 import AniButton from "@/components/AniButton";
+import GetUser from "@/utilities/GetUser";
 
 const itemnum = 12;
 
@@ -14,7 +15,7 @@ const News = () => {
   const [list, setList] = useState<NewItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
   const [listLength, setListLength] = useState(0); //리스트 길이
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const getRecipeListLength = async () => {
@@ -22,11 +23,7 @@ const News = () => {
       setListLength(newsListLength);
     };
     getRecipeListLength();
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, []);
 
   useEffect(() => {
@@ -40,7 +37,7 @@ const News = () => {
 
   return (
     <div className={Styles.news}>
-      {user?.login_type === "admin" ? (
+      {!!user && user?.login_type === "admin" ? (
         <AniButton className={Styles.news_make_btn}>작성하기</AniButton>
       ) : (
         ""

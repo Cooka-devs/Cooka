@@ -13,12 +13,13 @@ import { WantDeleteList } from "@/components/WantDeleteList";
 import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
 import AniButton from "@/components/AniButton";
+import GetUser from "@/utilities/GetUser";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState(false);
   const [comments, setComments] = useState<Comment[]>();
   const [inputComment, setInputComment] = useState("");
-  const [user, setUser] = useState<undefined | User>();
+  const [user, setUser] = useState<null | User>(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const [modify, setModify] = useState(false);
   const router = useRouter();
@@ -44,11 +45,7 @@ const CounselingDetail = () => {
     };
     getC();
 
-    const fetch = async () => {
-      const getU = await searchUser();
-      setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, [router.query.id]);
 
   return (
@@ -83,7 +80,7 @@ const CounselingDetail = () => {
             <div>|</div>
             <div>
               <span>{post.created_at}</span>
-              {user && user.nickname === post.writer ? (
+              {!!user && user.nickname === post.writer ? (
                 <span
                   style={{
                     position: "absolute",
@@ -126,7 +123,7 @@ const CounselingDetail = () => {
             <AniButton
               className={Styles.input_commentbtn}
               onClick={async () => {
-                if (user) {
+                if (!!user) {
                   await MakeComment({
                     type: "counseling",
                     text: inputComment,
