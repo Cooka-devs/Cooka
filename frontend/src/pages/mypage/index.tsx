@@ -1,7 +1,6 @@
 import { searchUser } from "@/api/getCurrentUser";
 import { RecipeList } from "@/components";
 import AniButton from "@/components/AniButton";
-import { ContentsByCheckType } from "@/utilities/ContentsByCheckType";
 import ContentsByUser from "@/components/ContentsByUser";
 import CounselingList from "@/components/CounselingList";
 import LikesContentsByUser from "@/components/LikesContentsByUser";
@@ -15,10 +14,14 @@ import FormAxiosService from "@/service/FormAxiosService";
 import { CsItem, PlaceProps, Recipe, User } from "@/types";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Styles from "./index.module.scss";
-import NoData from "@/components/NoData";
 import GetUser from "@/utilities/GetUser";
+import useSetDataByType from "@/hooks/useSetMyList";
+import { TYPEABOUTCS, TYPEABOUTPLACE, TYPEABOUTRECIPE } from "@/constants";
+import { DivDataByLength } from "@/components/DivDataByLength";
+
+const ITEMNUM = 9;
 
 const Mypage = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -40,14 +43,23 @@ const Mypage = () => {
   const [profileText, setProfileText] = useState<string>();
 
   const imgRef = useRef<HTMLInputElement>(null);
-  const ITEMNUM = 9;
 
   const router = useRouter();
+
+  const TYPE = useMemo(
+    () => [
+      { type: "recipe", set: setMyRecipe },
+      { type: "place", set: setMyPlace },
+      { type: "counseling", set: setMyCs },
+    ],
+    []
+  );
   const onChangeProfileText = async (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     await setProfileText(event.target.value);
   };
+
   const onClickMyIntroduceChange = async () => {
     if (!!user && profileText != "") {
       try {
@@ -60,6 +72,7 @@ const Mypage = () => {
       }
     }
   };
+
   const onClickProfileImgChange = async () => {
     if (
       imgRef.current != null &&
@@ -105,177 +118,166 @@ const Mypage = () => {
     setModal(false);
   }, []);
 
+  useSetDataByType({
+    checkType,
+    user,
+    currentPage,
+    setMyRecipe,
+    setMyPlace,
+    setMyCs,
+    setMyRecipeLength,
+    setMyPlaceLength,
+    setMyCsLength,
+    ITEMNUM,
+  });
+
   const TypeByContent = (type: string) => {
-    if (
-      type === "내가작성한 레시피" ||
-      type === "좋아요 레시피자세히보기" ||
-      type === "댓글 레시피자세히보기"
-    ) {
-      if (myRecipe?.length) {
-        return (
-          <>
-            <RecipeList item={myRecipe} />
-            <ListPageMove
-              totalPosts={myRecipeLength}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      } else {
-        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
-      }
-    } else if (
-      type === "내가작성한 맛집" ||
-      type === "좋아요 맛집자세히보기" ||
-      type === "댓글 맛집자세히보기"
-    ) {
-      if (myPlace?.length) {
-        return (
-          <>
-            <PlaceList items={myPlace} />
-            <ListPageMove
-              totalPosts={myPlaceLength}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      } else {
-        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
-      }
-    } else if (
-      type === "내가작성한 질문" ||
-      type === "좋아요 상담자세히보기" ||
-      type === "댓글 상담자세히보기"
-    ) {
-      if (myCs?.length) {
-        return (
-          <>
-            {!!user ? <CounselingList items={myCs} user={user} /> : ""}
-            <ListPageMove
-              totalPosts={myCsLength}
-              postsPerPage={ITEMNUM}
-              pageMove={setCurrentPage}
-              currentPage={currentPage}
-            />
-          </>
-        );
-      } else {
-        return <NoData paddingLeft="1rem" marginBottom="1rem" />;
-      }
-    } else if (type === "내가댓글단 게시물") {
-      if (!!user) {
-        return <ContentsByUser onClick={setCheckType} user={user} />;
-      } else return;
-    } else if (type === "내가추천한 게시물") {
-      if (!!user) {
-        return <LikesContentsByUser onClick={setCheckType} user={user} />;
-      }
-    } else if (type === "마이페이지") {
-      if (!!user) {
-        return (
-          <div className={Styles.profile}>
-            <div>프로필 이미지 등록</div>
-            <div className={Styles.profile_img}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  textAlign: "center",
-                }}
-              >
-                <Image
-                  src={imgFile}
-                  alt="프로필 이미지"
-                  className={Styles.img_preview}
-                  width={300}
-                  height={300}
-                />
-                <div>이미지 미리보기</div>
-              </div>
-              <div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={saveImgFile}
-                  ref={imgRef}
-                  id="upload"
-                />
-                <label htmlFor="upload" className={Styles.upload_btn}>
-                  업로드
-                </label>
-                <AniButton
-                  className={Styles.upload_btn}
-                  style={{ marginLeft: "1rem" }}
-                  onClick={onClickProfileImgChange}
-                >
-                  등록완료
-                </AniButton>
-                <div style={{ paddingTop: "2rem" }}>
-                  <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
-                  <div>등록완료를 눌러야 저장됩니다!</div>
-                </div>
-              </div>
-            </div>
-            <div>프로필 소개</div>
-            <div className={Styles.introduction}>
-              {user?.profile_text && !profileEdit ? (
+    if (TYPEABOUTRECIPE.includes(type)) {
+      return (
+        <DivDataByLength
+          type="recipe"
+          list={myRecipe}
+          listLength={myRecipeLength}
+          size={ITEMNUM}
+          pageMove={setCurrentPage}
+          currentPage={currentPage}
+        />
+      );
+    } else if (TYPEABOUTPLACE.includes(type)) {
+      return (
+        <DivDataByLength
+          type="place"
+          list={myPlace}
+          listLength={myPlaceLength}
+          size={ITEMNUM}
+          pageMove={setCurrentPage}
+          currentPage={currentPage}
+        />
+      );
+    } else if (TYPEABOUTCS.includes(type)) {
+      return (
+        <DivDataByLength
+          type="counseling"
+          list={myCs}
+          listLength={myCsLength}
+          size={ITEMNUM}
+          pageMove={setCurrentPage}
+          currentPage={currentPage}
+        />
+      );
+    }
+    switch (type) {
+      case "내가댓글단 게시물":
+        if (!!user) {
+          return <ContentsByUser onClick={setCheckType} user={user} />;
+        } else return;
+      case "내가추천한 게시물":
+        if (!!user) {
+          return <LikesContentsByUser onClick={setCheckType} user={user} />;
+        } else return;
+      case "마이페이지":
+        if (!!user) {
+          return (
+            <div className={Styles.profile}>
+              <div>프로필 이미지 등록</div>
+              <div className={Styles.profile_img}>
                 <div
-                  className={Styles.introduction_text}
-                  dangerouslySetInnerHTML={{ __html: user.profile_text }}
-                />
-              ) : profileEdit ? (
-                <textarea
-                  onChange={onChangeProfileText}
-                  className={Styles.introduction_text_edit}
-                  defaultValue={user?.profile_text}
-                />
-              ) : (
-                "자기소개를 입력해보세요!"
-              )}
-            </div>
-            <div
-              style={{
-                paddingTop: "3rem",
-                display: "flex",
-                gap: "1rem",
-                justifyContent: "right",
-              }}
-            >
-              {profileEdit ? (
-                <>
-                  <AniButton
-                    className={Styles.upload_btn}
-                    onClick={() => setProfileEdit(false)}
-                  >
-                    수정취소
-                  </AniButton>
-                  <AniButton
-                    className={Styles.upload_btn}
-                    onClick={() => onClickMyIntroduceChange()}
-                  >
-                    수정완료
-                  </AniButton>
-                </>
-              ) : (
-                <AniButton
-                  className={Styles.upload_btn}
-                  onClick={() => {
-                    setProfileEdit(true);
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "center",
                   }}
                 >
-                  수정
-                </AniButton>
-              )}
+                  <Image
+                    src={imgFile}
+                    alt="프로필 이미지"
+                    className={Styles.img_preview}
+                    width={300}
+                    height={300}
+                  />
+                  <div>이미지 미리보기</div>
+                </div>
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={saveImgFile}
+                    ref={imgRef}
+                    id="upload"
+                  />
+                  <label htmlFor="upload" className={Styles.upload_btn}>
+                    업로드
+                  </label>
+                  <AniButton
+                    className={Styles.upload_btn}
+                    style={{ marginLeft: "1rem" }}
+                    onClick={onClickProfileImgChange}
+                  >
+                    등록완료
+                  </AniButton>
+                  <div style={{ paddingTop: "2rem" }}>
+                    <div>이미지 업로드후 등록완료를 꼭 눌러주세요!</div>
+                    <div>등록완료를 눌러야 저장됩니다!</div>
+                  </div>
+                </div>
+              </div>
+              <div>프로필 소개</div>
+              <div className={Styles.introduction}>
+                {user?.profile_text && !profileEdit ? (
+                  <div
+                    className={Styles.introduction_text}
+                    dangerouslySetInnerHTML={{ __html: user.profile_text }}
+                  />
+                ) : profileEdit ? (
+                  <textarea
+                    onChange={onChangeProfileText}
+                    className={Styles.introduction_text_edit}
+                    defaultValue={user?.profile_text}
+                  />
+                ) : (
+                  "자기소개를 입력해보세요!"
+                )}
+              </div>
+              <div
+                style={{
+                  paddingTop: "3rem",
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "right",
+                }}
+              >
+                {profileEdit ? (
+                  <>
+                    <AniButton
+                      className={Styles.upload_btn}
+                      onClick={() => setProfileEdit(false)}
+                    >
+                      수정취소
+                    </AniButton>
+                    <AniButton
+                      className={Styles.upload_btn}
+                      onClick={() => onClickMyIntroduceChange()}
+                    >
+                      수정완료
+                    </AniButton>
+                  </>
+                ) : (
+                  <AniButton
+                    className={Styles.upload_btn}
+                    onClick={() => {
+                      setProfileEdit(true);
+                    }}
+                  >
+                    수정
+                  </AniButton>
+                )}
+              </div>
             </div>
-          </div>
-        );
-      } else return;
+          );
+        }
     }
   };
+
   useEffect(() => {
     //체크타입이 바뀔때마다 페이지를 1로 바꿔줍니다
     const changedCheckType = async () => {
@@ -285,52 +287,22 @@ const Mypage = () => {
   }, [checkType]);
 
   useEffect(() => {
-    //체크타입과 페이지를 종합해 데이터를 가져옵니다.
-    const changedCheckTypeOrPage = async () => {
-      if (!!user) {
-        ContentsByCheckType({
-          user,
-          checkType: checkType,
-          currentPage: currentPage,
-          setMyRecipe: setMyRecipe,
-          setMyPlace: setMyPlace,
-          setMyCs: setMyCs,
-          setMyRecipeLength: setMyRecipeLength,
-          setMyPlaceLength: setMyPlaceLength,
-          setMyCsLength: setMyCsLength,
-          ITEMNUM: ITEMNUM,
-        });
-      }
-    };
-    changedCheckTypeOrPage();
-  }, [checkType, currentPage, user]);
+    GetUser(setUser);
+  }, []);
 
   useEffect(() => {
     const getUserData = async () => {
-      GetUser(setUser);
       if (!!user) {
-        SearchUserData({
-          user: user,
-          set: setMyRecipe,
-          page: 1,
-          size: 9,
-          type: "recipe",
+        setModal(false);
+        TYPE.map((item) => {
+          SearchUserData({
+            user,
+            set: item.set,
+            page: 1,
+            size: 9,
+            type: item.type,
+          });
         });
-        SearchUserData({
-          user: user,
-          set: setMyPlace,
-          page: 1,
-          size: 9,
-          type: "place",
-        });
-        SearchUserData({
-          user: user,
-          set: setMyCs,
-          page: 1,
-          size: 9,
-          type: "counseling",
-        });
-
         setImgFile(user.profile_img);
         setProfileText(user.profile_text);
       } else {
@@ -338,7 +310,7 @@ const Mypage = () => {
       }
     };
     getUserData();
-  }, [user]);
+  }, [TYPE, user]);
 
   return (
     <div className={Styles.mypage}>

@@ -25,9 +25,7 @@ export const DisplayLikes = ({
 }: DisplayLikesProps) => {
   useEffect(() => {
     //해당유저가 좋아요를 눌렀는지 확인하기위함
-    console.log("좋아요에서의 바깥user:", user);
-    if (user) {
-      console.log("좋아요에서의 안user:", user);
+    if (!!user) {
       const getLikes = async () => {
         await DefaultAxiosService.instance
           .get(`/${type}_likes`, {

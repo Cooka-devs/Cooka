@@ -1,0 +1,11 @@
+.result_category {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10rem;
+  position: relative;
+}
+.title {
+  padding-left: 1rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+}

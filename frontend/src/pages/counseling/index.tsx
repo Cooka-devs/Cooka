@@ -88,7 +88,7 @@ const Counseling = () => {
         ) : (
           ""
         )}
-        <CounselingList items={list} user={user} />
+        <CounselingList items={list} />
         <div className={Styles.pagemove}>
           <ListPageMove
             totalPosts={listLength}

@@ -3,6 +3,7 @@ import RecipeItem from "./RecipeItem";
 import Styles from "./index.module.css";
 import { searchUser } from "@/api/getCurrentUser";
 import { useEffect, useState } from "react";
+import GetUser from "@/utilities/GetUser";
 export interface RecipeListProps {
   item: Recipe[];
 }
@@ -11,11 +12,7 @@ const RecipeList = ({ item }: RecipeListProps) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      await setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, []);
 
   return (

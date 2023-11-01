@@ -132,7 +132,7 @@ const ChefDetail = () => {
             <LeftButton pageNum={csPage} setPageNum={setCsPage} />
             <div className={Styles.title}>{userData.nickname}님의 질문</div>
             {myCs && myCs.length ? (
-              <CounselingList items={myCs} user={currentUser} />
+              <CounselingList items={myCs} />
             ) : (
               <NoData paddingTop="1rem" paddingLeft="1rem" />
             )}

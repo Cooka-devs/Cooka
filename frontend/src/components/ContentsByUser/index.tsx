@@ -100,7 +100,7 @@ const ContentsByUser = ({ onClick, user }: ContentsByUserProps) => {
           )}
         </div>
         {likedCsList && likedCsList.length ? (
-          <CounselingList items={likedCsList.slice(0, 3)} user={user} />
+          <CounselingList items={likedCsList.slice(0, 3)} />
         ) : (
           <NoData paddingLeft="1rem" marginBottom="1rem" />
         )}

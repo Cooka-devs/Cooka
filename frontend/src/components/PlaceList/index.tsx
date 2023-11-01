@@ -3,6 +3,7 @@ import PlaceItem from "./PlaceItem";
 import Styles from "./index.module.css";
 import { PlaceProps, User } from "@/types";
 import { useState, useEffect } from "react";
+import GetUser from "@/utilities/GetUser";
 
 interface PlaceListProps {
   items: PlaceProps[];
@@ -12,11 +13,7 @@ const PlaceList = ({ items }: PlaceListProps) => {
   const [user, setUser] = useState<null | User>(null);
 
   useEffect(() => {
-    const fetch = async () => {
-      const getU = await searchUser();
-      await setUser(getU);
-    };
-    fetch();
+    GetUser(setUser);
   }, []);
 
   return (

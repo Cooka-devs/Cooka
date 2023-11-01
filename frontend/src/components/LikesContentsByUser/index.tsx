@@ -106,7 +106,7 @@ const LikesContentsByUser = ({ onClick, user }: LikesContentsByUserProps) => {
           )}
         </div>
         {likedCsList && likedCsList.length > 0 ? (
-          <CounselingList items={likedCsList.slice(0, 3)} user={user} />
+          <CounselingList items={likedCsList.slice(0, 3)} />
         ) : (
           noData()
         )}
