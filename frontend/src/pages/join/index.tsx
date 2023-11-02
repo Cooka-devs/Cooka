@@ -6,10 +6,9 @@ import { User } from "@/types";
 import { createSalt } from "@/utilities/createSalt";
 import { encodePw } from "@/utilities/encodePw";
 import AniButton from "@/components/AniButton";
+import { checkJoinData } from "@/api/checkJoinData";
 
-const JoinContent = ({ closeModal }: any) => {
-  const [users, setUsers] = useState<User[]>([]); //DB에서 불러온 user 목록
-
+const JoinContent = () => {
   //유효성검사에 따른 상태메시지
   const [nicknameMessage, setNicknameMessage] = useState<string>("");
   const [idMessage, setIdMessage] = useState<string>("");
@@ -78,16 +77,11 @@ const JoinContent = ({ closeModal }: any) => {
     }
   };
 
-  const onClickCheckId = () => {
+  const onClickCheckId = async () => {
     if (idRegExp.test(id)) {
       setIsId(true);
       setIdMessage("사용가능한 아이디입니다!");
-      users.map((item) => {
-        if (item.login_id === id) {
-          setIsId(false);
-          setIdMessage("이미사용중인 아이디입니다!");
-        }
-      });
+      checkJoinData("login_id", id, setIsId, setIdMessage);
     } else {
       setIsId(false);
       setIdMessage("6~12사이 대소문자 또는 숫자만 입력해 주세요!");
@@ -98,12 +92,7 @@ const JoinContent = ({ closeModal }: any) => {
     if (nicknameRegExp.test(nickname)) {
       setIsNickname(true);
       setNicknameMessage("사용가능한 닉네임입니다!");
-      users.map((item) => {
-        if (item.nickname === nickname) {
-          setIsNickname(false);
-          setNicknameMessage("이미사용중인 닉네임입니다!");
-        }
-      });
+      checkJoinData("nickname", nickname, setIsNickname, setNicknameMessage);
     } else {
       setIsNickname(false);
       setNicknameMessage("2~8사이 한글만 입력해 주세요!");
@@ -114,12 +103,7 @@ const JoinContent = ({ closeModal }: any) => {
     if (phoneNumRegExp.test(phoneNum)) {
       setIsPhoneNum(true);
       setPhoneMessage("사용가능한 휴대폰번호입니다.");
-      users.map((item) => {
-        if (item.phone_number === phoneNum) {
-          setIsPhoneNum(false);
-          setPhoneMessage("이미가입한 휴대폰번호입니다.");
-        }
-      });
+      checkJoinData("phone", phoneNum, setIsPhoneNum, setPhoneMessage);
     } else {
       setIsPhoneNum(false);
       setPhoneMessage("-를 포함하여 입력바랍니다.");
@@ -158,15 +142,6 @@ const JoinContent = ({ closeModal }: any) => {
       alert("양식에맞게 입력 부탁드립니다!");
     }
   };
-
-  useEffect(() => {
-    axios(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`)
-      .then((res) => res.data)
-      .then((res) => res.data)
-      .then((res) => {
-        setUsers(res), console.log(res);
-      });
-  }, []);
 
   return (
     <div className={Styles.join}>

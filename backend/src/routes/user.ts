@@ -5,6 +5,9 @@ import {
   AddUserParams,
   GetPwParams,
   addUser,
+  checkLoginId,
+  checkNickname,
+  checkPhone,
   getUserById,
   getUsers,
   updateUserImage,
@@ -26,16 +29,41 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
     const response = await getUsers(conn);
     res.status(response.code).json(response);
   });
+
+  app.get("/users/loginId", async (req, res) => {
+    if (!req.query) return returnBadRequest(res);
+    const { login_id } = req.query;
+    const response = await checkLoginId(conn, login_id);
+    res.status(response.code).json(response);
+  });
+
+  app.get("/users/phone", async (req, res) => {
+    if (!req.query) return returnBadRequest(res);
+    const { phone_number } = req.query;
+    const response = await checkPhone(conn, phone_number);
+    res.status(response.code).json(response);
+  });
+
+  app.get("/users/nickname", async (req, res) => {
+    if (!req.query) return returnBadRequest(res);
+    const { nickname } = req.query;
+    console.log(nickname);
+    const response = await checkNickname(conn, nickname);
+    res.status(response.code).json(response);
+  });
+
   app.get("/users/:id", async (req, res) => {
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const response = await getUserById(conn, +id);
     res.status(response.code).json(response);
   });
+
   app.post("/pw", async (req: RequestGeneric<GetPwParams>, res) => {
     const response = await getPw(conn, req.body);
     res.status(response.code).json(response.data);
   });
+
   app.post("/users", async (req: RequestGeneric<AddUserParams>, res) => {
     if (!req.body || isIncludeUndefined(req.body)) {
       return returnBadRequest(res);
@@ -112,6 +140,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
       }
     }
   );
+
   app.get("/logout", async (req, res) => {
     try {
       if (req.session.social_id === 1) {
@@ -137,6 +166,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
       res.status(500).json({ error: "get logout error", message: err });
     }
   });
+
   app.put(`/user/image/:id`, async (req, res) => {
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
@@ -147,6 +177,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
     });
     res.status(response.code).json(response);
   });
+
   app.put(`/user/text/:id`, async (req, res) => {
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;

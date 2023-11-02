@@ -11,6 +11,37 @@ interface UpdateUserTextProps {
   profile_text: string;
   id: number;
 }
+export const checkLoginId = async (conn: Pool, login_id: any) => {
+  try {
+    const result = await conn.query(`SELECT * FROM user WHERE login_id = ?`, [
+      login_id,
+    ]);
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
+export const checkNickname = async (conn: Pool, nickname: any) => {
+  try {
+    const result = await conn.query(`SELECT * FROM user WHERE nickname = ?`, [
+      nickname,
+    ]);
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
+export const checkPhone = async (conn: Pool, phone_number: any) => {
+  try {
+    const result = await conn.query(
+      `SELECT * FROM user WHERE phone_number = ?`,
+      [phone_number]
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getUsers: QueriesFunction = async (conn) => {
   try {
     const result = await conn.query("SELECT * from user");
