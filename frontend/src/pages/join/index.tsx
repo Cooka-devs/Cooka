@@ -168,10 +168,7 @@ const JoinContent = () => {
           className={Styles.input_text}
           onChange={onChangeNickname}
         />
-        <AniButton
-          className={Styles.check_btn}
-          onClick={() => onClickCheckNickName()}
-        >
+        <AniButton className={Styles.check_btn} onClick={onClickCheckNickName}>
           중복확인
         </AniButton>
         <div className={isNickname ? Styles.okmessage : Styles.nomessage}>
@@ -187,10 +184,7 @@ const JoinContent = () => {
           className={Styles.input_text}
           onChange={onChangeId}
         />
-        <AniButton
-          className={Styles.check_btn}
-          onClick={() => onClickCheckId()}
-        >
+        <AniButton className={Styles.check_btn} onClick={onClickCheckId}>
           중복확인
         </AniButton>
         <div className={isId ? Styles.okmessage : Styles.nomessage}>
@@ -238,10 +232,7 @@ const JoinContent = () => {
           className={Styles.input_text}
           onChange={onChangePhoneNum}
         />
-        <AniButton
-          className={Styles.check_btn}
-          onClick={() => onClickPhoneNum()}
-        >
+        <AniButton className={Styles.check_btn} onClick={onClickPhoneNum}>
           중복확인
         </AniButton>
         <div className={isPhoneNum ? Styles.okmessage : Styles.nomessage}>
