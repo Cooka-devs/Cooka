@@ -30,6 +30,7 @@ const CounselingDetail = () => {
     setModal(false);
   };
   useEffect(() => {
+    if (!router.isReady || router.query.id === undefined) return;
     const id = router.query.id;
     const result = id as string;
 
@@ -46,7 +47,7 @@ const CounselingDetail = () => {
     getC();
 
     GetUser(setUser);
-  }, [router.query.id]);
+  }, [router.isReady, router.query.id]);
 
   return (
     <div>

@@ -87,7 +87,9 @@ export const getListByPage: QueriesFunctionWithBody<
   try {
     const { type, page, size } = params;
     const result = await conn.execute(
-      `SELECT * FROM ${type} LIMIT ${size} OFFSET ${(page - 1) * size}`
+      `SELECT * FROM ${type} ORDER BY id DESC LIMIT ${size} OFFSET ${
+        (page - 1) * size
+      }`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {

@@ -225,11 +225,12 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   useEffect(() => {
     if (shouldSetSelection) {
       if (inputRef.current && quillRef.current?.editor) {
-        // inputRef.current.value = "";
-        // quillRef.current.setEditorSelection(quillRef.current.editor, {
-        //   index: 9999,
-        //   length: 1,
-        // });
+        console.log("inputRef.current.value:", inputRef.current.value);
+        inputRef.current.value = "";
+        quillRef.current.setEditorSelection(quillRef.current.editor, {
+          index: 9999,
+          length: 1,
+        });
         const editor = quillRef.current.getEditor();
         const range = editor.getSelection();
         if (range) {

@@ -19,8 +19,6 @@
   box-sizing: border-box;
   border-bottom: 1px solid black;
 }
-.btn_item_none:hover {
-  border-color: lightgray;
-  box-shadow: none;
-  transform: none;
+.btn_item_none {
+  display: none;
 }

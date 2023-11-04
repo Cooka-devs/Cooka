@@ -2,7 +2,8 @@
   width: 120rem;
   margin: auto;
   font-size: 2rem;
-  min-height: 190rem;
+  min-height: 200rem;
+  padding-bottom: 10rem;
 }
 .main_item {
   width: 118rem;

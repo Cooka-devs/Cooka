@@ -46,8 +46,7 @@ const ListPageMove = ({
       <div className={Styles.movepage}>
         <AniButton
           onClick={() => HandleClickPrev()}
-          disabled={cutPage === 0 ? true : false}
-          className={cutPage === 0 ? Styles.btn_item_none : Styles.btn_item}
+          className={checkPage === 1 ? Styles.btn_item_none : Styles.btn_item}
         >
           <KeyboardDoubleArrowLeftIcon
             style={{ width: "3rem", height: "3rem", paddingTop: "0.5rem" }}
@@ -77,9 +76,6 @@ const ListPageMove = ({
               : Styles.btn_item
           }
           onClick={() => HandleClickNext()}
-          disabled={
-            pageNumbers.length / cutPageNumber <= checkPage ? true : false
-          }
         >
           <KeyboardDoubleArrowRightIcon
             style={{ width: "3rem", height: "3rem", paddingTop: "0.5rem" }}
