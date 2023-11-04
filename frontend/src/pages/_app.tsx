@@ -1,9 +1,9 @@
+import { Layout } from "@/layout";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Header, Footer, Layout } from "@/layout";
+import JoinContent from "./join";
 import LoginPage from "./login";
 import kakao from "./login/kakao";
-import JoinContent from "./join";
 
 export default function App({ Component, pageProps }: AppProps) {
   switch (Component) {

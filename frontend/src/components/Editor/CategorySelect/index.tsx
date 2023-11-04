@@ -7,7 +7,6 @@ export const CategorySelect = ({
   textType,
   modifyType,
 }: CategorySelectProps) => {
-  console.log(modifyType);
   if (textType === "recipe" || modifyType === "recipe") {
     return RECIPECATEGORY.map((item, index) => (
       <option value={item} key={index}>

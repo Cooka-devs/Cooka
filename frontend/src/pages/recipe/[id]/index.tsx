@@ -1,11 +1,11 @@
 import Styles from "./index.module.css";
+import "react-quill/dist/quill.snow.css";
 import { useEffect, useState } from "react";
 import { Comment, Recipe, User } from "@/types";
 import { useRouter } from "next/router";
 import { Divider } from "@/components";
 import getComments from "@/utilities/getComments";
 import ShowComment from "@/components/ShowComment";
-import { searchUser } from "@/api/getCurrentUser";
 import Modal from "@/components/Modal";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { MakeComment } from "@/components/MakeComment";
@@ -14,6 +14,7 @@ import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
 import AniButton from "@/components/AniButton";
 import GetUser from "@/utilities/GetUser";
+
 const RecipeDetail = () => {
   const [post, setPost] = useState<Recipe>();
   const [comments, setComments] = useState<Comment[]>();
@@ -112,11 +113,13 @@ const RecipeDetail = () => {
             <div style={{ color: "gray" }}>{post.created_at}</div>
           </div>
           <Divider weight="1.5px" color="#7e7b7b" />
-          <div
-            dangerouslySetInnerHTML={{ __html: post.content }}
-            style={{ marginBottom: "15rem" }}
-            className={Styles.content}
-          />
+          <div className={Styles.content}>
+            <div
+              dangerouslySetInnerHTML={{ __html: post.content }}
+              style={{ padding: "0", marginBottom: "15rem" }}
+              className="ql-editor"
+            />
+          </div>
           <Divider weight="1.5px" color="#7e7b7b" />
           <textarea
             placeholder="댓글을 입력하세요!"

@@ -42,16 +42,17 @@ interface TextType {
 }
 
 const Editor = ({ textType, modifyType, post }: TextType) => {
-  const [text, setText] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [user, setUser] = useState<null | User>(null);
-  const [modal, setModal] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>("");
-  const [errText, setErrorText] = useState<string>("");
+  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
+  const [user, setUser] = useState<User | null>(null);
+  const [modal, setModal] = useState(false);
+  const [category, setCategory] = useState("");
+  const [errText, setErrorText] = useState("");
   const [mainImg, setMainImg] = useState<null | string>(null);
   const quillRef = useRef<ReactQuill>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [shouldSetSelection, setShouldSetSelection] = useState(false);
+  const [imgUrl, setImgUrl] = useState("");
   const router = useRouter();
   const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
@@ -225,24 +226,25 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   useEffect(() => {
     if (shouldSetSelection) {
       if (inputRef.current && quillRef.current?.editor) {
-        console.log("inputRef.current.value:", inputRef.current.value);
         inputRef.current.value = "";
+        quillRef.current.getEditor();
         quillRef.current.setEditorSelection(quillRef.current.editor, {
           index: 9999,
           length: 1,
         });
-        const editor = quillRef.current.getEditor();
-        const range = editor.getSelection();
-        if (range) {
-          editor.setSelection(range.index + 1, 1);
+        const selection = quillRef.current.getEditor().getSelection();
+        if (selection) {
+          const { index } = selection;
+          quillRef.current.editor.insertEmbed(index, "image", imgUrl);
+          quillRef.current.setEditorSelection(quillRef.current.editor, {
+            index: index + 1,
+            length: 1,
+          });
         }
-        setText((prev) => prev + "<p><br/></p>");
-        console.log(text);
-        console.log(quillRef.current.editor);
       }
       setShouldSetSelection(false);
     }
-  }, [shouldSetSelection, text]);
+  }, [imgUrl, shouldSetSelection, text]);
 
   return (
     <div className={Styles.makeboard}>
@@ -265,8 +267,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                 "/image",
                 formData
               );
-              const imgUrl = `${result.data.imgSrc}`;
-              await setText((prev) => prev + `<img src="${imgUrl}"/>`);
+              setImgUrl(result.data.imgSrc);
               setShouldSetSelection(true);
             } catch (err) {
               console.log(err);

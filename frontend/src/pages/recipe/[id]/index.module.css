@@ -8,6 +8,7 @@
   font-family: "SUITE-Regular";
   padding-top: 5rem;
 }
+
 .title {
   font-size: 3rem;
   position: relative;
@@ -60,9 +61,10 @@
   text-align: center;
   margin-bottom: 3rem;
 }
+
 .content img {
   max-width: 70rem;
 }
-.content {
-  padding-top: 1.5rem;
+.ql-editor {
+  padding: 0;
 }
