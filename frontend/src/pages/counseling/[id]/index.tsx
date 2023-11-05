@@ -14,6 +14,9 @@ import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
 import AniButton from "@/components/AniButton";
 import GetUser from "@/utilities/GetUser";
+import { EditDeleteBtn } from "@/components/EditDeleteBtn";
+import NoData from "@/components/NoData";
+import { PostDetailWithComments } from "@/components/PostDetailWithComments";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState(false);
@@ -81,80 +84,31 @@ const CounselingDetail = () => {
             <div>|</div>
             <div>
               <span>{post.created_at}</span>
-              {!!user && user.nickname === post.writer ? (
-                <span
-                  style={{
-                    position: "absolute",
-                    right: "0",
-                    top: "1rem",
-                    display: "flex",
-                    gap: "1rem",
-                  }}
-                >
-                  <AniButton
-                    style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
-                    onClick={() => setDeleteModal(true)}
-                  >
-                    ❌글삭제
-                  </AniButton>
-                  <AniButton
-                    style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
-                    onClick={() => setModify(true)}
-                  >
-                    ❗글수정
-                  </AniButton>
-                </span>
-              ) : (
-                ""
-              )}
+              <EditDeleteBtn
+                user={user}
+                post={post}
+                setDelete={setDeleteModal}
+                setModify={setModify}
+              />
             </div>
           </div>
-          <div
-            dangerouslySetInnerHTML={{ __html: post.content }}
-            className={Styles.detail_content}
+          <PostDetailWithComments
+            post={post}
+            setInputComment={setInputComment}
+            inputComment={inputComment}
+            router={router}
+            user={user}
+            setModal={setModal}
+            comments={comments}
+            type="counseling"
           />
-          <textarea
-            placeholder="댓글을 입력하세요!"
-            className={Styles.comment_input_text}
-            onChange={(e) => {
-              setInputComment(e.target.value);
-            }}
-          />
-          <div className={Styles.input_comment}>
-            <AniButton
-              className={Styles.input_commentbtn}
-              onClick={async () => {
-                if (!!user) {
-                  await MakeComment({
-                    type: "counseling",
-                    text: inputComment,
-                    postId: post.id,
-                    nickName: user.nickname,
-                    apiRequestType: "post",
-                  });
-                  router.reload();
-                } else {
-                  setModal(true);
-                }
-              }}
-            >
-              입력완료
-            </AniButton>
-          </div>
-          {comments ? (
-            <ShowComment comments={comments} type="counseling" />
-          ) : (
-            ""
-          )}
         </div>
       ) : post && modify ? (
         <div>
           <ListModify modifyType="counseling" post={post} />
         </div>
       ) : (
-        <div className={Styles.cs_itemdetail}>
-          이미 삭제된 글이거나, 글을 찾을 수 없습니다.
-        </div>
+        <NoData paddingLeft="50rem" fontSize="2rem" />
       )}
     </div>
   );

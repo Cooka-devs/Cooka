@@ -15,6 +15,10 @@ import { ListModify } from "@/components/ListModify";
 import { getPostById } from "@/api/getPostById";
 import AniButton from "@/components/AniButton";
 import GetUser from "@/utilities/GetUser";
+import { EditDeleteBtn } from "@/components/EditDeleteBtn";
+import NoData from "@/components/NoData";
+import { PostDetailWithComments } from "@/components/PostDetailWithComments";
+import { PostHeader } from "@/components/PostHeader";
 
 const PlaceDetail = () => {
   const [post, setPost] = useState<PlaceProps | undefined>();
@@ -77,85 +81,27 @@ const PlaceDetail = () => {
           ) : (
             ""
           )}
-          <div className={Styles.title}>
-            <span>{`[${post?.category}]`}</span>
-            <span style={{ paddingLeft: "1rem" }}>{`${post?.title}`}</span>
-            {!!user && user.nickname === post.writer ? (
-              <span
-                style={{
-                  position: "absolute",
-                  right: "0",
-                  top: "1rem",
-                  display: "flex",
-                  gap: "1rem",
-                }}
-              >
-                <AniButton
-                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
-                  onClick={() => setDeleteModal(true)}
-                >
-                  ❌글삭제
-                </AniButton>
-                <AniButton
-                  style={{ fontSize: "1.5rem", fontFamily: "SUITE-Regular" }}
-                  onClick={() => setModify(true)}
-                >
-                  ❗글수정
-                </AniButton>
-              </span>
-            ) : (
-              ""
-            )}
-          </div>
-          <div style={{ paddingTop: "1rem", color: "gray" }}>
-            작성자 : {post.writer}
-          </div>
-          <div className={Styles.list_likes}>
-            <div style={{ color: "gray" }}>{post.created_at}</div>
-          </div>
-          <Divider weight="1.5px" color="#7e7b7b" />
-          <div
-            dangerouslySetInnerHTML={{ __html: post.content }}
-            style={{ marginBottom: "15rem" }}
-            className={Styles.content}
+          <PostHeader
+            post={post}
+            user={user}
+            setDeleteModal={setDeleteModal}
+            setModify={setModify}
           />
-          <Divider weight="1.5px" color="#7e7b7b" />
-          <textarea
-            placeholder="댓글을 입력하세요!"
-            className={Styles.comment_input_text}
-            onChange={(e) => {
-              setInputComment(e.target.value);
-            }}
+          <PostDetailWithComments
+            post={post}
+            setInputComment={setInputComment}
+            inputComment={inputComment}
+            router={router}
+            user={user}
+            setModal={setModal}
+            comments={comments}
+            type="place"
           />
-          <div className={Styles.input_comment}>
-            <AniButton
-              className={Styles.input_commentbtn}
-              onClick={async () => {
-                if (!!user) {
-                  await MakeComment({
-                    type: "place",
-                    text: inputComment,
-                    postId: post.id,
-                    nickName: user.nickname,
-                    apiRequestType: "post",
-                  });
-                  router.reload();
-                } else {
-                  setModal(true);
-                }
-              }}
-            >
-              입력완료
-            </AniButton>
-          </div>
-          {comments ? <ShowComment comments={comments} type="place" /> : ""}
         </div>
       ) : post && modify ? (
         <ListModify modifyType="place" post={post} />
       ) : (
-        <div className={Styles.recipe_itemdetail}>
-          이미 삭제된 글이거나, 글을 찾을 수 없습니다.
-        </div>
+        <NoData paddingLeft="50rem" fontSize="2rem" />
       )}
     </div>
   );

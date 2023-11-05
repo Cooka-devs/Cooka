@@ -14,13 +14,3 @@
 .recipe_right_make {
   margin-top: 1rem;
 }
-
-.goback_btn {
-  text-align: left;
-  font-size: 2rem;
-  border-radius: 0.6rem;
-  border: 1px solid black;
-  width: 25rem;
-  height: 12rem;
-  padding: 2rem;
-}

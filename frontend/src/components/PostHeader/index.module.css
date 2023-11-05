@@ -1,0 +1,10 @@
+.title {
+  font-size: 3rem;
+  position: relative;
+}
+.list_day {
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}

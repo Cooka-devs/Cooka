@@ -12,13 +12,13 @@ import { getListLength } from "@/api/getListLength";
 import { getListByPage } from "@/api/getListByPage";
 import AniButton from "@/components/AniButton";
 import GetUser from "@/utilities/GetUser";
-
+import { CancelPostButton } from "@/components/CancelPostButton";
+const ITEMNUM = 12;
 const Counseling = () => {
   const [list, setList] = useState<CsItem[]>([]);
   const [listLength, setListLength] = useState(0); //리스트 길이
   const [user, setUser] = useState<null | User>(null);
   const [currentPage, setCurrentPage] = useState(1); //현재페이지
-  const itemnum = 12; //페이지당 출력될 item 수
   const [onCounsel, setOnCounsel] = useState(false);
   const [modal, setModal] = useState(false);
 
@@ -37,7 +37,7 @@ const Counseling = () => {
   useEffect(() => {
     getListByPage({
       page: currentPage,
-      size: itemnum,
+      size: ITEMNUM,
       setList: setList,
       type: "counseling",
     });
@@ -60,19 +60,7 @@ const Counseling = () => {
         </div>
         <div className={Styles.counseling_makeright}>
           <div className={Styles.counseling_right_make}>
-            <AniButton
-              className={Styles.goback_btn}
-              onClick={() => setOnCounsel(false)}
-            >
-              <div style={{ fontSize: "2rem", fontWeight: "700" }}>
-                돌아가기
-              </div>
-              <div style={{ fontSize: "1.5rem", paddingTop: "1rem" }}>
-                고민공유 페이지로
-                <br />
-                돌아갈께요.
-              </div>
-            </AniButton>
+            <CancelPostButton set={setOnCounsel} text="고민공유" />
           </div>
         </div>
       </div>
@@ -92,7 +80,7 @@ const Counseling = () => {
         <div className={Styles.pagemove}>
           <ListPageMove
             totalPosts={listLength}
-            postsPerPage={itemnum}
+            postsPerPage={ITEMNUM}
             pageMove={setCurrentPage}
             currentPage={currentPage}
           />

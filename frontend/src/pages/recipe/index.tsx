@@ -1,19 +1,16 @@
-import { searchUser } from "@/api/getCurrentUser";
 import { getListByPage } from "@/api/getListByPage";
 import { getListLength } from "@/api/getListLength";
-import AniButton from "@/components/AniButton";
 import CreateList from "@/components/CreateList";
-import ListPageMove from "@/components/ListPageMove";
 import MakeRecipeButton from "@/components/MakeRecipeButton";
 import Modal from "@/components/Modal";
-import RecipeList from "@/components/RecipeList";
 import { WantLoginModalText } from "@/components/WantLoginModalText";
 import { Recipe, User } from "@/types";
 import { useCallback, useEffect, useState } from "react";
 import Styles from "./index.module.css";
 import GetUser from "@/utilities/GetUser";
-
-const itemnum = 9; //페이지당 출력될 item 수
+import { DivDataByLength } from "@/components/DivDataByLength";
+import { CancelPostButton } from "@/components/CancelPostButton";
+const ITEMNUM = 9; //페이지당 출력될 item 수
 
 export default function RecipePage() {
   const [listLength, setListLength] = useState(0); //리스트 길이
@@ -42,7 +39,7 @@ export default function RecipePage() {
   useEffect(() => {
     getListByPage({
       page: currentPage,
-      size: itemnum,
+      size: ITEMNUM,
       setList: setList,
       type: "recipe",
     });
@@ -72,30 +69,20 @@ export default function RecipePage() {
           {onRecipe ? (
             <CreateList textType="recipe" />
           ) : (
-            <>
-              <RecipeList item={list} />
-              <ListPageMove
-                totalPosts={listLength}
-                postsPerPage={itemnum}
-                pageMove={setCurrentPage}
-                currentPage={currentPage}
-              />
-            </>
+            <DivDataByLength
+              list={list}
+              listLength={listLength}
+              size={ITEMNUM}
+              pageMove={setCurrentPage}
+              currentPage={currentPage}
+              type="recipe"
+            />
           )}
         </div>
         <div className={Styles.recipe_right}>
           <div className={Styles.recipe_right_make}>
             {onRecipe ? (
-              <AniButton onClick={listRecipe} className={Styles.goback_btn}>
-                <div style={{ fontSize: "2rem", fontWeight: "700" }}>
-                  돌아가기
-                </div>
-                <div style={{ fontSize: "1.5rem", paddingTop: "1rem" }}>
-                  레시피공유 페이지로
-                  <br />
-                  돌아갈께요.
-                </div>
-              </AniButton>
+              <CancelPostButton set={setOnRecipe} text="레시피공유" />
             ) : (
               <MakeRecipeButton onClick={makeRecipe} />
             )}
