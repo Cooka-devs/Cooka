@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "forever": "forever start ./out",
-    "start": "node ./out/index.js"
+    "start": "ts-node src/index.ts"
   },
   "author": "",
   "license": "ISC",
