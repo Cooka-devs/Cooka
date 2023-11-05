@@ -39,7 +39,7 @@ export const getSearchData: QueriesFunctionWithBody<
     const { type, page, size, keyword } = params;
     const offset = (page - 1) * size;
     const result = await conn.execute(
-      `SELECT * FROM ${type} WHERE title LIKE '%${keyword}%' LIMIT ${size} OFFSET ${offset}`
+      `SELECT * FROM ${type} WHERE title LIKE '%${keyword}%' ORDER BY id DESC LIMIT ${size} OFFSET ${offset}`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {
@@ -87,9 +87,7 @@ export const getListByPage: QueriesFunctionWithBody<
   try {
     const { type, page, size } = params;
     const result = await conn.execute(
-      `SELECT * FROM ${type} ORDER BY id DESC LIMIT ${size} OFFSET ${
-        (page - 1) * size
-      }`
+      `SELECT * FROM ${type} LIMIT ${size} OFFSET ${(page - 1) * size}`
     );
     return makeSuccessResponse(result[0]);
   } catch (err) {
