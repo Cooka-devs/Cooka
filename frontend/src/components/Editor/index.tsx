@@ -220,6 +220,10 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
     GetUser(setUser);
     if (post && textType === "modify") {
       setText(post.content);
+      setTitle(post.title);
+      if ("category" in post) {
+        setCategory(post.category);
+      }
     }
   }, [post, textType]);
 
@@ -290,23 +294,29 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
           <input
             placeholder={
               textType === "recipe"
-                ? `요리명을 입력하세요!`
+                ? `요리명을 입력하세요! 최대8글자`
                 : textType === "place"
-                ? "맛집명을 입력하세요"
+                ? "맛집명을 입력하세요! 최대8글자"
                 : textType === "counseling"
-                ? "고민명을 입력하세요"
+                ? "고민명을 입력하세요! 최대8글자"
                 : textType === "modify"
-                ? "수정할 제목을 입력하세요"
+                ? "수정할 제목을 입력하세요! 최대8글자"
                 : ""
             }
             className={Styles.text_title}
             onChange={onChangeTitle}
+            maxLength={8}
+            value={title}
           />
           {textType === "recipe" ||
           textType === "place" ||
           modifyType === "recipe" ||
           modifyType === "place" ? (
-            <select className={Styles.select_option} onChange={selectCategory}>
+            <select
+              className={Styles.select_option}
+              onChange={selectCategory}
+              value={category}
+            >
               <option hidden>카테고리</option>
               <CategorySelect textType={textType} modifyType={modifyType} />
             </select>
@@ -315,53 +325,25 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
           )}
         </div>
         <div>
-          {textType === "recipe" ? (
-            <ReactQuill
-              ref={quillRef}
-              id={"quill"}
-              onChange={onChangeText}
-              modules={modules}
-              value={text}
-              formats={formats}
-              style={{ height: "64.219rem" }}
-              placeholder="레시피를 입력하세요!"
-              className={Styles.editor_text}
-            />
-          ) : textType === "place" ? (
-            <ReactQuill
-              ref={quillRef}
-              id={"quill"}
-              value={text}
-              onChange={onChangeText}
-              modules={modules}
-              formats={formats}
-              style={{ height: "64.219rem" }}
-              placeholder="맛집정보를 입력하세요!"
-            />
-          ) : textType === "counseling" ? (
-            <ReactQuill
-              ref={quillRef}
-              id={"quill"}
-              value={text}
-              onChange={onChangeText}
-              modules={modules}
-              formats={formats}
-              style={{ height: "64.219rem" }}
-              placeholder="고민을 입력하세요!"
-            />
-          ) : textType === "modify" ? (
-            <ReactQuill
-              ref={quillRef}
-              id={"quill"}
-              value={text}
-              onChange={onChangeText}
-              modules={modules}
-              formats={formats}
-              style={{ height: "64.219rem" }}
-            />
-          ) : (
-            ""
-          )}
+          <ReactQuill
+            ref={quillRef}
+            id={"quill"}
+            onChange={onChangeText}
+            modules={modules}
+            value={text}
+            formats={formats}
+            style={{ height: "64.219rem" }}
+            placeholder={
+              textType === "recipe"
+                ? "레시피를 입력하세요!"
+                : textType === "place"
+                ? "맛집정보를 입력하세요!"
+                : textType === "counseling"
+                ? "고민을 입력하세요!"
+                : ""
+            }
+            className={Styles.editor_text}
+          />
         </div>
       </div>
       <div style={{ width: "100%", textAlign: "center", paddingTop: "2rem" }}>
