@@ -36,7 +36,7 @@ const ChefDetail = () => {
   useEffect(() => {
     const getUser = async () => {
       if (!chefId) return;
-      const user = await DefaultAxiosService.instance.get(`/users/loginId`);
+      const user = await DefaultAxiosService.instance.get(`/users/${chefId}`);
       setUserData(user.data.data[0]);
       GetUser(setCurrentUser);
     };
