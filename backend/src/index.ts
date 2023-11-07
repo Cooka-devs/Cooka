@@ -40,6 +40,9 @@ connectDB((pool) => {
     })
   );
   app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+  app.get(`/uploads/:imageFileName`, (req, res) => {
+    res.setHeader(`Content-Type`, `image/webp`);
+  });
   console.log("path.join:", path.join(__dirname, "/uploads"));
   app.use(
     session({
