@@ -18,3 +18,20 @@ export const replaceImage = {
     }
   },
 };
+
+export const imageResize = (width: number, height: number) => {
+  const ratio = width / height;
+  const max = Math.max(width, height);
+
+  if (max > 500) {
+    return {
+      width: 500,
+      height: 500 / ratio,
+    };
+  } else {
+    return {
+      width,
+      height,
+    };
+  }
+};

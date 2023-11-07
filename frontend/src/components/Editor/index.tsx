@@ -1,7 +1,7 @@
-import { searchUser } from "@/api/getCurrentUser";
 import DefaultAxiosService from "@/service/DefaultAxiosService";
 import FormAxiosService from "@/service/FormAxiosService";
 import { CsItem, PlaceProps, Recipe, User } from "@/types";
+import GetUser from "@/utilities/GetUser";
 import { getImgInText } from "@/utilities/getImgSrcInText";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -12,7 +12,7 @@ import Modal from "../Modal";
 import { WantLoginModalText } from "../WantLoginModalText";
 import { CategorySelect } from "./CategorySelect";
 import Styles from "./index.module.css";
-import GetUser from "@/utilities/GetUser";
+import { imageResize } from "@/utilities/replaceImage";
 
 const formats = [
   "header",
@@ -41,6 +41,13 @@ interface TextType {
   post?: Recipe | PlaceProps | CsItem;
 }
 
+type ImageWithProps = {
+  src: string;
+  alt: string;
+  width: string;
+  height: string;
+};
+
 const Editor = ({ textType, modifyType, post }: TextType) => {
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -52,7 +59,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   const quillRef = useRef<ReactQuill>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [shouldSetSelection, setShouldSetSelection] = useState(false);
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState<ImageWithProps>();
   const router = useRouter();
   const selectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
@@ -250,6 +257,12 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
     }
   }, [imgUrl, shouldSetSelection, text]);
 
+  useEffect(() => {
+    (async () => {
+      ReactQuill.Quill.register(await getCustomImageBlot(ReactQuill));
+    })();
+  }, []);
+
   return (
     <div className={Styles.makeboard}>
       <input
@@ -263,19 +276,36 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
           if (!e.target.files) return;
           const selectImg =
             e.target.files?.length > 0 ? e.target.files[0] : null;
+
           if (selectImg) {
-            const formData = new FormData();
-            formData.append("image", selectImg);
-            try {
-              const result = await FormAxiosService.instance.post(
-                "/image",
-                formData
-              );
-              setImgUrl(result.data.imgSrc);
-              setShouldSetSelection(true);
-            } catch (err) {
-              console.log(err);
-            }
+            const reader = new FileReader();
+            reader.readAsDataURL(selectImg);
+            // to base64
+            reader.onload = () => {
+              // to image
+              const img = new Image();
+              img.src = reader.result as string;
+              img.onload = async () => {
+                const { width, height } = imageResize(img.width, img.height);
+                const formData = new FormData();
+                formData.append("image", selectImg);
+                try {
+                  const result = await FormAxiosService.instance.post(
+                    "/image",
+                    formData
+                  );
+                  setImgUrl({
+                    src: result.data.imgSrc,
+                    alt: "img",
+                    width: `${width.toString()}px`,
+                    height: `${height.toString()}px`,
+                  });
+                  setShouldSetSelection(true);
+                } catch (err) {
+                  console.log(err);
+                }
+              };
+            };
           } else {
             console.log("no file err");
           }
@@ -359,3 +389,34 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
   );
 };
 export default Editor;
+
+async function getCustomImageBlot(QuillComponent: typeof ReactQuill) {
+  const ImageBlot = await QuillComponent.Quill.import("formats/image");
+
+  class CustomImageBlot extends ImageBlot {
+    static create(value: {
+      alt: string;
+      src: string;
+      width: number;
+      height: number;
+    }) {
+      const node: HTMLElement = super.create(value);
+      node.setAttribute("alt", value.alt);
+      node.setAttribute("src", value.src);
+      node.setAttribute("width", value.width.toString());
+      node.setAttribute("height", value.height.toString());
+
+      return node;
+    }
+
+    static value(domNode: HTMLElement): ImageWithProps {
+      return {
+        alt: domNode.getAttribute("alt") || "",
+        src: domNode.getAttribute("src") || "",
+        width: domNode.getAttribute("width") || "0",
+        height: domNode.getAttribute("height") || "0",
+      };
+    }
+  }
+  return CustomImageBlot;
+}
