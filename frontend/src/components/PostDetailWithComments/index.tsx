@@ -5,6 +5,9 @@ import { MakeComment } from "../MakeComment";
 import { NextRouter } from "next/router";
 import ShowComment from "../ShowComment";
 import { Divider } from "..";
+import parse from "html-react-parser";
+import { replaceImage } from "@/utilities/replaceImage";
+
 interface PostDetailWithCommentsProps {
   post: CsItem | Recipe | PlaceProps;
   setInputComment: React.Dispatch<React.SetStateAction<string>>;
@@ -30,7 +33,9 @@ export const PostDetailWithComments = ({
       <Divider weight="1.5px" color="#7e7b7b" />
       <div className={Styles.content}>
         <div
-          dangerouslySetInnerHTML={{ __html: post.content }}
+          dangerouslySetInnerHTML={{
+            __html: parse(post.content, replaceImage),
+          }}
           style={{ padding: "0", marginBottom: "15rem" }}
           className="ql-editor"
         />

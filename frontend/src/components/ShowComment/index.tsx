@@ -9,6 +9,9 @@ import Modal from "../Modal";
 import ListPageMove from "../ListPageMove";
 import AniButton from "../AniButton";
 import GetUser from "@/utilities/GetUser";
+import { replaceImage } from "@/utilities/replaceImage";
+import parse from "html-react-parser";
+
 interface ShowCommentProp {
   comments: Comment[];
   type: string;
@@ -138,7 +141,9 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
           ) : (
             <div
               className={Styles.comment_comment}
-              dangerouslySetInnerHTML={{ __html: comment.content }}
+              dangerouslySetInnerHTML={{
+                __html: parse(comment.content, replaceImage),
+              }}
             />
           )}
         </div>
