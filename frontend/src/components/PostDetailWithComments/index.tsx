@@ -33,12 +33,11 @@ export const PostDetailWithComments = ({
       <Divider weight="1.5px" color="#7e7b7b" />
       <div className={Styles.content}>
         <div
-          dangerouslySetInnerHTML={{
-            __html: parse(post.content, replaceImage),
-          }}
           style={{ padding: "0", marginBottom: "15rem" }}
           className="ql-editor"
-        />
+        >
+          {parse(post.content, replaceImage)}
+        </div>
       </div>
       <Divider weight="1.5px" color="#7e7b7b" />
       <textarea

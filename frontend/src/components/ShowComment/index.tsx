@@ -139,12 +139,9 @@ const ShowComment = ({ comments, type }: ShowCommentProp) => {
               </div>
             </div>
           ) : (
-            <div
-              className={Styles.comment_comment}
-              dangerouslySetInnerHTML={{
-                __html: parse(comment.content, replaceImage),
-              }}
-            />
+            <div className={Styles.comment_comment}>
+              {parse(comment.content, replaceImage)}
+            </div>
           )}
         </div>
       ))}
