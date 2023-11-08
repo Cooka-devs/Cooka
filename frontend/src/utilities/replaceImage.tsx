@@ -21,12 +21,11 @@ export const replaceImage = {
 
 export const imageResize = (width: number, height: number) => {
   const ratio = width / height;
-  const max = Math.max(width, height);
 
-  if (max > 500) {
+  if (width > 700) {
     return {
-      width: 500,
-      height: 500 / ratio,
+      width: 700,
+      height: 700 / ratio,
     };
   } else {
     return {
