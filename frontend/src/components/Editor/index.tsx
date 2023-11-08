@@ -82,7 +82,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
     const imgSrcInText = getImgInText(text);
     if (!imgSrcInText.length) {
       await setMainImg(
-        `http://${process.env.NEXT_PUBLIC_SERVER_HOST}:3000/noneImg.jpg`
+        `http://${process.env.NEXT_PUBLIC_CLIENT_HOST}:3000/noneImg.jpg`
       );
     } else {
       await setMainImg(imgSrcInText[0].src);
