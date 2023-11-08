@@ -91,8 +91,12 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
           console.log("OK");
           req.session.save((err) => {
             if (err) {
-              console.log("3");
               res.status(400).json({ message: err });
+            } else {
+              res.cookie("sessionID", req.sessionID, {
+                sameSite: "None",
+                secure: true,
+              });
             }
             console.log("세션이 저장되었습니다.");
             res.header("Access-Control-Expose-Headers", "Set-Cookie");
