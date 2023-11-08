@@ -94,7 +94,7 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
               res.status(400).json({ message: err });
             } else {
               res.cookie("sessionID", req.sessionID, {
-                sameSite: "None",
+                sameSite: "none",
                 secure: true,
               });
             }
@@ -130,6 +130,11 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
             if (err) {
               console.log("session save error");
               res.status(400).json({ message: err });
+            } else {
+              res.cookie("sessionID", req.sessionID, {
+                sameSite: "none",
+                secure: true,
+              });
             }
             console.log("세션이 저장되었습니다.");
             console.log("session:", req.session);
