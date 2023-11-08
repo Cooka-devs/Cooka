@@ -25,7 +25,6 @@ export const CounselingItem = ({ item, user }: CounselingItemProp) => {
   const onClickCloseModal = () => {
     setModal(false);
   };
-  console.log("item", item);
   useEffect(() => {
     const getLikesNum = async () => {
       await DefaultAxiosService.instance
