@@ -25,7 +25,7 @@ export const imageResize = (width: number, height: number) => {
   if (width > 700) {
     return {
       width: 700,
-      height: 700 / ratio,
+      height: Math.round(700 / ratio),
     };
   } else {
     return {

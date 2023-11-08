@@ -31,7 +31,7 @@ export const RightButton = ({
       }}
       className={Styles.arrow_right}
     >
-      <ArrowForwardIosIcon className={Styles.arrowbtn} />
+      <ArrowForwardIosIcon style={{ color: "burlywood", fontSize: "5rem" }} />
     </AniButton>
   );
 };
@@ -47,7 +47,7 @@ export const LeftButton = ({ pageNum, setPageNum }: LeftButtonProps) => {
         setPageNum((prev) => prev - 1);
       }}
     >
-      <ArrowBackIosNewIcon className={Styles.arrowbtn} />
+      <ArrowBackIosNewIcon style={{ color: "burlywood", fontSize: "5rem" }} />
     </AniButton>
   );
 };

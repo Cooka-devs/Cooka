@@ -39,8 +39,6 @@ const Search = () => {
   const [placePageNum, setPlacePageNum] = useState(1);
   const [csPageNum, setCsPageNum] = useState(1);
 
-  const [user, setUser] = useState<User | null>(null);
-
   const router = useRouter();
 
   const DIVSEARCHDATA = [
@@ -92,7 +90,6 @@ const Search = () => {
       setC: setCsListNum,
       setN: setNewsListNum,
     });
-    GetUser(setUser);
   }, [router.isReady, router.query]);
 
   useGetSearchData({

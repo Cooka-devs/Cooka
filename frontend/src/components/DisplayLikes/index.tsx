@@ -9,6 +9,7 @@ interface DisplayLikesProps {
   likes: number;
   setOnLike: React.Dispatch<React.SetStateAction<boolean>>;
   setLikesNum: React.Dispatch<React.SetStateAction<number>>;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
   user: User | null;
   item: Recipe | PlaceProps | CsItem;
   type: string;
@@ -22,6 +23,7 @@ export const DisplayLikes = ({
   user,
   item,
   type,
+  setModal,
 }: DisplayLikesProps) => {
   useEffect(() => {
     //해당유저가 좋아요를 눌렀는지 확인하기위함
@@ -47,9 +49,8 @@ export const DisplayLikes = ({
     <div
       className={Styles.like_span}
       onClick={async (e) => {
-        if (user) {
-          console.log(user);
-          e.stopPropagation();
+        e.stopPropagation();
+        if (!!user) {
           if (onLike) {
             await DefaultAxiosService.instance
               .delete(`/${type}_likes`, {
@@ -73,7 +74,7 @@ export const DisplayLikes = ({
               });
           }
         } else {
-          console.log(user);
+          setModal(true);
         }
       }}
     >

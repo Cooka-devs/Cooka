@@ -20,7 +20,6 @@ export const DivDataByLength = ({
   currentPage,
   type,
 }: DivDataByLengthProps) => {
-  console.log(type);
   switch (type) {
     case "recipe":
       if (list?.length) {

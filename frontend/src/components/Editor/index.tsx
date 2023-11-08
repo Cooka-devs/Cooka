@@ -238,11 +238,6 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
     if (shouldSetSelection) {
       if (inputRef.current && quillRef.current?.editor) {
         inputRef.current.value = "";
-        quillRef.current.getEditor();
-        quillRef.current.setEditorSelection(quillRef.current.editor, {
-          index: 9999,
-          length: 1,
-        });
         const selection = quillRef.current.getEditor().getSelection();
         if (selection) {
           const { index } = selection;
@@ -252,6 +247,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
             length: 1,
           });
         }
+        console.log("text", text);
       }
       setShouldSetSelection(false);
     }
@@ -297,8 +293,8 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                   setImgUrl({
                     src: result.data.imgSrc,
                     alt: "img",
-                    width: `${width.toString()}px`,
-                    height: `${height.toString()}px`,
+                    width: `${width.toString()}`,
+                    height: `${height.toString()}`,
                   });
                   setShouldSetSelection(true);
                 } catch (err) {
