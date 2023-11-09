@@ -1,3 +1,7 @@
+.arrowbtn {
+  color: burlywood;
+  font-size: 5rem;
+}
 .arrow_right {
   position: absolute;
   right: 3rem;

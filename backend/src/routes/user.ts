@@ -1,6 +1,6 @@
 import { Express } from "express";
 import { Pool } from "mysql2/promise";
-import { BAD_REQUEST } from "../constants/response";
+
 import {
   AddUserParams,
   GetPwParams,
@@ -105,7 +105,8 @@ export const setUserRoutes = (app: Express, conn: Pool) => {
         } else {
           console.log("session error");
         }
-      } else {
+      }
+      if (Array.isArray(result) && result.length === 0) {
         res.status(202).json({ message: "no id" });
       }
     } catch (err) {

@@ -30,8 +30,6 @@ const LoginPage = () => {
   };
 
   const onClickJoin = useCallback(() => {
-    console.log("id:", id);
-    console.log(url);
     DefaultAxiosService.instance
       .post("/pw", {
         login_id: id,
