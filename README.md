@@ -1,6 +1,6 @@
 # Cooka !
 <br/>
-서비스url : [cooka.site](cooka.site)
+서비스url : [cooka.site](http://cooka.site)
 
 <br/>
 <br/>
