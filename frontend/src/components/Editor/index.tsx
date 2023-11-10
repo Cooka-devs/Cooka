@@ -326,7 +326,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                 : textType === "counseling"
                 ? "고민명을 입력하세요! 최대16글자"
                 : textType === "modify"
-                ? "수정할 제목을 입력하세요! 최대8글자"
+                ? "수정할 제목을 입력하세요!"
                 : ""
             }
             className={Styles.text_title}
