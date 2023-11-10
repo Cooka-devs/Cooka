@@ -10,6 +10,7 @@ import Styles from "./index.module.scss";
 import AniButton from "@/components/AniButton";
 import Image from "next/image";
 import useStore from "@/store";
+import useGetEnterKeyup from "@/hooks/useGetEnterKeyUp";
 
 const Header = () => {
   const [searchText, setSearchText] = useState("");
@@ -38,19 +39,7 @@ const Header = () => {
     };
     setData();
   }, []);
-  useEffect(() => {
-    if (!document) return;
-
-    const SearchInput = document.getElementById("password");
-
-    //엔터키 로그인 추가
-    SearchInput?.addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        onClickSearchBtn();
-      }
-    });
-  }, [onClickSearchBtn]);
+  useGetEnterKeyup({ inputId: "search", onClick: onClickSearchBtn });
   return (
     <div>
       <div className={Styles.header}>
@@ -66,7 +55,7 @@ const Header = () => {
             </Link>
           </span>
           <span className={Styles.header_searchbox}>
-            <input type="text" onChange={onChangeSearch} />
+            <input type="text" id="search" onChange={onChangeSearch} />
             <AniButton className={Styles.search_btn} onClick={onClickSearchBtn}>
               <span>검색</span>
             </AniButton>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import Styles from "./index.module.css";
+import useGetEnterKeyup from "@/hooks/useGetEnterKeyUp";
 
 export const kakao_client_Id = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 export const kakao_redirect_Uri = process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL;
@@ -61,19 +62,7 @@ const LoginPage = () => {
       .catch((err) => console.log(err));
   }, [id, password, router, url]);
 
-  useEffect(() => {
-    if (!document) return;
-
-    const passwordInput = document.getElementById("password");
-
-    //엔터키 로그인 추가
-    passwordInput?.addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
-        event.preventDefault();
-        onClickJoin();
-      }
-    });
-  }, [onClickJoin]);
+  useGetEnterKeyup({ inputId: "password", onClick: onClickJoin });
 
   return (
     <div style={{ paddingTop: "15rem" }}>
