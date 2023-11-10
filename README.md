@@ -1,7 +1,7 @@
 # Cooka !
 <br/>
-서비스url : http://cooka.site
-
+서비스url : http://cooka.site<br/><br/>
+pagenation을 보여드리기위해 테스트게시글을 넣어두었습니다.
 <br/>
 <br/>
 
