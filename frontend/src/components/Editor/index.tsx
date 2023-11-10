@@ -331,7 +331,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
             }
             className={Styles.text_title}
             onChange={onChangeTitle}
-            maxLength={8}
+            maxLength={textType === "counseling" ? 16 : 8}
             value={title}
           />
           {textType === "recipe" ||
