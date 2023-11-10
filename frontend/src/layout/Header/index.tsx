@@ -5,7 +5,7 @@ import { CurrentUserProps } from "@/types";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Styles from "./index.module.scss";
 import AniButton from "@/components/AniButton";
 import Image from "next/image";
@@ -14,12 +14,18 @@ import useStore from "@/store";
 const Header = () => {
   const [searchText, setSearchText] = useState("");
   const [currentUser, setCurrentUser] = useState<CurrentUserProps>();
+  const { setUrl } = useStore();
+  const router = useRouter();
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
-  const { setUrl } = useStore();
-  const router = useRouter();
+  const onClickSearchBtn = useCallback(() => {
+    router.push({
+      pathname: "/search",
+      query: { keyword: searchText },
+    });
+  }, [router, searchText]);
 
   useEffect(() => {
     const setData = async () => {
@@ -32,7 +38,19 @@ const Header = () => {
     };
     setData();
   }, []);
+  useEffect(() => {
+    if (!document) return;
 
+    const SearchInput = document.getElementById("password");
+
+    //엔터키 로그인 추가
+    SearchInput?.addEventListener("keyup", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        onClickSearchBtn();
+      }
+    });
+  }, [onClickSearchBtn]);
   return (
     <div>
       <div className={Styles.header}>
@@ -49,15 +67,7 @@ const Header = () => {
           </span>
           <span className={Styles.header_searchbox}>
             <input type="text" onChange={onChangeSearch} />
-            <AniButton
-              className={Styles.search_btn}
-              onClick={() => {
-                router.push({
-                  pathname: "/search",
-                  query: { keyword: searchText },
-                });
-              }}
-            >
+            <AniButton className={Styles.search_btn} onClick={onClickSearchBtn}>
               <span>검색</span>
             </AniButton>
           </span>
