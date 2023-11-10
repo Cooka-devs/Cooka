@@ -324,7 +324,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                 : textType === "place"
                 ? "맛집명을 입력하세요! 최대8글자"
                 : textType === "counseling"
-                ? "고민명을 입력하세요! 최대8글자"
+                ? "고민명을 입력하세요! 최대16글자"
                 : textType === "modify"
                 ? "수정할 제목을 입력하세요! 최대8글자"
                 : ""
