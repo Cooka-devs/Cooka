@@ -22,10 +22,14 @@ const Header = () => {
     setSearchText(e.target.value);
   };
   const onClickSearchBtn = useCallback(() => {
-    router.push({
-      pathname: "/search",
-      query: { keyword: searchText },
-    });
+    router.push(
+      {
+        pathname: "/search",
+        query: { keyword: searchText },
+      },
+      undefined,
+      { shallow: true }
+    );
   }, [router, searchText]);
 
   useEffect(() => {

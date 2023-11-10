@@ -49,7 +49,7 @@ const LoginPage = () => {
               const status = res.status;
               console.log(status);
               if (status === 200) {
-                router.push(`${url}`);
+                router.push(`${url}`, undefined, { shallow: true });
               } else if (status === 202) {
                 setText("입력하신 비밀번호가 틀렸습니다.");
               }
