@@ -85,6 +85,8 @@ const RecipeDetail = () => {
             post={post}
             setDeleteModal={setDeleteModal}
             setModify={setModify}
+            type="recipe"
+            router={router}
           />
           <PostDetailWithComments
             post={post}

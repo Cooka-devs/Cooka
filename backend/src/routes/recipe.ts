@@ -14,11 +14,11 @@ import { RequestGeneric } from "../types/request";
 import { isIncludeUndefined } from "../utils/request";
 import { deleteCommentsByPostId } from "../queries/comment";
 import { returnBadRequest } from "../utils/response";
+import { getUserIdByPostWriter } from "../queries/intergrate";
 
 export const setRecipeRoutes = (app: Express, conn: Pool) => {
   app.post("/recipe", async (req: RequestGeneric<AddRecipeListParams>, res) => {
     if (!req.body || isIncludeUndefined(req.body)) {
-      console.log("1");
       return returnBadRequest(res);
     }
     const response = await addRecipe(conn, req.body);
@@ -44,7 +44,8 @@ export const setRecipeRoutes = (app: Express, conn: Pool) => {
     const response = await updateRecipe(conn, { id: +id, ...req.body });
     res.status(response.code).json(response);
   });
-  app.get("/recipe/:id", async (req, res) => {
+  app.get("/recipe/:id(\\d+)", async (req, res) => {
+    console.log("2");
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const { size, page } = req.query;

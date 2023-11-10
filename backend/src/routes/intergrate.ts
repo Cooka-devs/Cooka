@@ -7,6 +7,7 @@ import {
   getListLengthByUser,
   getSearchData,
   getSearchDataLength,
+  getUserIdByPostWriter,
 } from "../queries/intergrate";
 import { BAD_REQUEST } from "../constants/response";
 import { returnBadRequest } from "../utils/response";
@@ -68,6 +69,15 @@ export const setIntergratedRoutes = (app: Express, conn: Pool) => {
         const response = await getListByPageAndUser(conn, params);
         res.status(response.code).json(response);
       }
+    });
+    app.get(`/${type}/writer`, async (req, res) => {
+      if (!req.query) return returnBadRequest(res);
+      const { writer } = req.query;
+      if (!writer) return returnBadRequest(res);
+      const params = { writer };
+      const response = await getUserIdByPostWriter(conn, params);
+      console.log(response);
+      res.status(response.code).json(response);
     });
   });
 };

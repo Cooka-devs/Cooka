@@ -43,7 +43,7 @@ export const setCounselingRoutes = (app: Express, conn: Pool) => {
     const response = await updateCounseling(conn, { id: +id, ...req.body });
     res.status(response.code).json(response);
   });
-  app.get("/counseling/:id", async (req, res) => {
+  app.get("/counseling/:id(\\d+)", async (req, res) => {
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const { size, page } = req.query;

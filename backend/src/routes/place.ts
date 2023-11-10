@@ -41,7 +41,7 @@ export const setPlaceRoutes = (app: Express, conn: Pool) => {
     const response = await updatePlace(conn, { id: +id, ...req.body });
     res.status(response.code).json(response);
   });
-  app.get("/place/:id", async (req, res) => {
+  app.get("/place/:id(\\d+)", async (req, res) => {
     if (!("id" in req.params)) return returnBadRequest(res);
     const { id } = req.params;
     const { size, page } = req.query;

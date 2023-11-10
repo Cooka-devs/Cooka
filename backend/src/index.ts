@@ -35,7 +35,7 @@ connectDB((pool) => {
   app.use(bodyParser.json());
   app.use(
     cors({
-      origin: "http://cooka.site",
+      origin: "http://localhost:3000",
       credentials: true,
     })
   );

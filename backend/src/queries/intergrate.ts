@@ -32,6 +32,24 @@ interface GetListLengthByUserProps {
   type: string;
   writer: any;
 }
+interface getUserIdByPostWriterProps {
+  writer: any;
+}
+export const getUserIdByPostWriter: QueriesFunctionWithBody<
+  getUserIdByPostWriterProps
+> = async (conn, params) => {
+  try {
+    const { writer } = params;
+    const result = await conn.execute(
+      `SELECT id
+      FROM user
+      WHERE nickname = '${writer}'`
+    );
+    return makeSuccessResponse(result[0]);
+  } catch (err) {
+    return DB_QUERY_ERROR;
+  }
+};
 export const getSearchData: QueriesFunctionWithBody<
   GetSearchDataProps
 > = async (conn, params) => {

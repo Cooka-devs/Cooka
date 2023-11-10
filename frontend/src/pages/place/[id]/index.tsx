@@ -86,6 +86,8 @@ const PlaceDetail = () => {
             user={user}
             setDeleteModal={setDeleteModal}
             setModify={setModify}
+            type="place"
+            router={router}
           />
           <PostDetailWithComments
             post={post}

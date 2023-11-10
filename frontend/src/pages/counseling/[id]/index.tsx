@@ -17,6 +17,7 @@ import GetUser from "@/utilities/GetUser";
 import { EditDeleteBtn } from "@/components/EditDeleteBtn";
 import NoData from "@/components/NoData";
 import { PostDetailWithComments } from "@/components/PostDetailWithComments";
+import { RouteUserPosts } from "@/components/RouteUserPosts";
 const CounselingDetail = () => {
   const [post, setPost] = useState<CsItem>();
   const [modal, setModal] = useState(false);
@@ -80,7 +81,17 @@ const CounselingDetail = () => {
           )}
           <h1>{post.title}</h1>
           <div className={Styles.detail_name}>
-            <div>{post.writer}</div>
+            <div
+              onClick={() =>
+                RouteUserPosts({
+                  writer: post.writer,
+                  type: "counseling",
+                  router,
+                })
+              }
+            >
+              {post.writer}
+            </div>
             <div>|</div>
             <div>
               <span>{post.created_at}</span>
