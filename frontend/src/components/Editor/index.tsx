@@ -324,14 +324,14 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                 : textType === "place"
                 ? "맛집명을 입력하세요! 최대8글자"
                 : textType === "counseling"
-                ? "고민명을 입력하세요! 최대16글자"
+                ? "고민명을 입력하세요! 최대30글자"
                 : textType === "modify"
                 ? "수정할 제목을 입력하세요!"
                 : ""
             }
             className={Styles.text_title}
             onChange={onChangeTitle}
-            maxLength={textType === "counseling" ? 16 : 8}
+            maxLength={textType === "counseling" ? 30 : 8}
             value={title}
           />
           {textType === "recipe" ||
