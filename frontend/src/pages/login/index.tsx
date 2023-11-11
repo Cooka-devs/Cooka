@@ -41,7 +41,6 @@ const LoginPage = () => {
       .then((res) => res.data[0])
       .then((userData) => {
         if (userData) {
-          console.log("id", id, "pw", password, "router", router, "url", url);
           const getPw = encodePw(userData.salt, password);
           DefaultAxiosService.instance
             .post("/login", {
@@ -50,7 +49,6 @@ const LoginPage = () => {
             })
             .then((res) => {
               const status = res.status;
-              console.log(status);
               if (status === 200) {
                 router.push(`${url}`, undefined, { shallow: true });
               } else if (status === 202) {

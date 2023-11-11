@@ -25,7 +25,6 @@ export const kakaoLogin = async (
       );
       const status = loginResponse.status;
       if (status === 200) {
-        console.log("status : 200 return");
         return { status: 200 };
       } else {
         console.log("로그인실패");

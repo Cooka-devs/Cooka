@@ -10,6 +10,5 @@ export const updateComment = ({ id, content, type }: UpdateCommentProps) => {
     .put(`${type}_comment/${id}`, {
       content,
     })
-    .then((res) => console.log(res))
     .catch((err) => console.log(err));
 };

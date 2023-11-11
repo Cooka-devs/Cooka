@@ -19,7 +19,6 @@ export const getSearchData = async ({
       params: { keyword: keyword, page: page, size: size },
     })
     .then((res) => {
-      console.log(`${type}Search : `, res.data.data);
       setList(() => {
         return [...res.data.data];
       });

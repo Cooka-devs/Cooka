@@ -55,7 +55,6 @@ export const WantDeleteList: React.FC<WantDeleteModalProp> = ({
           type === "place_comment" ? (
           <AniButton
             onClick={async () => {
-              console.log("id in modal:", id);
               await deleteCommentList(type, id);
               router.reload();
             }}

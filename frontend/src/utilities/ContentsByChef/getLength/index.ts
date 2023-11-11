@@ -25,7 +25,6 @@ export const getListLength = async ({
       params: { nickname: writer },
     }
   );
-  console.log(recipeLength.data.data[0].count);
   setRNum(recipeLength.data.data[0].count);
   setPNum(placeLength.data.data[0].count);
   setCNum(counselingLength.data.data[0].count);

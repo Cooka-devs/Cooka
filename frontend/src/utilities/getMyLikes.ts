@@ -51,11 +51,6 @@ export const getMyLikedList = async ({
   size,
   page,
 }: GetMyLikedListProps) => {
-  console.log("type", type);
-  console.log("user", user);
-  console.log("set", set);
-  console.log("size", size);
-  console.log("page", page);
   DefaultAxiosService.instance
     .get(`/${type}/${user.id}`, { params: { size: size, page: page } })
     .then((res) => {

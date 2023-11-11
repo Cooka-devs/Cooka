@@ -12,7 +12,6 @@ export const getLikedList = ({ type, user, set }: GetLikedListProp) => {
       params: { id: user.id, user: true },
     })
     .then((res) => {
-      console.log(`${type} count:`, res.data.data.count);
       set(res.data.data.count);
     });
 };

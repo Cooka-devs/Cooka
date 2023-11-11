@@ -19,7 +19,6 @@ export const getListByPage = async ({
     const result = await DefaultAxiosService.instance.get(
       `/list/${type}?page=${page}&size=${size}`
     );
-    console.log("result:", result.data.data);
     setList(result.data.data);
   } catch (err) {
     console.log(err);

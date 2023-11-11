@@ -4,6 +4,5 @@ export const encodePw = (salt: string, password: string): string => {
     .createHash(`sha256`)
     .update(salt + password)
     .digest(`base64`);
-  console.log("baseCrypto:", baseCrypto);
   return baseCrypto;
 };

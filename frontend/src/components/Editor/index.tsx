@@ -71,7 +71,6 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
 
   const onChangeText: ReactQuill.ReactQuillProps["onChange"] = async (e) => {
     await setText(e);
-    console.log(text);
   };
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,8 +129,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                   title: title,
                   isHot: false,
                 })
-                .then((res) => {
-                  console.log(res);
+                .then(() => {
                   router.reload();
                 })
                 .catch((err) => console.log(err));
@@ -151,8 +149,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                   content: text,
                   title: title,
                 })
-                .then((res) => {
-                  console.log(res);
+                .then(() => {
                   router.reload();
                 })
                 .catch((err) => console.log(err));
@@ -178,8 +175,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                   title: title,
                   isHot: false,
                 })
-                .then((res) => {
-                  console.log(res);
+                .then(() => {
                   router.reload();
                 })
                 .catch((err) => console.log(err));
@@ -199,8 +195,7 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
                   content: text,
                   title: title,
                 })
-                .then((res) => {
-                  console.log(res);
+                .then(() => {
                   router.reload();
                 })
                 .catch((err) => console.log(err));
@@ -247,7 +242,6 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
             length: 1,
           });
         }
-        console.log("text", text);
       }
       setShouldSetSelection(false);
     }
@@ -268,7 +262,6 @@ const Editor = ({ textType, modifyType, post }: TextType) => {
         accept={"image/*"}
         onChange={async (e) => {
           const editor = document.getElementsByClassName("ql-editor");
-          console.log(editor[0]);
           if (!e.target.files) return;
           const selectImg =
             e.target.files?.length > 0 ? e.target.files[0] : null;

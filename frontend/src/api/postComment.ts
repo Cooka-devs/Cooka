@@ -18,6 +18,5 @@ export const postComment = ({
       writer,
       postId,
     })
-    .then((res) => console.log(res))
     .catch((err) => console.log(err));
 };

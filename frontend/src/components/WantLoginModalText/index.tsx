@@ -18,7 +18,6 @@ export const WantLoginModalText: React.FC<WantLoginModalProp> = ({
 }) => {
   const { setUrl } = useStore();
   const router = useRouter();
-  console.log(router.pathname);
 
   return (
     <div className={Styles.loginModalText}>

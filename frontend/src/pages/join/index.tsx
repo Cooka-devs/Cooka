@@ -119,8 +119,6 @@ const JoinContent = () => {
         });
       if (!salt) return;
       const encodePassword = encodePw(salt, password);
-      console.log("salt:", salt);
-      console.log("pw:", encodePassword);
       axios
         .post(`http://${process.env.NEXT_PUBLIC_SERVER_HOST}:8000/users`, {
           name: name,
@@ -134,7 +132,6 @@ const JoinContent = () => {
           profile_text: "자기소개를 입력해주세요",
           salt: salt,
         })
-        .then((res) => console.log(res))
         .catch((err) => console.log(err));
       alert("회원가입이 완료되었습니다!");
       router.push("/");

@@ -57,7 +57,6 @@ export const DisplayLikes = ({
                 params: { userId: user.id, postId: item.id },
               })
               .then((res) => {
-                console.log(res);
                 setLikesNum((prev) => prev - 1);
                 setOnLike(false);
               });
@@ -68,7 +67,6 @@ export const DisplayLikes = ({
                 postId: item.id,
               })
               .then((res) => {
-                console.log(res);
                 setLikesNum((prev) => prev + 1);
                 setOnLike(true);
               });

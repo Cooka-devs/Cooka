@@ -155,7 +155,6 @@ const KakaoLoginPage = () => {
     }).then((res) =>
       res.json().then(async (data) => {
         if (data.access_token) {
-          console.log("token:", data.access_token);
           await setToken(data.access_token);
           fetch(getUserUrl, {
             method: "GET",
@@ -167,7 +166,6 @@ const KakaoLoginPage = () => {
             .then((res) =>
               res.json().then(async (kakaoData: KaKaoLoginData) => {
                 setKakaoLoginData(kakaoData);
-                console.log(kakaoData);
                 try {
                   const loginResult = await kakaoLogin(
                     kakaoData,

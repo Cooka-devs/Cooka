@@ -21,7 +21,6 @@ const SearchUserData = async ({
       `/list/${type}?page=${page}&size=${size}`,
       { params: { nickname: user.nickname } }
     );
-    console.log(result);
     set(result.data.data);
   } catch (err) {
     console.log(err);

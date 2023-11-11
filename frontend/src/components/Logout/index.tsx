@@ -9,7 +9,6 @@ export const Logout = () => {
     try {
       DefaultAxiosService.instance.get("/logout").then((res) => {
         const status = res.status;
-        console.log(status);
         if (status === 200) {
           router.reload();
         }
