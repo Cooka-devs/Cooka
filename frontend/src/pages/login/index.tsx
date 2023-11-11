@@ -4,7 +4,7 @@ import useStore from "@/store";
 import { encodePw } from "@/utilities/encodePw";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Styles from "./index.module.css";
 import useGetEnterKeyup from "@/hooks/useGetEnterKeyUp";
 
@@ -19,6 +19,8 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [text, setText] = useState("");
   const router = useRouter();
+  const ref = useRef();
+
   const kakaoLoginHandler = useCallback(() => {
     router.push(kakao_Auth_Uri);
   }, [router]);
@@ -39,6 +41,7 @@ const LoginPage = () => {
       .then((res) => res.data[0])
       .then((userData) => {
         if (userData) {
+          console.log("id", id, "pw", password, "router", router, "url", url);
           const getPw = encodePw(userData.salt, password);
           DefaultAxiosService.instance
             .post("/login", {
